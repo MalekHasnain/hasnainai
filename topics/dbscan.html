@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DBSCAN — HasnainAI</title>
+  <link rel="stylesheet" href="/assets/style.css">
+</head>
+<body>
+<div class="layout">
+  <aside class="sidebar">
+    <div class="brand">Hasnain<span>AI</span></div>
+    <div class="tagline">HCCDA-AI prep &amp; practice</div>
+    <nav>
+      <a href="/index.html">🏠 Home</a>
+      <a href="/concepts.html">📚 Core Concepts</a>
+      <div style="color:var(--muted);font-size:.75rem;margin:14px 0 4px 10px;">TOPICS (class sequence)</div>
+      <a href="/topics/confusion-matrix.html"><span class="num">01</span>Confusion Matrix</a>
+      <a href="/topics/cnn.html"><span class="num">02</span>CNN</a>
+      <a href="/topics/dbscan.html" class="active"><span class="num">03</span>DBSCAN</a>
+      <a href="/topics/vgg16.html"><span class="num">04</span>VGG16</a>
+      <a href="/topics/logistic-regression.html"><span class="num">05</span>Logistic Regression</a>
+      <a href="/topics/simple-linear-regression.html"><span class="num">06</span>Simple Linear Regression</a>
+      <a href="/topics/pca.html"><span class="num">07</span>PCA</a>
+      <a href="/topics/kmeans.html"><span class="num">08</span>K-Means</a>
+      <a href="/topics/multiple-regression.html"><span class="num">09</span>Multiple Regression</a>
+      <a href="/topics/rnn.html"><span class="num">10</span>RNN</a>
+    </nav>
+  </aside>
+  <main>
+    <h1>DBSCAN</h1>
+    <div class="meta">
+      <span class="chip">Clustering (density-based)</span>
+      <span class="chip">Anomaly detection</span>
+      <span class="chip">Dataset: Mall Customer Segmentation (Kaggle)</span>
+      <span class="chip">Library: scikit-learn</span>
+    </div>
+
+    <h2>What it is</h2>
+    <p><strong>DBSCAN</strong> (Density-Based Spatial Clustering of Applications with Noise) groups points that are packed closely together, and marks any point that sits alone in a sparse region as <strong>noise</strong>. Unlike K-Means, you never tell it how many clusters you want — it discovers the number of clusters by itself from the density of the data.</p>
+    <p>The intuition is simple: a cluster is a <em>crowded neighborhood</em>. If you stand on a point and there are enough neighbors within walking distance, you are in a dense area — part of a cluster. If you look around and see almost nobody nearby, you are out in the wilderness — you are noise (an outlier).</p>
+    <p>Because sparse, isolated points get labeled as noise instead of being forced into the nearest cluster, DBSCAN doubles as an <strong>anomaly detector</strong>. That is its superpower: it clusters and finds outliers in one pass, and it can find clusters of arbitrary shape (rings, crescents, blobs) that K-Means cannot.</p>
+
+    <h2>The math inside</h2>
+    <p>DBSCAN measures how close points are with Euclidean distance (<a href="/concepts.html">already explained in Core Concepts</a>) on <a href="/concepts.html">normalized</a> / standardized features — scaling matters because distance-based algorithms are dominated by whichever feature has the biggest raw range.</p>
+
+    <div class="formula">N<sub>eps</sub>(p) = { q : dist(p, q) &le; eps }</div>
+    <p>The eps-neighborhood of point <em>p</em> is the set of all points within distance <em>eps</em> of it — its "walking distance" circle.</p>
+
+    <div class="term"><strong>eps</strong> — the neighborhood radius. How far DBSCAN "looks" from each point when counting neighbors. Small eps &rarr; many points become noise; large eps &rarr; clusters merge into one blob.</div>
+
+    <div class="term"><strong>min_samples</strong> — the minimum number of neighbors (including the point itself) required inside the eps-neighborhood for a point to count as "dense". A common rule of thumb is min_samples &ge; dimensions + 1; 4 is a typical small-data choice.</div>
+
+    <div class="formula">core point &hArr; |N<sub>eps</sub>(p)| &ge; min_samples</div>
+    <p>A point is a <strong>core point</strong> if its eps-neighborhood contains at least <em>min_samples</em> points — it lives in a crowded area.</p>
+
+    <div class="term"><strong>border point</strong> — a point that falls inside the eps-neighborhood of a core point but does not have <em>min_samples</em> neighbors of its own. It joins the core point's cluster but sits on its edge.</div>
+
+    <div class="term"><strong>noise point (outlier)</strong> — a point that is neither core nor border: not enough neighbors, and not reachable from any core point. DBSCAN labels it -1. <em>This is the anomaly-detection payoff</em>: for anomaly methods in general see <a href="/concepts.html">Core Concepts</a> — DBSCAN is one concrete instance of them.</div>
+
+    <div class="formula">q is <strong>density-reachable</strong> from p if there is a chain of core points p = p<sub>1</sub>, p<sub>2</sub>, &hellip;, p<sub>n</sub> = q where each p<sub>i+1</sub> is inside N<sub>eps</sub>(p<sub>i</sub>)</div>
+    <p>Density-reachability is how clusters grow: starting from one core point, DBSCAN keeps absorbing neighbors-of-neighbors, so one cluster is the full set of points reachable by chaining dense neighborhoods together.</p>
+
+    <h2>Diagram</h2>
+    <figure>
+      <img src="https://upload.wikimedia.org/wikipedia/commons/a/af/DBSCAN-Illustration.svg" alt="DBSCAN illustration showing core points (red), border points (yellow) and noise points (blue) with eps neighborhood circles">
+      <figcaption>Source: Wikipedia/Wikimedia Commons</figcaption>
+    </figure>
+    <p>Notice the three point roles at once: red points are core points (their eps circle holds &ge; min_samples neighbors), yellow points are border points (inside a core point's circle but not dense themselves), and the blue point out on its own is noise — the anomaly.</p>
+
+    <h2>Dataset (Kaggle)</h2>
+    <p><strong>Mall Customer Segmentation Dataset</strong> — kagglehub slug <code>vjchoudhary7/customer-segmentation-tutorial-in-python</code> (file <code>Mall_Customers.csv</code>). A mall collected data on 200 of its customers: <code>CustomerID</code>, <code>Genre</code> (gender), <code>Age</code>, <code>Annual Income (k$)</code>, and <code>Spending Score (1-100)</code> — a score the mall assigned each customer based on buying behavior. There is no target column: this is unsupervised learning, so the question is not "predict Y" but "what natural groups (and oddballs) exist among customers?" We cluster on Annual Income vs Spending Score to find customer segments and spot unusual customers.</p>
+
+    <h2>Practice code — run in Google Colab, top to bottom</h2>
+    <div class="callout">Blocks must run in order. Copy each block into a Colab cell and run it before moving to the next — later blocks depend on variables created earlier.</div>
+
+    <div class="block-label">BLOCK 1: Imports</div>
+    <p>Bring in everything we need up front: kagglehub for the dataset, pandas/numpy for data handling, sklearn for scaling, DBSCAN and the silhouette score, and matplotlib for plots.</p>
+<pre><code># Import the dataset downloader from Kaggle
+import kagglehub
+
+# Import pandas for tables and numpy for numeric arrays
+import pandas as pd
+import numpy as np
+
+# Import glob to locate the downloaded CSV file on disk
+import glob
+
+# StandardScaler puts features on the same scale (mean 0, std 1)
+from sklearn.preprocessing import StandardScaler
+
+# DBSCAN is the density-based clustering algorithm we are practicing
+from sklearn.cluster import DBSCAN
+
+# silhouette_score measures how well-separated the clusters are
+from sklearn.metrics import silhouette_score
+
+# matplotlib for scatter plots
+import matplotlib.pyplot as plt</code></pre>
+
+    <div class="block-label">BLOCK 2: Download the dataset with kagglehub</div>
+    <p>kagglehub pulls the dataset straight into Colab — no manual download, no Kaggle account in the notebook. It returns the local folder path.</p>
+<pre><code># Download the mall customers dataset from Kaggle (returns the local cache path)
+path = kagglehub.dataset_download("vjchoudhary7/customer-segmentation-tutorial-in-python")
+
+# Print the folder where the files were stored
+print("Dataset downloaded to:", path)
+
+# List every file inside that folder so we can see the exact CSV name
+print(glob.glob(path + "/*"))</code></pre>
+
+    <div class="block-label">BLOCK 3: Load and look at the data</div>
+    <p>Read the CSV into a DataFrame and take a first look: shape, column names, and a few rows to confirm the data landed correctly.</p>
+<pre><code># Find the CSV file inside the downloaded folder (matches Mall_Customers.csv)
+csv_file = glob.glob(path + "/Mall_Customers.csv")[0]
+
+# Load the CSV into a pandas DataFrame
+df = pd.read_csv(csv_file)
+
+# Show the shape: (rows, columns) — we expect (200, 5)
+print("Shape:", df.shape)
+
+# Show column names and data types
+print(df.info())
+
+# Show the first 5 rows to eyeball the values
+print(df.head())</code></pre>
+
+    <div class="block-label">BLOCK 4: Select features</div>
+    <p>We cluster on Annual Income and Spending Score — the two behavioral columns the mall cares about for segmentation. CustomerID is just a row label and would inject fake distance, Age and Genre answer different questions, so we drop them for this run.</p>
+<pre><code># Keep only the two features we want to cluster on
+X = df[["Annual Income (k$)", "Spending Score (1-100)"]]
+
+# Confirm we now have a 200 x 2 numeric matrix
+print(X.shape)
+print(X.head())</code></pre>
+
+    <div class="block-label">BLOCK 5: Scale the features with StandardScaler</div>
+    <p>DBSCAN is distance-based (Euclidean), and income ranges ~15–137 while spending ranges 1–99 — unscaled, income differences would dominate every eps-neighborhood. Standardizing both columns to mean 0 / std 1 makes one eps value meaningful for both.</p>
+<pre><code># Create the scaler (will transform each feature to mean 0, std 1)
+scaler = StandardScaler()
+
+# Fit the scaler to X and transform it in one step
+X_scaled = scaler.fit_transform(X)
+
+# Check the result: each column should now have mean ~0 and std ~1
+print("Means after scaling:", X_scaled.mean(axis=0).round(3))
+print("Stds  after scaling:", X_scaled.std(axis=0).round(3))</code></pre>
+
+    <div class="block-label">BLOCK 6: Fit DBSCAN</div>
+    <p>Run DBSCAN with eps=9 and min_samples=4. These were chosen by trial: we plotted the k-distance graph (distance of each point to its 4th nearest neighbor, sorted) and looked for the "elbow" to pick eps, then nudged both values until clusters looked clean and noise stayed small. Expect to tune them yourself on new data — that is normal for DBSCAN.</p>
+<pre><code># Create the model:
+#   eps=9          - neighborhood radius (in scaled units, chosen via k-distance elbow)
+#   min_samples=4  - neighbors needed for a point to be core (rule of thumb: dims + 2)
+dbscan = DBSCAN(eps=9, min_samples=4)
+
+# Fit the model to the scaled data AND get each point's cluster label in one call
+# Labels: 0,1,2,... = cluster IDs; -1 = noise (anomaly)
+labels = dbscan.fit_predict(X_scaled)
+
+# Show how many clusters were found (excluding the -1 noise label)
+real_clusters = set(labels) - {-1}
+print("Clusters found:", len(real_clusters), "->", sorted(real_clusters))
+
+# Show how many points landed in each cluster, including noise (-1)
+print(pd.Series(labels).value_counts().sort_index())</code></pre>
+
+    <div class="block-label">BLOCK 7: Visualize clusters with noise in black</div>
+    <p>The payoff plot: every cluster in its own color, and the noise points (label -1) drawn in black so the anomalies stand out immediately. This is DBSCAN doing anomaly detection for free while it clusters.</p>
+<pre><code># Create a figure for the scatter plot
+plt.figure(figsize=(8, 6))
+
+# Loop over each label and plot that group with its own color
+for lbl in sorted(set(labels)):
+    if lbl == -1:
+        # -1 means noise: plot as black X markers so anomalies are obvious
+        plt.scatter(X_scaled[labels == lbl, 0], X_scaled[labels == lbl, 1],
+                    c="black", marker="x", s=60, label="Noise / anomaly (-1)")
+    else:
+        # Regular cluster: plot as colored dots
+        plt.scatter(X_scaled[labels == lbl, 0], X_scaled[labels == lbl, 1],
+                    s=40, label=f"Cluster {lbl}")
+
+# Axis labels use the feature names (values are standardized)
+plt.xlabel("Annual Income (scaled)")
+plt.ylabel("Spending Score (scaled)")
+
+# Title and legend, then render
+plt.title("DBSCAN clusters on mall customers — black X = anomalies")
+plt.legend()
+plt.show()</code></pre>
+
+    <div class="block-label">BLOCK 8: Count noise points as anomalies</div>
+    <p>Turn the noise label into an explicit anomaly list: count the -1 points and pull the original (unscaled) rows so you can see exactly <em>who</em> the unusual customers are — this is what a business would act on.</p>
+<pre><code># Noise label is -1: count how many points DBSCAN flagged as anomalies
+n_noise = (labels == -1).sum()
+print(f"Anomalies (noise points): {n_noise} out of {len(labels)} "
+      f"({100 * n_noise / len(labels):.1f}%)")
+
+# Add the labels back to the original DataFrame for interpretation
+df["Cluster"] = labels
+
+# Show the original customer rows that were flagged as anomalies
+print(df[df["Cluster"] == -1])</code></pre>
+
+    <div class="block-label">BLOCK 9: Silhouette score</div>
+    <p>A number for cluster quality. Silhouette compares, for each point, how close it is to its own cluster (cohesion) versus the nearest other cluster (separation) — it ranges from -1 (wrong cluster) through 0 (borderline) to +1 (well placed). Compute it on the non-noise points only, and use it to compare different eps/min_samples settings (higher is better).</p>
+<pre><code># silhouette_score needs at least 2 real clusters to be defined
+if len(real_clusters) &gt;= 2:
+    # Keep only non-noise points and their labels (silhouette is undefined for noise)
+    mask = labels != -1
+    score = silhouette_score(X_scaled[mask], labels[mask])
+    # Print the score: closer to +1 means tighter, better-separated clusters
+    print(f"Silhouette score (noise excluded): {score:.3f}")
+else:
+    # If everything collapsed into one cluster or all noise, tuning is needed
+    print("Fewer than 2 clusters - adjust eps / min_samples and rerun.")</code></pre>
+
+    <h2>Real-world use cases &amp; companies</h2>
+    <table>
+      <tr><th>Use case</th><th>Who / how</th></tr>
+      <tr><td>Fraud &amp; anomaly detection in card transactions</td><td>Visa and Mastercard-style payment networks flag transactions that fall in sparse regions of spending behavior (unusual amount, location, velocity) for review — density-based noise = suspicious activity</td></tr>
+      <tr><td>Network intrusion detection</td><td>Security teams cluster network traffic flows; the vast majority forms dense "normal" regions, and rare flows that land in no cluster are treated as candidate intrusions</td></tr>
+      <tr><td>Geospatial hotspot detection</td><td>City planners and mapping platforms (e.g. OpenStreetMap-based analyses, Uber-style pickup heatmaps) find dense pockets of events — crime hotspots, accident zones, ride demand — and ignore scattered rural noise</td></tr>
+    </table>
+
+    <h2>Combining with other algorithms (project ideas)</h2>
+    <p><strong>Clean outliers before K-Means.</strong> Run DBSCAN first on the mall data, drop the -1 noise points, then run K-Means on the survivors. K-Means is sensitive to outliers because it minimizes squared distances to centroids, so removing DBSCAN's noise gives tighter, more stable customer segments (and you can compare each method's silhouette score).</p>
+    <p><strong>DBSCAN anomalies &rarr; Logistic Regression labels.</strong> Use DBSCAN's noise points on the transaction dataset as "suspicious" examples and a sample of cluster points as "normal", then train Logistic Regression to <em>classify</em> new transactions as fraud/normal in real time — DBSCAN does the labeling, Logistic Regression does the deploying. Evaluate with a Confusion Matrix.</p>
+    <p><strong>Visualize high-dimensional clusters with PCA.</strong> Cluster customers on all numeric columns with DBSCAN, then apply PCA to project the data to 2D for plotting — PCA compresses the features while keeping most of the variance, so you can actually <em>see</em> the density structure DBSCAN found.</p>
+
+    <h2>Interview Q&amp;A</h2>
+    <div class="qa">
+      <div class="q">What is the difference between DBSCAN and K-Means?</div>
+      <div class="a">Three big differences. (1) Number of clusters: K-Means needs k up front; DBSCAN discovers it from the data. (2) Shape: K-Means only finds round, equally-sized blobs because it assigns points to the nearest centroid; DBSCAN follows density, so it can find rings, crescents, and arbitrarily shaped clusters. (3) Noise: K-Means forces every point into a cluster (outliers drag centroids); DBSCAN explicitly labels unreachable points as noise. DBSCAN's costs: you must tune eps and min_samples, and it struggles when clusters have very different densities.</div>
+      <div class="q">How does DBSCAN find anomalies?</div>
+      <div class="a">Any point that is not a core point and is not within eps of any core point gets label -1 (noise). Those points live in sparse regions — too far from every dense neighborhood — which is exactly what an outlier is. So one fit gives you clustering AND anomaly detection: count the -1 labels and you have your anomaly list.</div>
+      <div class="q">What do eps and min_samples actually control?</div>
+      <div class="a">eps is the neighborhood radius — how far DBSCAN looks from each point when counting neighbors. min_samples is the neighbor count a point needs to qualify as core (dense). Small eps or big min_samples &rarr; more points become noise; big eps &rarr; separate clusters merge into one blob. Tune eps with a k-distance plot (sorted distance to the k-th nearest neighbor; pick the elbow).</div>
+      <div class="q">Explain core, border, and noise points.</div>
+      <div class="a">Core: has &ge; min_samples points (including itself) within eps — the interior of a cluster. Border: fewer than min_samples neighbors, but within eps of some core point — the edge of a cluster; it belongs to the cluster but doesn't extend it. Noise: neither — not dense and not reachable from any core point; labeled -1 and treated as an anomaly.</div>
+      <div class="q">Why do you need to scale features before DBSCAN?</div>
+      <div class="a">DBSCAN is built on Euclidean distance. If income ranges 15–137 and spending 1–99, the income axis dominates the distance and eps effectively measures income only. Standardizing (mean 0, std 1 per feature) puts both axes on equal footing so one eps value is meaningful in every direction — same reason any distance-based method (K-Means, KNN) needs scaling.</div>
+      <div class="q">How does a cluster grow in DBSCAN? What is density-reachability?</div>
+      <div class="a">Pick an unvisited core point — it starts a cluster. Every point in its eps-neighborhood joins. Any of those that are also core contribute their own neighborhoods, and so on transitively: the cluster is the set of points density-reachable from the start through a chain of core points. Border points on the frontier join but stop the expansion; noise never joins.</div>
+      <div class="q">When would you NOT use DBSCAN?</div>
+      <div class="a">When clusters have very different densities (one eps can't serve them all — sparse clusters break into noise), when data is very high-dimensional (distances concentrate and "neighborhood" loses meaning — reduce dimensions with PCA first), or when you specifically need every point assigned to a cluster with a centroid for interpretation — then K-Means fits better.</div>
+      <div class="q">What is the silhouette score and how do you use it here?</div>
+      <div class="a">For each point, silhouette = (b − a) / max(a, b), where a is its average distance to its own cluster and b is its average distance to the nearest other cluster. It ranges -1 to +1; higher means points sit tight inside their own cluster and far from others. In this practice we compute it on non-noise points only and use it to compare eps/min_samples settings — the setting with the best silhouette (plus a sensible noise count) wins.</div>
+    </div>
+
+    <div class="prevnext"><a href="/topics/cnn.html">&larr; previous topic</a> | <a href="/topics/vgg16.html">next topic &rarr;</a></div>
+    <p class="footer-note">Built for personal study — Huawei HCCDA-AI certification prep. Diagrams from Wikipedia/Wikimedia Commons. Datasets from Kaggle.</p>
+  </main>
+</div>
+<script>
+document.querySelectorAll('pre').forEach(p => {
+  const b = document.createElement('button');
+  b.className = 'copy-btn'; b.textContent = 'Copy';
+  b.onclick = () => { navigator.clipboard.writeText(p.innerText); b.textContent = 'Copied!'; setTimeout(()=>b.textContent='Copy',1200); };
+  p.appendChild(b);
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CNN (Convolutional Neural Network) — HasnainAI</title>
+<link rel="stylesheet" href="/assets/style.css">
+</head>
+<body>
+<div class="layout">
+  <aside class="sidebar">
+    <div class="brand">Hasnain<span>AI</span></div>
+    <div class="tagline">HCCDA-AI prep &amp; practice</div>
+    <nav>
+      <a href="/index.html">🏠 Home</a>
+      <a href="/concepts.html">📚 Core Concepts</a>
+      <div style="color:var(--muted);font-size:.75rem;margin:14px 0 4px 10px;">TOPICS (class sequence)</div>
+      <a href="/topics/confusion-matrix.html"><span class="num">01</span>Confusion Matrix</a>
+      <a href="/topics/cnn.html" class="active"><span class="num">02</span>CNN</a>
+      <a href="/topics/dbscan.html"><span class="num">03</span>DBSCAN</a>
+      <a href="/topics/vgg16.html"><span class="num">04</span>VGG16</a>
+      <a href="/topics/logistic-regression.html"><span class="num">05</span>Logistic Regression</a>
+      <a href="/topics/simple-linear-regression.html"><span class="num">06</span>Simple Linear Regression</a>
+      <a href="/topics/pca.html"><span class="num">07</span>PCA</a>
+      <a href="/topics/kmeans.html"><span class="num">08</span>K-Means</a>
+      <a href="/topics/multiple-regression.html"><span class="num">09</span>Multiple Regression</a>
+      <a href="/topics/rnn.html"><span class="num">10</span>RNN</a>
+    </nav>
+  </aside>
+  <main>
+    <h1>CNN (Convolutional Neural Network)</h1>
+    <div class="meta">
+      <span class="chip">Neural network</span>
+      <span class="chip">Image classification</span>
+      <span class="chip">Dataset: Kaggle pankrzysiu/cifar10-python</span>
+      <span class="chip">Library: TensorFlow / Keras</span>
+    </div>
+
+    <h2>What it is</h2>
+    <p>A <b>Convolutional Neural Network (CNN)</b> is a neural network designed to recognize patterns in images. Instead of looking at an image as one giant list of pixels, a CNN slides small <b>filters</b> across the image to detect local patterns — first edges, then corners and textures, then object parts like "wheel" or "eye", then whole objects like "cat" or "airplane".</p>
+    <p>Why not just feed raw pixels into a normal network? A tiny 32&times;32 color image already has 3,072 input numbers, and a normal fully-connected layer would need a weight for every one of them. A CNN reuses the <b>same small filter everywhere</b> in the image, so it has far fewer parameters, trains faster, and recognizes a cat whether it sits in the corner or the center of the photo.</p>
+    <p>A typical CNN stacks three kinds of layers: <b>convolution layers</b> that extract features, <b>pooling layers</b> that shrink the feature maps and make them tolerant to small shifts, and finally plain <b>dense layers</b> that combine the features into class scores. Training itself is <a href="/concepts.html">gradient descent, already explained in Core Concepts</a> — the same engine as every other neural network.</p>
+    <p>In this page we build a small CNN that classifies 32&times;32 color photos into 10 classes (CIFAR-10) and reach roughly 70% test accuracy in about 5 minutes on a free Colab GPU — even a plain CPU session finishes in a reasonable time because the model is intentionally small.</p>
+
+    <h2>The math inside</h2>
+    <p>The whole pipeline is just four simple operations repeated: convolution, ReLU, pooling, and at the end flattening + a softmax layer (softmax is <a href="/concepts.html">already explained in Core Concepts</a>).</p>
+
+    <div class="term"><b>Filter (kernel) &amp; convolution:</b> a small grid of learnable weights (e.g. 3&times;3). Convolution slides this filter across the image and, at every position, computes the dot product: multiply filter weights with the pixel values underneath and sum. One output number per position.</div>
+    <div class="formula">output(i, j) = &Sigma;<sub>m,n</sub> W(m, n) &middot; X(i+m, j+n) + b</div>
+    <p>Each output pixel is a weighted sum of a small patch of the input — the filter "lights up" where its pattern is present.</p>
+
+    <div class="term"><b>Feature map:</b> the full output image produced by ONE filter after convolution + ReLU. Each filter gives its own feature map: an "edge map", a "red-spot map", etc. A Conv2D layer with 32 filters outputs 32 stacked feature maps.</div>
+
+    <div class="term"><b>Stride:</b> how many pixels the filter jumps between positions. Stride 1 = visit every position (output almost the same size); stride 2 = skip every other position (output about half the size in each dimension).</div>
+
+    <div class="term"><b>Padding:</b> adding a border of zeros around the image before convolving. With padding='same' the output keeps the same height/width as the input; without it ('valid') each 3&times;3 convolution shrinks the image by 1 pixel on each side.</div>
+
+    <div class="term"><b>ReLU (Rectified Linear Unit):</b> an activation applied element-wise after convolution to keep only positive signals:</div>
+    <div class="formula">ReLU(x) = max(0, x)</div>
+    <p>Negative values become 0, positive values pass through unchanged. Without a non-linear step like this, stacking layers would collapse into one big linear operation.</p>
+
+    <div class="term"><b>Pooling (max pooling):</b> sliding a small window (e.g. 2&times;2) over each feature map and keeping only the maximum value in each window:</div>
+    <div class="formula">maxpool(X)<sub>window</sub> = max(values in the 2&times;2 window)</div>
+    <p>This halves the width and height, throws away 75% of the numbers, and keeps the strongest signal — so "a cat slightly to the left" still looks like "a cat".</p>
+
+    <div class="term"><b>Flattening:</b> reshaping the final stack of small feature maps into one long vector of numbers so ordinary dense layers can read it. No math changes — the numbers are just lined up in a row.</div>
+
+    <div class="formula">P(class k) = softmax(z)<sub>k</sub>, &nbsp; z = W &middot; flattened&nbsp;features + b</div>
+    <p>The final dense layer turns the flattened features into 10 raw scores, and the softmax (a <a href="/concepts.html">Core Concepts</a> term) converts them into probabilities that sum to 1. Training minimizes cross-entropy loss by <a href="/concepts.html">gradient descent — see Core Concepts</a>; the sigmoid, its 2-class cousin, appears again in Topic 05 (Logistic Regression).</p>
+
+    <h2>Diagram</h2>
+    <figure><img src="https://upload.wikimedia.org/wikipedia/commons/6/63/Typical_cnn.png" alt="Typical CNN architecture: input image, convolution layers, pooling, fully connected layer, output classes"><figcaption>Source: Wikipedia/Wikimedia Commons</figcaption></figure>
+    <p>Notice how the image gets spatially smaller but deeper (more feature maps) after each conv+pool stage, then flattens into a vector for the fully-connected part.</p>
+    <figure><img src="https://upload.wikimedia.org/wikipedia/commons/4/46/Colored_neural_network.svg" alt="Colored neural network with input, hidden and output neurons connected by weighted edges"><figcaption>Source: Wikipedia/Wikimedia Commons</figcaption></figure>
+    <p>Notice the dense part of the CNN is exactly this classic network: every neuron connected to the previous layer — convolution is what feeds it better features than raw pixels.</p>
+
+    <h2>Dataset (Kaggle)</h2>
+    <p><b>CIFAR-10</b> — Kaggle slug <code>pankrzysiu/cifar10-python</code> (fetchable with kagglehub). It contains 60,000 tiny color photographs, each 32&times;32 pixels with 3 color channels, evenly split across 10 classes: airplane, automobile, bird, cat, deer, dog, frog, horse, ship, truck. 50,000 images are for training and 10,000 for testing; the target is simply the class name of the object in the photo. The Kaggle copy ships as a tar.gz of Python pickle batches, so in Colab the simplest loading path is Keras's built-in <code>cifar10.load_data()</code>, which downloads the exact same data already unpacked — the Kaggle dataset is your reference/source citation for it.</p>
+
+    <h2>Practice code — run in Google Colab, top to bottom</h2>
+    <div class="callout">Blocks must run in order. Copy each block into a Colab cell and press Shift+Enter. The model is deliberately small so the free tier (GPU or even CPU) finishes all 10 epochs in roughly 5 minutes.</div>
+
+    <div class="block-label">BLOCK 1: Imports</div>
+    <p>Load the libraries: TensorFlow/Keras to build the network, NumPy for array math, and Matplotlib for plots.</p>
+<pre><code># Import TensorFlow and give it the short name tf
+import tensorflow as tf
+# Keras is TensorFlow's model-building API (Sequential = stack of layers)
+from tensorflow import keras
+# NumPy handles arrays of pixel values and labels
+import numpy as np
+# Matplotlib draws the sample images and the accuracy curves
+import matplotlib.pyplot as plt</code></pre>
+
+    <div class="block-label">BLOCK 2: Load CIFAR-10</div>
+    <p>Keras ships CIFAR-10 built-in — one call downloads the same 60,000 images as the Kaggle dataset <code>pankrzysiu/cifar10-python</code> (listed here via kagglehub purely as the reference source; the tar.gz pickle batches it contains are what cifar10.load_data unpacks for you).</p>
+<pre><code># Load the CIFAR-10 dataset that comes packaged with Keras
+# Same data as Kaggle pankrzysiu/cifar10-python, pre-unpacked
+(x_train, y_train), (x_test, y_test) = keras.datasets.cifar10.load_data()
+# Human-readable names for the 10 output classes (indexes 0..9)
+class_names = ['airplane', 'automobile', 'bird', 'cat', 'deer',
+               'dog', 'frog', 'horse', 'ship', 'truck']
+# Print the shapes: 50000 train / 10000 test images, 32x32 pixels, 3 RGB channels
+print(x_train.shape, y_train.shape, x_test.shape, y_test.shape)</code></pre>
+
+    <div class="block-label">BLOCK 3: Normalize the pixels</div>
+    <p>Pixels arrive as integers 0–255. Dividing by 255 puts every input in the 0–1 range — <a href="/concepts.html">normalization, already explained in Core Concepts</a> — which keeps training stable.</p>
+<pre><code># Convert integers 0..255 to float32 and divide by 255
+# so every pixel value lands in the range 0..1 (normalization)
+x_train = x_train.astype('float32') / 255.0
+x_test = x_test.astype('float32') / 255.0
+# Labels arrive as a column vector (n, 1); flatten to a simple vector (n,)
+# because sparse_categorical_crossentropy expects plain class indexes 0..9
+y_train = y_train.flatten()
+y_test = y_test.flatten()</code></pre>
+
+    <div class="block-label">BLOCK 4: Look at the data — 9 sample images</div>
+    <p>Always eyeball the dataset before training: these are the tiny, blurry 32&times;32 photos your CNN must classify.</p>
+<pre><code># Create a 3x3 grid of plot cells
+fig, axes = plt.subplots(3, 3, figsize=(6, 6))
+# Loop over the first 9 training images with their grid position
+for i, ax in enumerate(axes.flat):
+    # Show image i; imshow reverses the /255 scaling for display
+    ax.imshow(x_train[i])
+    # Title = true class name looked up from the integer label
+    ax.set_title(class_names[y_train[i]])
+    # Hide the x/y tick marks for a clean grid
+    ax.set_xticks([]); ax.set_yticks([])
+plt.tight_layout()
+plt.show()</code></pre>
+
+    <div class="block-label">BLOCK 5: Build the CNN (Sequential)</div>
+    <p>The model: two conv+pool stages that learn image features, then flatten + dense layers that classify. Each comment names the math the layer performs.</p>
+<pre><code># Sequential = layers run in order, top to bottom
+model = keras.Sequential([
+    # --- Feature extraction part ---
+    # Input: 32x32 color image. Conv2D slides 32 filters of 3x3 over it
+    # (convolution = sliding dot product), padding='same' keeps 32x32,
+    # ReLU (max(0,x)) keeps only positive pattern responses
+    keras.layers.Conv2D(32, (3, 3), activation='relu', padding='same',
+                        input_shape=(32, 32, 3)),
+    # Max pooling: keep the max of each 2x2 window -> halves to 16x16,
+    # small shifts of a pattern no longer change the output
+    keras.layers.MaxPooling2D((2, 2)),
+    # Second convolution: 64 filters now see 16x16 maps and can learn
+    # bigger patterns (corners, textures) built from layer-1 edges
+    keras.layers.Conv2D(64, (3, 3), activation='relu', padding='same'),
+    # Second pooling halves again to 8x8
+    keras.layers.MaxPooling2D((2, 2)),
+
+    # --- Classification part ---
+    # Flatten: stack the 64 feature maps of 8x8 into one vector
+    # of 64*8*8 = 4096 numbers (no math, just a reshape)
+    keras.layers.Flatten(),
+    # Dense hidden layer: every input connects to 64 neurons (matrix
+    # multiply + ReLU) to combine features into class evidence
+    keras.layers.Dense(64, activation='relu'),
+    # Dropout randomly zeroes 40% of those connections each training
+    # step - a regularization trick against overfitting
+    keras.layers.Dropout(0.4),
+    # Output layer: 10 neurons (one per class); softmax turns the 10
+    # scores into probabilities that sum to 1
+    keras.layers.Dense(10, activation='softmax')
+])
+# Print the layer stack and parameter count (small = fast on free Colab)
+model.summary()</code></pre>
+
+    <div class="block-label">BLOCK 6: Compile — choose loss and optimizer</div>
+    <p>Compile tells Keras <i>how</i> to learn. One line of "why" per choice is in the comments.</p>
+<pre><code>model.compile(
+    # Adam: a fast, self-tuning version of gradient descent - good
+    # default for deep networks (Core Concepts covers gradient descent)
+    optimizer='adam',
+    # Cross-entropy loss for integer labels 0..9: punishes confident
+    # wrong predictions; 'sparse' = labels are plain indexes, not one-hot
+    loss='sparse_categorical_crossentropy',
+    # Track accuracy because the classes are balanced (6000 per class)
+    metrics=['accuracy']
+)</code></pre>
+
+    <div class="block-label">BLOCK 7: Train (fit)</div>
+    <p>Run <a href="/concepts.html">gradient descent (Core Concepts)</a> for 10 passes over the data, keeping 20% of the training images as a validation set to watch for overfitting.</p>
+<pre><code># Train for 10 epochs (full passes over the 50000 images)
+# validation_split=0.2 hides the last 20% of x_train from the optimizer
+# and reports accuracy on it after each epoch
+history = model.fit(
+    x_train, y_train,
+    epochs=10,                # 10 passes: enough for ~70% accuracy
+    batch_size=64,            # update weights every 64 images
+    validation_split=0.2      # 10000 held-out images for monitoring
+)</code></pre>
+
+    <div class="block-label">BLOCK 8: Plot accuracy curves — spot overfitting</div>
+    <p>If training accuracy climbs far above validation accuracy, the model is memorizing — <a href="/concepts.html">overfitting, already explained in Core Concepts</a>.</p>
+<pre><code># Plot accuracy on training data vs validation data per epoch
+plt.plot(history.history['accuracy'], label='train accuracy')
+plt.plot(history.history['val_accuracy'], label='validation accuracy')
+plt.xlabel('Epoch')
+plt.ylabel('Accuracy')
+plt.legend()
+plt.title('Training vs validation accuracy')
+plt.show()
+# The gap between the two curves IS overfitting made visible:
+# train keeps rising while validation flattens or drops</code></pre>
+
+    <div class="block-label">BLOCK 9: Evaluate on the test set</div>
+    <p>The test set (10,000 images) was never used for training or validation — this is the honest final grade.</p>
+<pre><code># Evaluate loss and accuracy on the 10000 unseen test images
+test_loss, test_acc = model.evaluate(x_test, y_test, verbose=2)
+# ~0.70 accuracy is expected for this small CNN (humans get ~95%
+# on CIFAR-10; the big pretrained VGG16 of Topic 04 does much better)
+print(f'Test accuracy: {test_acc:.3f}')</code></pre>
+
+    <div class="block-label">BLOCK 10: Predict one image</div>
+    <p>Use the trained model on a single test photo and read the predicted class with argmax — <a href="/concepts.html">argmax is explained in Core Concepts</a>.</p>
+<pre><code># Pick test image number 0 and add a batch dimension: (1, 32, 32, 3)
+one_image = x_test[0:1]
+# model.predict returns 10 probabilities summing to 1 (softmax)
+probs = model.predict(one_image)[0]
+# argmax = index of the largest probability -> predicted class
+predicted_class = class_names[np.argmax(probs)]
+# Show the image with predicted vs true label
+plt.imshow(x_test[0])
+plt.title(f'Predicted: {predicted_class} | True: {class_names[y_test[0]]}')
+plt.axis('off')
+plt.show()
+# Print the probability vector to see how confident the CNN is
+print('Class probabilities:', np.round(probs, 3))</code></pre>
+
+    <div class="block-label">BLOCK 11: Confusion matrix of the CNN</div>
+    <p>Link back to Topic 01: the confusion matrix shows <i>which</i> classes the CNN confuses — on CIFAR-10, cats and dogs get mixed constantly.</p>
+<pre><code># Predict probabilities for every test image, then take the
+# argmax (index of the max probability) as the predicted class
+y_pred = np.argmax(model.predict(x_test), axis=1)
+# Build the 10x10 confusion matrix: rows = true class, cols = predicted
+from sklearn.metrics import confusion_matrix, ConfusionMatrixDisplay
+cm = confusion_matrix(y_test, y_pred)
+# Draw it with color coding; bright off-diagonal cells = confusions
+disp = ConfusionMatrixDisplay(cm, display_labels=class_names)
+fig, ax = plt.subplots(figsize=(10, 10))
+disp.plot(ax=ax, xticks_rotation=45)
+plt.title('CNN confusion matrix (CIFAR-10)')
+plt.show()
+# Reading it: the diagonal = correct predictions; the cat/dog block
+# is usually the brightest off-diagonal error zone</code></pre>
+
+    <h2>Real-world use cases &amp; companies</h2>
+    <table>
+      <tr><th>Use case</th><th>Who uses it</th></tr>
+      <tr><td>Search your photos by what's in them ("beach", "dog")</td><td>Google Photos</td></tr>
+      <tr><td>Real-time vision: lanes, cars, pedestrians, traffic signs</td><td>Tesla Autopilot</td></tr>
+      <tr><td>Auto-tagging faces in uploaded photos</td><td>Facebook (DeepFace)</td></tr>
+      <tr><td>Screening chest X-rays for pneumonia and other findings</td><td>Hospitals / CheXNet-style medical AI</td></tr>
+    </table>
+
+    <h2>Combining with other algorithms (project ideas)</h2>
+    <p><b>CNN features &rarr; SVM classifier.</b> Chop off the final softmax layer and use the CNN's Flatten output as a feature vector; train an SVM on those features instead of the dense layer. You compare a deep model with a classic classifier on identical deep features.</p>
+    <p><b>CNN &rarr; sigmoid for 2 classes (Logistic Regression link).</b> Merge CIFAR-10 into two super-classes (animal vs vehicle) and replace the 10-neuron softmax with a 1-neuron sigmoid output — the last layer then works exactly like the Logistic Regression of Topic 05, and you can compare its weights-based decision with the CNN's.</p>
+    <p><b>PCA on flattened features before a simple classifier (PCA link).</b> Flatten raw 32&times;32&times;3 images into 3,072-number vectors, run the PCA of Topic 07 to keep the top 50 components, then feed those to K-Nearest-Neighbors or Logistic Regression. Compare this "no-convolution" baseline against the CNN to see how much of the accuracy the convolution layers alone contribute.</p>
+    <p><b>Error analysis with the Confusion Matrix.</b> Take the confusion matrix from Block 11 (Topic 01) and train a second, targeted CNN only on the most-confused class pair (e.g. cat vs dog) — a clean mini-project on its own.</p>
+
+    <h2>Interview Q&amp;A</h2>
+    <div class="qa"><div class="q">Why convolution instead of fully-connected layers for images?</div><div class="a">Three classic reasons: (1) <b>parameter sharing</b> — one 3&times;3 filter of 9 weights is reused across the whole image instead of a weight per pixel pair, so the model is far smaller and faster to train; (2) <b>sparse connectivity</b> — each output only looks at a small local patch, matching how image patterns are local; (3) <b>translation invariance</b> — a cat in the corner triggers the same filters as a cat in the center. A fully-connected layer treats "cat left" and "cat right" as completely different inputs.</div></div>
+    <div class="qa"><div class="q">What does a filter (kernel) actually learn?</div><div class="a">The filter weights are learned by gradient descent, not hand-designed. Early-layer filters end up resembling edge and color-blob detectors; deeper layers combine them into corners, textures, and eventually object parts. Each filter's output after sliding over the image is one feature map.</div></div>
+    <div class="qa"><div class="q">What do padding and stride control?</div><div class="a">Stride is how many pixels the filter jumps per step — a bigger stride gives a smaller output. Padding adds zeros around the border; padding='same' keeps the output the same size as the input, padding='valid' lets it shrink. Together they set the spatial size of the next layer.</div></div>
+    <div class="qa"><div class="q">Why is max pooling used, and does it lose information?</div><div class="a">Max pooling keeps only the strongest activation in each window, halving width and height. It does discard values, but the discarded ones are weaker responses to the same pattern — what's kept is <i>where-ish and how strongly</i> a pattern appeared, which makes the network tolerant to small shifts and cuts computation. Yes, precise position information is lost — that's the trade.</div></div>
+    <div class="qa"><div class="q">Why ReLU instead of sigmoid or no activation at all?</div><div class="a">Without a non-linearity, stacked layers collapse into a single linear operation, so depth adds nothing. ReLU = max(0,x) is preferred over sigmoid because it's cheap to compute and doesn't saturate: sigmoid squashes large inputs toward 0 or 1 where the gradient nearly vanishes, slowing training. The CNN still uses sigmoid-style softmax at the output because we need probabilities there.</div></div>
+    <div class="qa"><div class="q">How would you spot overfitting during CNN training?</div><div class="a">Plot training vs validation accuracy per epoch. When train accuracy keeps rising while validation accuracy flattens or falls, the model is memorizing. Fixes used in this page's model: dropout, a small model, and early stopping; more data or augmentation also help (see Core Concepts on overfitting).</div></div>
+    <div class="qa"><div class="q">CNN vs VGG16 — what's the difference?</div><div class="a">VGG16 (Topic 04) is a specific famous CNN architecture: 13 convolutional layers with 3&times;3 filters plus 3 dense layers, ~138M parameters, trained on ImageNet's 1.4M images across 1000 classes. Our CNN has 4 conv layers and well under 1M parameters trained on 50K images. Same math (convolution, ReLU, pooling), different scale — and in practice you usually don't train VGG16 from scratch, you reuse its pretrained weights (transfer learning) the way Topic 04 shows.</div></div>
+    <div class="qa"><div class="q">How does a CNN connect to the other topics in this course?</div><div class="a">It's evaluated with the confusion matrix from Topic 01; its last layer with a sigmoid is Logistic Regression (Topic 05) applied to learned features; those features can feed an SVM or be reduced with PCA (Topic 07); and the same gradient-descent training loop powers everything. A CNN is for images, while RNN (Topic 10) applies the same "layer + gradient descent" idea to sequences like text.</div></div>
+
+    <div class="prevnext">
+      <a href="/topics/confusion-matrix.html">← Topic 01: Confusion Matrix</a>
+      <a href="/topics/dbscan.html">Topic 03: DBSCAN →</a>
+    </div>
+    <p class="footer-note">Part of HasnainAI — HCCDA-AI prep. Code runs top-to-bottom in Google Colab (free tier). ~5 minutes with this small model.</p>
+  </main>
+</div>
+<script>
+document.querySelectorAll('pre').forEach(p => {
+  const b = document.createElement('button');
+  b.className = 'copy-btn'; b.textContent = 'Copy';
+  b.onclick = () => { navigator.clipboard.writeText(p.innerText); b.textContent = 'Copied!'; setTimeout(()=>b.textContent='Copy',1200); };
+  p.appendChild(b);
+});
+</script>
+</body>
+</html>

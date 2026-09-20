@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Simple Linear Regression — HasnainAI</title>
+  <link rel="stylesheet" href="/assets/style.css">
+</head>
+<body>
+<div class="layout">
+  <aside class="sidebar">
+    <div class="brand">Hasnain<span>AI</span></div>
+    <div class="tagline">HCCDA-AI prep &amp; practice</div>
+    <nav>
+      <a href="/index.html">🏠 Home</a>
+      <a href="/concepts.html">📚 Core Concepts</a>
+      <div style="color:var(--muted);font-size:.75rem;margin:14px 0 4px 10px;">TOPICS (class sequence)</div>
+      <a href="/topics/confusion-matrix.html"><span class="num">01</span>Confusion Matrix</a>
+      <a href="/topics/cnn.html"><span class="num">02</span>CNN</a>
+      <a href="/topics/dbscan.html"><span class="num">03</span>DBSCAN</a>
+      <a href="/topics/vgg16.html"><span class="num">04</span>VGG16</a>
+      <a href="/topics/logistic-regression.html"><span class="num">05</span>Logistic Regression</a>
+      <a href="/topics/simple-linear-regression.html" class="active"><span class="num">06</span>Simple Linear Regression</a>
+      <a href="/topics/pca.html"><span class="num">07</span>PCA</a>
+      <a href="/topics/kmeans.html"><span class="num">08</span>K-Means</a>
+      <a href="/topics/multiple-regression.html"><span class="num">09</span>Multiple Regression</a>
+      <a href="/topics/rnn.html"><span class="num">10</span>RNN</a>
+    </nav>
+  </aside>
+  <main>
+    <h1>Simple Linear Regression</h1>
+    <div class="meta">
+      <span class="chip">Regression (supervised)</span>
+      <span class="chip">Dataset: Kaggle prokshitha/home-value-insights</span>
+      <span class="chip">scikit-learn LinearRegression</span>
+    </div>
+
+    <h2>What it is</h2>
+    <p>Simple linear regression is the most basic prediction machine in statistics: it draws the best straight line through a cloud of points so you can predict a number from a single number. "Simple" means exactly <b>one input feature</b> — one x, one y. Given a house's square footage, predict its price. Given years of experience, predict salary.</p>
+    <p>The line it draws is not a guess. There is an exact formula (calculus, no iteration needed) that finds the one line minimizing the total squared error between the points and the line. That procedure is called <b>Ordinary Least Squares (OLS)</b>, and it is the same engine that powers multiple regression with many features later in this course.</p>
+    <p>Despite being over 200 years old (Gauss and Legendre, early 1800s, for astronomy), it is still the first model any data scientist fits — because the two numbers it returns, <b>slope</b> and <b>intercept</b>, are directly readable as business insights: "each extra square foot adds $148 to the price" is a sentence a manager understands.</p>
+    <p>It is a <a href="/concepts.html">supervised</a> regression method: the target is continuous, and every training row already carries the correct answer.</p>
+
+    <h2>The math inside</h2>
+    <p>The model is a straight line with two parameters — the intercept b<sub>0</sub> and the slope b<sub>1</sub>:</p>
+    <div class="formula">y&#770; = b<sub>0</sub> + b<sub>1</sub>x</div>
+    <p>For any input x, this computes the predicted y (written y&#770;, "y-hat") by starting at b<sub>0</sub> and walking b<sub>1</sub> units up for every unit of x.</p>
+    <div class="formula">b<sub>1</sub> = &Sigma;(x<sub>i</sub> &minus; x&#772;)(y<sub>i</sub> &minus; y&#772;) / &Sigma;(x<sub>i</sub> &minus; x&#772;)&sup2;</div>
+    <p>The slope is the <b>covariance of x and y divided by the variance of x</b> — both already <a href="/concepts.html">explained in Core Concepts</a>. If x and y move together (positive covariance), the slope is positive; the more spread x has (bigger variance), the gentler the slope.</p>
+    <div class="formula">b<sub>0</sub> = y&#772; &minus; b<sub>1</sub>x&#772;</div>
+    <p>The intercept is chosen so the line passes exactly through the point of means (x&#772;, y&#772;) — the center of mass of the data.</p>
+    <div class="formula">residual e<sub>i</sub> = y<sub>i</sub> &minus; y&#770;<sub>i</sub></div>
+    <p>The residual is the vertical gap between a real point and the line — how wrong the line was on that row (positive = line too low, negative = line too high).</p>
+    <div class="formula">OLS minimizes &Sigma;(y<sub>i</sub> &minus; y&#770;<sub>i</sub>)&sup2;</div>
+    <p>Ordinary Least Squares picks the b<sub>0</sub> and b<sub>1</sub> that make the sum of squared residuals as small as possible — squaring kills the sign and punishes big misses. This is the <a href="/concepts.html">loss function</a> of linear regression.</p>
+    <div class="term"><b>Residual:</b> the error of one prediction — actual minus predicted (y &minus; y&#770;). Residuals are what OLS squashes; they are also useful diagnostics (a pattern in residuals means the line is the wrong shape).</div>
+    <div class="term"><b>Ordinary Least Squares (OLS):</b> the closed-form recipe for finding the best-fit line by minimizing the sum of squared residuals. No gradient descent needed — the two formulas above ARE the answer.</div>
+    <div class="term"><b>R&sup2; (R-squared, coefficient of determination):</b> the share of the target's variance the model explains, from 0 to 1. R&sup2; = 1 &minus; (sum of squared residuals) / (variance of y around its mean). 0.85 means 85% of price variation is captured by square footage.</div>
+    <div class="term"><b>MAE / RMSE (error in target units):</b> MAE = mean of |residuals| — "on average we're off by $23,000". RMSE = square root of the mean of squared residuals — same units, but punishes large misses more.</div>
+
+    <h2>Diagram</h2>
+    <figure>
+      <img src="https://upload.wikimedia.org/wikipedia/commons/3/3a/Linear_regression.svg" alt="Scatter plot of data points with a fitted straight regression line; vertical dashed segments show the residuals from each point to the line">
+      <figcaption>Source: Wikipedia/Wikimedia Commons</figcaption>
+    </figure>
+    <p>Notice the vertical dashed segments: each one is a residual, the gap between a real point and the line — and OLS rotated/shifted the line until the sum of the squares of exactly those segments was as small as possible.</p>
+
+    <h2>Dataset (Kaggle)</h2>
+    <p><b>prokshitha/home-value-insights</b> via kagglehub, file <code>house_price_regression_dataset.csv</code> — a synthetic dataset of 1,000 houses built for practicing price prediction. Each row is one house; columns include Square_Footage, number of rooms, age, and other property attributes, plus the target <b>House_Price</b>. In this topic we deliberately use <b>only Square_Footage</b> as the single feature — one feature in, one number out, that is what makes it <i>simple</i> linear regression. The full 7-feature version (all columns at once) is Topic 09: Multiple Regression, where the same OLS math scales up to many x's.</p>
+
+    <h2>Practice code — run in Google Colab, top to bottom</h2>
+    <div class="callout">Blocks must run in order. Copy each block into a Colab cell and run it before moving to the next — later blocks depend on variables created earlier.</div>
+
+    <div class="block-label">BLOCK 1: Imports</div>
+    <p>Everything we need: pandas for tables, matplotlib/seaborn for plots, and scikit-learn for the model, the split, and the error metrics.</p>
+<pre><code># Import the data and plotting libraries
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+import seaborn as sns
+
+# Import sklearn tools: model, splitter, and error metrics
+from sklearn.model_selection import train_test_split
+from sklearn.linear_model import LinearRegression
+from sklearn.metrics import mean_absolute_error, mean_squared_error, r2_score</code></pre>
+
+    <div class="block-label">BLOCK 2: Download the dataset with kagglehub</div>
+    <p>kagglehub pulls the dataset straight from Kaggle into Colab — no account login, no manual upload. glob then finds the CSV inside the downloaded folder.</p>
+<pre><code># Download the dataset straight from Kaggle (no login needed)
+import kagglehub
+import glob
+
+# Download 'home-value-insights' by user 'prokshitha'
+path = kagglehub.dataset_download("prokshitha/home-value-insights")
+
+# Find the CSV file inside the downloaded folder
+csv_file = glob.glob(path + "/house_price_regression_dataset.csv")[0]
+print("Dataset file:", csv_file)</code></pre>
+
+    <div class="block-label">BLOCK 3: Load and look at the data</div>
+    <p>Always look before you model: shape tells us rows and columns, head shows the first rows, describe gives min/max/mean so we know the ranges we're working with.</p>
+<pre><code># Load the CSV into a pandas DataFrame
+df = pd.read_csv(csv_file)
+
+# 1000 rows (houses), several property columns
+print(df.shape)
+
+# Peek at the first 5 rows to see the structure
+print(df.head())
+
+# Summary stats: Square_Footage range, House_Price mean, etc.
+print(df.describe())
+
+# Check for missing values (imputer would be needed if any)
+print(df.isnull().sum())</code></pre>
+
+    <div class="block-label">BLOCK 4: Scatter plot of feature vs target</div>
+    <p>Before fitting a line, eyeball the relationship. If the cloud is tight and tilted (roughly a straight band), a linear model is a good bet.</p>
+<pre><code># Scatter plot: each dot is one house (square footage vs price)
+plt.figure(figsize=(8, 5))
+plt.scatter(df["Square_Footage"], df["House_Price"], alpha=0.4, s=15)
+
+# Labels so the plot is readable
+plt.xlabel("Square Footage")
+plt.ylabel("House Price ($)")
+plt.title("House Price vs Square Footage")
+plt.show()
+
+# Correlation: close to +1 means a strong straight-line relationship
+print("Correlation:", df["Square_Footage"].corr(df["House_Price"]))</code></pre>
+
+    <div class="block-label">BLOCK 5: Separate feature X and target y</div>
+    <p>The one syntax trap in sklearn: X must be 2D (a DataFrame, double brackets) because sklearn expects a table of features; y is 1D (a Series, single brackets).</p>
+<pre><code># X is the single feature, kept 2D with DOUBLE brackets
+# (sklearn wants a table of features, even with only one column)
+X = df[["Square_Footage"]]
+
+# y is the target, 1D with single brackets (a plain column)
+y = df["House_Price"]
+
+# Confirm the shapes: X (1000, 1), y (1000,)
+print(X.shape, y.shape)</code></pre>
+
+    <div class="block-label">BLOCK 6: Train/test split</div>
+    <p>Hide 20% of the houses so we can grade the model on data it never saw — grading on memorized data gives a fake score.</p>
+<pre><code># Split: 80% for training, 20% for honest testing
+# random_state fixes the shuffle so results are reproducible
+X_train, X_test, y_train, y_test = train_test_split(
+    X, y, test_size=0.2, random_state=42
+)
+
+print("Train rows:", len(X_train), "| Test rows:", len(X_test))</code></pre>
+
+    <div class="block-label">BLOCK 7: Fit the model and read the line</div>
+    <p>fit runs OLS and stores the two numbers that define the line. intercept_ is b0, coef_ is b1 — and b1 converts directly into a dollar sentence.</p>
+<pre><code># Create and train the model: OLS finds the best b0 and b1
+model = LinearRegression()
+model.fit(X_train, y_train)
+
+# b0: predicted price when square footage is zero (baseline)
+b0 = model.intercept_
+
+# b1: dollars added per extra square foot of living area
+b1 = model.coef_[0]
+
+print(f"Intercept b0 = {b0:,.2f}")
+print(f"Slope b1 = {b1:,.2f}")
+
+# The business sentence: each extra sq ft of living area adds b1 dollars
+print(f"Each extra square foot adds about ${b1:,.0f} to the house price.")</code></pre>
+
+    <div class="block-label">BLOCK 8: Draw the regression line over the scatter</div>
+    <p>The whole model is one line — plotting it over the training scatter shows the fit at a glance. seaborn's regplot draws the scatter and the OLS line together.</p>
+<pre><code># regplot = scatter + fitted least-squares line in one call
+plt.figure(figsize=(8, 5))
+sns.regplot(x=X_train["Square_Footage"], y=y_train,
+            scatter_kws={"alpha": 0.4, "s": 15},
+            line_kws={"color": "red"})
+
+# Labels and title
+plt.xlabel("Square Footage")
+plt.ylabel("House Price ($)")
+plt.title("Fitted regression line over the training data")
+plt.show()</code></pre>
+
+    <div class="block-label">BLOCK 9: Predict on the test set and evaluate</div>
+    <p>Grade the model on the unseen 20%. MAE is the average miss in dollars, RMSE punishes big misses, R&sup2; is the share of price variation explained by square footage.</p>
+<pre><code># Predict prices for the held-out test houses
+y_pred = model.predict(X_test)
+
+# MAE: average miss in dollars (mean of |residuals|)
+mae = mean_absolute_error(y_test, y_pred)
+
+# RMSE: sqrt of mean squared error - punishes large misses
+rmse = np.sqrt(mean_squared_error(y_test, y_pred))
+
+# R^2: share of price variance explained by square footage
+r2 = r2_score(y_test, y_pred)
+
+print(f"MAE  = ${mae:,.0f}   (average miss)")
+print(f"RMSE = ${rmse:,.0f}   (bigger misses weigh more)")
+print(f"R^2  = {r2:.3f}      (variation explained)")</code></pre>
+
+    <div class="block-label">BLOCK 10: Predict one new house</div>
+    <p>The payoff: hand the model a square footage it has never seen and get a price. The input must be 2D, just like X during training.</p>
+<pre><code># A new house: 2400 square feet (2D shape: one row, one feature)
+new_house = pd.DataFrame({"Square_Footage": [2400]})
+
+# Predict its price with the fitted line: y = b0 + b1 * 2400
+predicted_price = model.predict(new_house)[0]
+
+print(f"Predicted price for a 2400 sq ft house: ${predicted_price:,.0f}")
+
+# Manual check with the formula - must match the model output
+manual = b0 + b1 * 2400
+print(f"Manual formula b0 + b1*x gives: ${manual:,.0f}")</code></pre>
+
+    <h2>Real-world use cases &amp; companies</h2>
+    <table>
+      <tr><th>Use case</th><th>Who / where</th></tr>
+      <tr><td>Salary from years of experience — the classic HR example taught everywhere</td><td>Compensation analytics teams (Glassdoor, Payscale publish experience-vs-pay curves built on the same idea)</td></tr>
+      <tr><td>Sales from advertising spend — "each extra $1k of TV ads sells X units"</td><td>Marketing mix modeling used by consumer-goods advertisers (e.g. P&amp;G-era econometrics) to budget ad channels</td></tr>
+      <tr><td>Electricity bill / load from usage (kWh)</td><td>Utility billing: cost = fixed charge + rate per kWh is literally an intercept-plus-slope model</td></tr>
+      <tr><td>House value from size as a baseline before richer models</td><td>Real-estate estimates (Zillow's Zestimate started from hedonic regression ideas, then scaled up)</td></tr>
+    </table>
+
+    <h2>Combining with other algorithms (project ideas)</h2>
+    <p><b>Stepping stone to Multiple Regression (Topic 09):</b> refit the same dataset with all 7 features. The OLS math is identical — the slope formula becomes matrix algebra — and watch R&sup2; climb as rooms, age, and location explain what square footage alone could not. Compare the per-feature coefficients to see which feature moves price most.</p>
+    <p><b>Residuals + anomaly detection:</b> after fitting the line, houses with huge residuals (predicted $300k, sold $100k) are mispriced listings. Combine with the IQR rule or a DBSCAN (Topic 03) run on the residuals to flag them automatically — a classic underpricing/overpricing detector.</p>
+    <p><b>Fixing curves with polynomial terms:</b> if the scatter bends, add x&sup2; as a second feature and you get polynomial regression — still linear in its parameters, so still solved by the same LinearRegression call. Plot the residuals before and after to see the pattern disappear.</p>
+    <p><b>Regression before classification:</b> use the predicted price (or the residual) as an input feature to a Logistic Regression (Topic 05) classifier that decides fast-sell vs slow-sell. Regression outputs often make powerful features for classifiers.</p>
+
+    <h2>Interview Q&amp;A</h2>
+    <div class="qa"><div class="q">What is the meaning of the slope and the intercept?</div><div class="a">The slope b<sub>1</sub> is the predicted change in y for a one-unit increase in x — "each extra square foot adds $148". The intercept b<sub>0</sub> is the predicted y when x = 0 — the baseline when the feature is absent. The intercept is sometimes not physically meaningful (a 0 sq ft house) but is required to position the line correctly.</div></div>
+    <div class="qa"><div class="q">When does simple linear regression fail?</div><div class="a">When the relationship is not linear (curves need polynomial terms or another model), when one feature is not enough (leaving signal on the table — fix with multiple features), when outliers drag the line (OLS punishes squared errors, so extreme points have huge leverage), and when features are correlated with hidden variables (omitted-variable bias).</div></div>
+    <div class="qa"><div class="q">What exactly does OLS minimize, and why square the errors?</div><div class="a">Ordinary Least Squares minimizes the sum of squared residuals &Sigma;(y &minus; y&#770;)&sup2;. Squaring removes the sign so positive and negative misses don't cancel, and it punishes large errors disproportionately — a miss of 4 hurts 16 times as much as a miss of 1. The alternative, sum of absolute errors, is harder to optimize but robust to outliers.</div></div>
+    <div class="qa"><div class="q">How are linear regression and logistic regression (Topic 05) related?</div><div class="a">Both fit a linear combination b<sub>0</sub> + b<sub>1</sub>x with (regularized) least-squares-style optimization — but linear regression outputs that raw number (a continuous price), while logistic regression passes it through a sigmoid to squash it into a probability of a category. Same skeleton, different output transform and loss function (squared error vs log loss).</div></div>
+    <div class="qa"><div class="q">What is R&sup2; and what does a value of 0.85 mean?</div><div class="a">R&sup2; is the proportion of the target's variance explained by the model: 1 &minus; (squared residual sum) / (variance of y around its mean). 0.85 means 85% of the variation in house prices is captured by square footage alone; the remaining 15% is due to factors the model ignores — rooms, age, location.</div></div>
+    <div class="qa"><div class="q">What is a residual and why should you plot them?</div><div class="a">A residual is actual minus predicted for one row. Plotting residuals against x should show a random, patternless band around zero — a curve or funnel shape means the line is the wrong shape or the error spread changes with x, telling you to add polynomial terms or transform the target before trusting the model.</div></div>
+    <div class="qa"><div class="q">Why is MAE easier to explain than RMSE?</div><div class="a">MAE is literally the average miss in target units — "we're off by $23,000 on average" — so anyone can understand it. RMSE is also in target units but takes the square root of the mean of squared errors, so big misses dominate it; it's the right metric when large errors are disproportionately costly, but it's less intuitive to explain.</div></div>
+    <div class="qa"><div class="q">Why does X need double brackets but y single brackets in sklearn?</div><div class="a">X = df[["Square_Footage"]] returns a 2D DataFrame because sklearn models accept a table of features — even a table with one column — while y = df["House_Price"] returns a 1D Series, since the target is always a single column of answers. Passing a 1D x raises a "expected 2D array" error.</div></div>
+
+    <div class="prevnext">
+      <a href="/topics/logistic-regression.html">← Topic 05: Logistic Regression</a>
+      <a href="/topics/pca.html">Topic 07: PCA →</a>
+    </div>
+    <p class="footer-note">HasnainAI — HCCDA-AI course companion. One line, two numbers, endless insight.</p>
+  </main>
+</div>
+<script>
+document.querySelectorAll('pre').forEach(p => {
+  const b = document.createElement('button');
+  b.className = 'copy-btn'; b.textContent = 'Copy';
+  b.onclick = () => { navigator.clipboard.writeText(p.innerText); b.textContent = 'Copied!'; setTimeout(()=>b.textContent='Copy',1200); };
+  p.appendChild(b);
+});
+</script>
+</body>
+</html>
