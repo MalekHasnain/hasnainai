@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Core Concepts — HasnainAI</title>
+<link rel="stylesheet" href="/assets/style.css">
+</head>
+<body>
+<div class="layout">
+  <aside class="sidebar">
+    <div class="brand">Hasnain<span>AI</span></div>
+    <div class="tagline">HCCDA-AI prep &amp; practice</div>
+    <nav>
+      <a href="/index.html">🏠 Home</a>
+      <a href="/concepts.html" class="active">📚 Core Concepts</a>
+      <div style="color:var(--muted);font-size:.75rem;margin:14px 0 4px 10px;">TOPICS (class sequence)</div>
+      <a href="/topics/confusion-matrix.html"><span class="num">01</span>Confusion Matrix</a>
+      <a href="/topics/cnn.html"><span class="num">02</span>CNN</a>
+      <a href="/topics/dbscan.html"><span class="num">03</span>DBSCAN</a>
+      <a href="/topics/vgg16.html"><span class="num">04</span>VGG16</a>
+      <a href="/topics/logistic-regression.html"><span class="num">05</span>Logistic Regression</a>
+      <a href="/topics/simple-linear-regression.html"><span class="num">06</span>Simple Linear Regression</a>
+      <a href="/topics/pca.html"><span class="num">07</span>PCA</a>
+      <a href="/topics/kmeans.html"><span class="num">08</span>K-Means</a>
+      <a href="/topics/multiple-regression.html"><span class="num">09</span>Multiple Regression</a>
+      <a href="/topics/rnn.html"><span class="num">10</span>RNN</a>
+    </nav>
+  </aside>
+  <main>
+    <h1>Core Concepts (explained ONCE — used everywhere)</h1>
+    <p>These terms appear in every algorithm. Each is defined here <b>one time only</b> — topic pages link back to this page instead of repeating.</p>
+
+    <h2>1. Data basics</h2>
+    <div class="term"><b>Feature (X, independent variable):</b> an input column used to make a prediction — e.g. house size, age, pixel values.</div>
+    <div class="term"><b>Target variable (y, dependent variable):</b> the output the model is trained to predict. In supervised learning, the model learns from examples where the target is already known. Continuous target → regression; category target → classification.</div>
+    <div class="term"><b>Sample:</b> one row of the dataset — one house, one patient, one image. Your notes: "imputer used to fill none value" → see Missing data below.</div>
+    <div class="term"><b>Probability sample:</b> a sample chosen by random chance, where every member has a known probability of being picked (simple random, stratified, systematic, cluster). Results generalize to the population.</div>
+    <div class="term"><b>Non-probability sample:</b> a sample chosen by convenience or judgment (convenience, snowball, quota). Cheaper but biased — results may not generalize.</div>
+    <div class="term"><b>Imputer / missing data:</b> an imputer fills empty (None/NaN) cells, e.g. SimpleImputer(strategy='mean') replaces each missing value with that column's mean. Models crash or lie on missing data.</div>
+
+    <h2>2. Model evaluation</h2>
+    <div class="term"><b>Train/Test split:</b> hiding part of the data (commonly 20%) so the model is graded on examples it never saw. If you grade on memorized data, the score is fake. random_state fixes the shuffle for reproducibility.</div>
+    <div class="term"><b>Overfitting:</b> the model memorizes training data and fails on new data — train score high, test score low. Fixes: more data, fewer features, regularization (Ridge/Lasso/dropout), cross-validation.</div>
+    <div class="term"><b>Underfitting:</b> the model is too simple — bad on both train and test. Fixes: more features, more complex model, train longer.</div>
+    <div class="term"><b>Bias:</b> error from wrong/too-simple assumptions; high bias → underfitting. <b>Variance:</b> error from sensitivity to training noise; high variance → overfitting. <b>Bias-variance tradeoff:</b> decreasing one usually increases the other — the goal is a balance.</div>
+    <div class="term"><b>Cross-validation:</b> rotating the test set — split data into K folds, train on K−1, test on 1, rotate. Gives a reliable average score and fights overfitting.</div>
+
+    <h2>3. Data problems</h2>
+    <div class="term"><b>Anomaly / outlier detection methods:</b> IQR rule (outside Q1−1.5·IQR or Q3+1.5·IQR), Z-score (|z| &gt; 3), DBSCAN noise points, Isolation Forest. Visual: boxplot.</div>
+    <div class="term"><b>Data augmentation (increasing a dataset artificially):</b> jittering (small noise on features), SMOTE (synthetic points between a sample and its neighbor), bootstrapping (sampling with replacement); images: flip/rotate/crop. Overdone augmentation adds bias.</div>
+
+    <h2>4. Math &amp; stat functions (definitions used across all algorithms)</h2>
+    <div class="term"><b>Mean:</b> the average — sum of values ÷ count. The balancing point of data.</div>
+    <div class="term"><b>Variance (σ²):</b> the average of squared distances from the mean — how spread out the data is.</div>
+    <div class="term"><b>Standard deviation (σ, std):</b> the square root of variance — spread in the SAME units as the data.</div>
+    <div class="term"><b>Covariance:</b> how two variables move together — positive = together, negative = opposite. Units are awkward (X-units × Y-units), which is why correlation exists.</div>
+    <div class="term"><b>Pearson correlation (r):</b> covariance divided by (std(X)·std(y)) — scaled to −1…+1. |r| near 1 = strong linear relationship.</div>
+    <div class="term"><b>Percentile / quartile:</b> Q1 = 25th percentile (25% of data below), Q3 = 75th. IQR = Q3 − Q1 = spread of the middle 50%.</div>
+    <div class="term"><b>Distance metrics:</b> Euclidean = straight-line distance (√ of sum of squared differences); Manhattan = city-block distance (sum of absolute differences). K-Means uses Euclidean; DBSCAN uses either.</div>
+    <div class="term"><b>Matrix, eigenvector, eigenvalue:</b> a matrix is a grid of numbers (a linear transformation). An eigenvector of a matrix is a direction the matrix does NOT rotate — it only stretches it, and the stretch factor is the eigenvalue (λ). PCA finds the eigenvectors of the covariance matrix; the biggest eigenvalues mark the directions of most variance.</div>
+    <div class="term"><b>Determinant:</b> a single number computed from a square matrix — geometrically, the volume-scaling factor of the transformation. Zero determinant = matrix squashes space flat (not invertible).</div>
+    <div class="term"><b>Gradient descent:</b> an optimization loop: compute the slope (gradient) of the error, step a little downhill, repeat until the error stops improving. The training engine of neural networks and logistic regression at scale.</div>
+    <div class="term"><b>Sigmoid (logistic) function:</b> σ(z) = 1/(1+e<sup>−z</sup>) — squashes any number into (0, 1), S-shaped. Turns a regression score into a probability.</div>
+    <div class="term"><b>Softmax:</b> the multi-class version of sigmoid — converts a vector of scores into probabilities that sum to 1.</div>
+    <div class="term"><b>Log loss / cross-entropy:</b> the classification loss function — heavily punishes confident wrong predictions. What logistic regression and neural classifiers minimize.</div>
+    <div class="term"><b>Derivative (slope):</b> how fast a function changes at a point. Needed for gradient descent (the gradient is made of derivatives).</div>
+    <div class="term"><b>Argmax:</b> the INDEX of the largest value, not the value itself — e.g. which class has the highest probability.</div>
+    <div class="term"><b>Normalization / scaling:</b> squeezing features to comparable ranges (e.g. 0–1 or mean 0 / std 1). Critical for K-Means, SVM, PCA, KNN — anything using distances.</div>
+
+    <h2>5. Learning families</h2>
+    <div class="term"><b>Supervised learning:</b> learning with labels (target known). Regression + classification.</div>
+    <div class="term"><b>Unsupervised learning:</b> learning without labels — finding structure. Clustering (K-Means, DBSCAN) + dimensionality reduction (PCA).</div>
+    <div class="term"><b>Regression:</b> predicting a continuous number (price, temperature).</div>
+    <div class="term"><b>Classification:</b> predicting a category (spam/not spam, cat/dog).</div>
+    <div class="term"><b>Clustering:</b> grouping similar samples without labels.</div>
+    <div class="term"><b>Embedding / feature vector:</b> representing a sample as a list of numbers (an image as 1000 numbers, a word as 300 numbers) so math can be applied.</div>
+
+    <div class="prevnext">
+      <a href="/index.html">← Home</a>
+      <a href="/topics/confusion-matrix.html">Topic 01: Confusion Matrix →</a>
+    </div>
+    <p class="footer-note">Core terms are defined once here; topic pages link back instead of repeating.</p>
+  </main>
+</div>
+<script>
+document.querySelectorAll('pre').forEach(p => {
+  const b = document.createElement('button');
+  b.className = 'copy-btn'; b.textContent = 'Copy';
+  b.onclick = () => { navigator.clipboard.writeText(p.innerText); b.textContent = 'Copied!'; setTimeout(()=>b.textContent='Copy',1200); };
+  p.appendChild(b);
+});
+</script>
+</body>
+</html>
