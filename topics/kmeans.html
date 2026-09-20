@@ -59,44 +59,64 @@
       <span class="chip">Library: scikit-learn</span>
     </div>
 
-    <h2>What it is</h2>
-    <p>K-Means is an unsupervised algorithm that splits data into <b>k</b> groups (clusters) without ever seeing a label. You choose k in advance — "split my customers into 5 groups" — and the algorithm finds the 5 natural groupings hiding in the features.</p>
-    <p>The intuition is simple: a cluster is a bunch of points that sit close together, and each cluster can be represented by its center (the <b>centroid</b> — the mean position of all its members). K-Means alternates between two steps: assign every point to its nearest centroid, then move each centroid to the mean of the points it just captured. Repeat until nothing moves.</p>
-    <p>Unlike DBSCAN (Topic 03), K-Means needs k upfront, works best on round, similarly-sized blobs, and always assigns every point to some cluster — there are no "noise" points. In return it's fast, scales to millions of rows, and gives you a centroid per cluster you can inspect and use for prediction on new data.</p>
-    <p>It's the classic customer-segmentation tool: feed in income and spending score, and out come segments like "high income, low spending" that marketing teams can target differently.</p>
+    <h2 class="en">What it is</h2>
+    <h2 class="ru">Yeh kya hai</h2>
+    <p class="en">K-Means is an unsupervised algorithm that splits data into <b>k</b> groups (clusters) without ever seeing a label. You choose k in advance — "split my customers into 5 groups" — and the algorithm finds the 5 natural groupings hiding in the features.</p>
+    <p class="ru">K-Means ek unsupervised algorithm hai jo data ko k girohon (clusters) mein taakta hai bina koi label diye..</p>
+    <p class="en">The intuition is simple: a cluster is a bunch of points that sit close together, and each cluster can be represented by its center (the <b>centroid</b> — the mean position of all its members). K-Means alternates between two steps: assign every point to its nearest centroid, then move each centroid to the mean of the points it just captured. Repeat until nothing moves.</p>
+    <p class="ru">Samajh aasan hai: cluster woh points ka giroh hai jo aas paas baithe hon.</p>
+    <p class="en">Unlike DBSCAN (Topic 03), K-Means needs k upfront, works best on round, similarly-sized blobs, and always assigns every point to some cluster — there are no "noise" points. In return it's fast, scales to millions of rows, and gives you a centroid per cluster you can inspect and use for prediction on new data.</p>
+    <p class="ru">DBSCAN (Topic 03) ke ulat, K-Means ko pehle se k chahiye.</p>
+    <p class="en">It's the classic customer-segmentation tool: feed in income and spending score, and out come segments like "high income, low spending" that marketing teams can target differently.</p>
+    <p class="ru">Yeh classic customer-segmentation tool hai.</p>
 
-    <h2>The math inside</h2>
-    <p>K-Means tries to minimize the <b>within-cluster sum of squares (WCSS)</b> — the total squared distance between every point and the centroid of its assigned cluster:</p>
+    <h2 class="en">The math inside</h2>
+    <h2 class="ru">Andar ka math</h2>
+    <p class="en">K-Means tries to minimize the <b>within-cluster sum of squares (WCSS)</b> — the total squared distance between every point and the centroid of its assigned cluster:</p>
+    <p class="ru">K-Means within-cluster sum of squares (WCSS) ko minimize karne ki koshish karta hai.</p>
     <div class="formula">Objective = min &Sigma;<sub>k=1..K</sub> &Sigma;<sub>x &isin; cluster k</sub> ||x &minus; centroid<sub>k</sub>||&sup2;</div>
-    <p>This is the total squared Euclidean distance from every point to the centroid of its assigned cluster; smaller means tighter clusters.</p>
+    <p class="en">This is the total squared Euclidean distance from every point to the centroid of its assigned cluster; smaller means tighter clusters.</p>
+    <p class="ru">Yeh har point se uske cluster ke centroid tak kul squared Euclidean doori hai.</p>
     <div class="term"><b>Centroid:</b> the center of a cluster — literally the mean (average) of the coordinates of all points in that cluster. Point (x&#772;, y&#772;) where x&#772; is the average x of the members. The <a href="../concepts.html">mean is already explained in Core Concepts</a>.</div>
     <div class="term"><b>WCSS / elbow method:</b> WCSS = the total within-cluster sum of squares across all clusters (the objective above, summed over the whole dataset). The elbow method runs K-Means for k = 1, 2, 3, … and plots WCSS vs k. WCSS always drops as k grows, but at some k the drop suddenly flattens — that bend (the "elbow") is the natural number of clusters, because adding more clusters past it stops helping.</div>
-    <p>The algorithm itself, step by step:</p>
+    <p class="en">The algorithm itself, step by step:</p>
+    <p class="ru">Algorithm khud, qadam ba qadam:.</p>
     <div class="formula">1. Pick k starting centroids randomly (k random points)</div>
-    <p>Initialization — where the algorithm starts.</p>
+    <p class="en">Initialization — where the algorithm starts.</p>
+    <p class="ru">Initialization — algorithm kahan se shuru hota hai..</p>
     <div class="formula">2. Assign: each point &rarr; nearest centroid (by <a href="../concepts.html" style="text-decoration:underline">Euclidean distance</a>)</div>
-    <p>Every point joins the cluster of the centroid closest to it.</p>
+    <p class="en">Every point joins the cluster of the centroid closest to it.</p>
+    <p class="ru">Har point apne sab se qareeb centroid ke cluster mein shamil ho jata hai..</p>
     <div class="formula">3. Update: centroid<sub>k</sub> = mean of all points assigned to cluster k</div>
-    <p>Each centroid walks to the average position of its members — the step that shrinks WCSS.</p>
+    <p class="en">Each centroid walks to the average position of its members — the step that shrinks WCSS.</p>
+    <p class="ru">Har centroid apne members ki average jagah ki taraf chalta hai.</p>
     <div class="formula">4. Repeat 2–3 until assignments stop changing (converged)</div>
-    <p>Assignment and update keep alternating until every point stays with its cluster — then the centroids are stable.</p>
-    <p>Note that distances are <a href="../concepts.html">Euclidean distance, already explained in Core Concepts</a>, and centroid updates use the <a href="../concepts.html">mean, also in Core Concepts</a>. Because the algorithm is built on distances, <a href="../concepts.html">feature scaling</a> (why we StandardScale below) matters — that's in Core Concepts too.</p>
+    <p class="en">Assignment and update keep alternating until every point stays with its cluster — then the centroids are stable.</p>
+    <p class="ru">Assignment aur update barabar badalte rehte hain jab tak har point apne cluster mein tikta nahi jata.</p>
+    <p class="en">Note that distances are <a href="../concepts.html">Euclidean distance, already explained in Core Concepts</a>, and centroid updates use the <a href="../concepts.html">mean, also in Core Concepts</a>. Because the algorithm is built on distances, <a href="../concepts.html">feature scaling</a> (why we StandardScale below) matters — that's in Core Concepts too.</p>
+    <p class="ru">Dhyan do ke dooriyan Euclidean distance hain, jo Core Concepts mein samjhayi ja chuki hain.</p>
 
-    <h2>Diagram</h2>
+    <h2 class="en">Diagram</h2>
+    <h2 class="ru">Diagram</h2>
     <figure>
       <img src="https://upload.wikimedia.org/wikipedia/commons/e/ea/K-means_convergence.gif" alt="Animated GIF of K-Means convergence: points are assigned to the nearest centroid, centroids move to the mean of their members, and the process repeats until stable.">
       <figcaption>Source: Wikipedia/Wikimedia Commons</figcaption>
     </figure>
-    <p>Watch how the centroids (the moving crosses) walk toward the middle of their clusters iteration after iteration — each move is step 3 (centroid = mean of members), and they freeze once every point keeps its assignment.</p>
+    <p class="en">Watch how the centroids (the moving crosses) walk toward the middle of their clusters iteration after iteration — each move is step 3 (centroid = mean of members), and they freeze once every point keeps its assignment.</p>
+    <p class="ru">Dekho centroids (chalte hue crosses) apne clusters ke darmiyan kaise chalte hain.</p>
 
-    <h2>Dataset (Kaggle)</h2>
-    <p><b>Mall Customers</b> — kagglehub slug <code>vjchoudhary7/customer-segmentation-tutorial-in-python</code>, file <code>Mall_Customers.csv</code>. It has 200 rows, one per mall customer, with 5 columns: CustomerID, Genre (gender), Age, Annual Income (k$), and Spending Score (1–100, assigned by the mall based on buying behavior). There is no target column — that's the point: this is unsupervised learning, and the "answer" (customer segments) is something K-Means discovers on its own from just income and spending score.</p>
+    <h2 class="en">Dataset (Kaggle)</h2>
+    <h2 class="ru">Dataset (Kaggle)</h2>
+    <p class="en"><b>Mall Customers</b> — kagglehub slug <code>vjchoudhary7/customer-segmentation-tutorial-in-python</code>, file <code>Mall_Customers.csv</code>. It has 200 rows, one per mall customer, with 5 columns: CustomerID, Genre (gender), Age, Annual Income (k$), and Spending Score (1–100, assigned by the mall based on buying behavior). There is no target column — that's the point: this is unsupervised learning, and the "answer" (customer segments) is something K-Means discovers on its own from just income and spending score.</p>
+    <p class="ru">Mall Customers — kagglehub slug.</p>
 
-    <h2>Practice code — run in Google Colab, top to bottom</h2>
+    <h2 class="en">Practice code — run in Google Colab, top to bottom</h2>
+    <h2 class="ru">Practice code — Google Colab mein upar se neeche chalayein</h2>
     <div class="callout">Blocks must run in order. Copy each block into Colab (or a Jupyter notebook) one at a time and run it before moving to the next — later blocks depend on variables from earlier ones.</div>
 
     <div class="block-label">BLOCK 1: Imports</div>
-    <p>Everything we need: pandas/numpy for data, kagglehub to fetch the dataset, sklearn for scaling and K-Means, matplotlib for plots.</p>
+    <p class="en">Everything we need: pandas/numpy for data, kagglehub to fetch the dataset, sklearn for scaling and K-Means, matplotlib for plots.</p>
+    <p class="ru">Jo kuch chahiye: pandas/numpy data ke liye.</p>
     <pre><code># Import pandas for DataFrames and numpy for numeric arrays
 import pandas as pd
 import numpy as np
@@ -112,7 +132,8 @@ from sklearn.cluster import KMeans
 import matplotlib.pyplot as plt</code></pre>
 
     <div class="block-label">BLOCK 2: Download the dataset with kagglehub</div>
-    <p>kagglehub pulls the dataset from Kaggle and returns the local folder it saved to; glob then finds the CSV inside it.</p>
+    <p class="en">kagglehub pulls the dataset from Kaggle and returns the local folder it saved to; glob then finds the CSV inside it.</p>
+    <p class="ru">kagglehub dataset Kaggle se laata hai aur local folder wapas deta hai.</p>
     <pre><code># Download the Mall Customers dataset; path is the local folder kagglehub created
 path = kagglehub.dataset_download("vjchoudhary7/customer-segmentation-tutorial-in-python")
 # Search that folder for the CSV file (glob returns a list of matching paths)
@@ -121,7 +142,8 @@ csv_files = glob.glob(path + "/Mall_Customers.csv")
 print("Found:", csv_files)</code></pre>
 
     <div class="block-label">BLOCK 3: Load and look at the data</div>
-    <p>Read the CSV into a DataFrame and take a first look at shape, columns, and a few rows.</p>
+    <p class="en">Read the CSV into a DataFrame and take a first look at shape, columns, and a few rows.</p>
+    <p class="ru">CSV ko DataFrame mein parho aur pehli nazar daalo.</p>
     <pre><code># Load the CSV into a pandas DataFrame
 df = pd.read_csv(csv_files[0])
 # 200 rows, 5 columns expected
@@ -132,7 +154,8 @@ print(df.info())
 print(df.head())</code></pre>
 
     <div class="block-label">BLOCK 4: Select the two clustering features</div>
-    <p>We cluster on Annual Income and Spending Score only — two interpretable axes. CustomerID is just a row label, not behavior, so we drop it.</p>
+    <p class="en">We cluster on Annual Income and Spending Score only — two interpretable axes. CustomerID is just a row label, not behavior, so we drop it.</p>
+    <p class="ru">Hum sirf Annual Income aur Spending Score par cluster karte hain.</p>
     <pre><code># Keep only the two behavioral features we want to cluster on
 X = df[["Annual Income (k$)", "Spending Score (1-100)"]].copy()
 # Quick sanity check: 200 rows, 2 columns, no missing values
@@ -140,7 +163,8 @@ print(X.describe())
 print(X.isnull().sum())</code></pre>
 
     <div class="block-label">BLOCK 5: Scale the features</div>
-    <p>K-Means is built on Euclidean distance. Income spans ~15–137 while spending spans ~1–99; unscaled, income differences would dominate and squash the spending information. StandardScaler centers both columns at mean 0 with std 1.</p>
+    <p class="en">K-Means is built on Euclidean distance. Income spans ~15–137 while spending spans ~1–99; unscaled, income differences would dominate and squash the spending information. StandardScaler centers both columns at mean 0 with std 1.</p>
+    <p class="ru">K-Means Euclidean distance par bana hai. Income ka span.</p>
     <pre><code># Create the scaler (mean 0, std 1 for each column)
 scaler = StandardScaler()
 # Fit the scaler to X and transform it in one step -> numpy array
@@ -149,7 +173,8 @@ X_scaled = scaler.fit_transform(X)
 print(X_scaled[:5])</code></pre>
 
     <div class="block-label">BLOCK 6: Elbow method — choose k</div>
-    <p>We don't know the right number of clusters, so we run K-Means for k = 1..10, record WCSS (<code>inertia_</code>) each time, and look for the elbow — the k where the curve bends and adding clusters stops helping much.</p>
+    <p class="en">We don't know the right number of clusters, so we run K-Means for k = 1..10, record WCSS (<code>inertia_</code>) each time, and look for the elbow — the k where the curve bends and adding clusters stops helping much.</p>
+    <p class="ru">Clusters ki sahi tadaad maloom nahi, is liye k = 1..10 ke liye K-Means chalate hain.</p>
     <pre><code># Try every k from 1 to 10 and store the WCSS of each run
 wcss = []
 for k in range(1, 11):
@@ -170,7 +195,8 @@ plt.show()
 # Expect a sharp bend at k=5: WCSS plummets until 5, then flattens</code></pre>
 
     <div class="block-label">BLOCK 7: Fit K-Means with k = 5</div>
-    <p>The elbow points at 5, so we fit the final model with 5 clusters. <code>random_state</code> makes results reproducible; <code>n_init=10</code> retries from 10 random starting positions because K-Means can otherwise get stuck in a bad local optimum.</p>
+    <p class="en">The elbow points at 5, so we fit the final model with 5 clusters. <code>random_state</code> makes results reproducible; <code>n_init=10</code> retries from 10 random starting positions because K-Means can otherwise get stuck in a bad local optimum.</p>
+    <p class="ru">Elabow 5 ki taraf ishara karta hai, to final model 5 clusters ke saath fit karte hain.</p>
     <pre><code># Final model: 5 clusters, 10 restarts, fixed seed for reproducibility
 kmeans = KMeans(n_clusters=5, random_state=42, n_init=10)
 # Fit on the scaled features — no labels anywhere (unsupervised)
@@ -179,7 +205,8 @@ kmeans.fit(X_scaled)
 print("WCSS (inertia):", round(kmeans.inertia_, 2))</code></pre>
 
     <div class="block-label">BLOCK 8: Labels and centroids</div>
-    <p><code>labels_</code> gives the cluster number (0–4) of every customer; <code>cluster_centers_</code> holds the 5 centroid coordinates in scaled space. We inverse-transform them back to real dollars/score so they're readable.</p>
+    <p class="en"><code>labels_</code> gives the cluster number (0–4) of every customer; <code>cluster_centers_</code> holds the 5 centroid coordinates in scaled space. We inverse-transform them back to real dollars/score so they're readable.</p>
+    <p class="ru">labels_ har customer ka cluster number (0-4) deta hai.</p>
     <pre><code># Cluster assignment (0..4) for each of the 200 customers
 labels = kmeans.labels_
 # Add the cluster back to the original (unscaled) dataframe for profiling
@@ -192,7 +219,8 @@ print(np.round(centers_real, 1))
 print(df["Cluster"].value_counts().sort_index())</code></pre>
 
     <div class="block-label">BLOCK 9: Visualize the 5 segments</div>
-    <p>Scatter every customer colored by cluster, and mark the 5 centroids with black X's — one look should show 5 clean blobs with a centroid in the heart of each.</p>
+    <p class="en">Scatter every customer colored by cluster, and mark the 5 centroids with black X's — one look should show 5 clean blobs with a centroid in the heart of each.</p>
+    <p class="ru">Har customer ko cluster ke rang se bikhrao aur 5 centroids nishaan lagao.</p>
     <pre><code>plt.figure(figsize=(8, 6))
 # One colored scatter per cluster (loop keeps colors consistent)
 for c in range(5):
@@ -208,7 +236,8 @@ plt.grid(True)
 plt.show()</code></pre>
 
     <div class="block-label">BLOCK 10: Profile and name each segment</div>
-    <p>groupby-mean turns numbers into a story: average income, spending, and age per cluster. That's how we name the 5 customer types and hand marketing something actionable.</p>
+    <p class="en">groupby-mean turns numbers into a story: average income, spending, and age per cluster. That's how we name the 5 customer types and hand marketing something actionable.</p>
+    <p class="ru">groupby-mean numbers ko kahani mein badal deta hai.</p>
     <pre><code># Mean of each feature per cluster — the "profile card" of every segment
 profile = df.groupby("Cluster")[["Annual Income (k$)", "Spending Score (1-100)", "Age"]].mean().round(1)
 print(profile)
@@ -223,7 +252,8 @@ print(profile)
 # so match names to the actual income/spending pattern you see, not the numbers above.</code></pre>
 
     <div class="block-label">BLOCK 11: Predict the segment of a new customer</div>
-    <p>K-Means is a real model: <code>predict</code> assigns a brand-new customer to the nearest fitted centroid — same rule the training loop used. Remember to scale the new input with the SAME fitted scaler.</p>
+    <p class="en">K-Means is a real model: <code>predict</code> assigns a brand-new customer to the nearest fitted centroid — same rule the training loop used. Remember to scale the new input with the SAME fitted scaler.</p>
+    <p class="ru">K-Means ek asli model hai: predict naya customer.</p>
     <pre><code># A new customer: 80k$ income, spending score 75
 new_customer = [[80, 75]]
 # Scale with the SAME scaler fitted earlier (never refit on new data)
@@ -233,7 +263,8 @@ cluster = kmeans.predict(new_scaled)
 print("New customer belongs to segment:", cluster[0])
 # That's a high-income, high-spending customer -> a "careless-rich" VIP prospect</code></pre>
 
-    <h2>Real-world use cases &amp; companies</h2>
+    <h2 class="en">Real-world use cases &amp; companies</h2>
+    <h2 class="ru">Asli duniya ke use cases aur companies</h2>
     <table>
       <tr><th>Use case</th><th>Who uses it</th></tr>
       <tr><td>Customer segmentation for targeted marketing and recommendations</td><td>Amazon and Netflix cluster users by behavior to personalize campaigns and homepage rows</td></tr>
@@ -242,13 +273,19 @@ print("New customer belongs to segment:", cluster[0])
       <tr><td>Delivery / service zone design</td><td>Logistics teams cluster addresses into zones for routing and warehouse planning</td></tr>
     </table>
 
-    <h2>Combining with other algorithms (project ideas)</h2>
-    <p><b>K-Means segments → one model per segment (Topic 09).</b> Cluster customers first with K-Means, then fit a separate Multiple Regression inside each cluster (e.g. predict spending from age + income per segment). The per-segment models usually beat one global model because each cluster's relationship is simpler and cleaner.</p>
-    <p><b>K-Means → logistic churn per cluster (Topic 05).</b> Use K-Means to build behavioral segments, then train a Logistic Regression churn classifier on each segment. You not only predict WHO churns but also get "which type of customer" for free — that combination is what actually shapes the retention offer.</p>
-    <p><b>PCA first, then K-Means on the PCs (Topic 07).</b> With many correlated features, run PCA, keep the top components, and cluster in that smaller space. Distances become more meaningful (less noise), it's cheaper, and you can even plot clusters on PC1 vs PC2.</p>
-    <p><b>K-Means vs DBSCAN sanity check (Topic 03).</b> Run both on the same data — K-Means forces k round clusters, DBSCAN finds arbitrary shapes and labels outliers as noise. Comparing the two segmentations on the same customers is a great notebook exercise and interview story.</p>
+    <h2 class="en">Combining with other algorithms (project ideas)</h2>
+    <h2 class="ru">Dusre algorithms ke saath milana (project ideas)</h2>
+    <p class="en"><b>K-Means segments → one model per segment (Topic 09).</b> Cluster customers first with K-Means, then fit a separate Multiple Regression inside each cluster (e.g. predict spending from age + income per segment). The per-segment models usually beat one global model because each cluster's relationship is simpler and cleaner.</p>
+    <p class="ru">K-Means segments → har segment ka ek model (Topic 09).</p>
+    <p class="en"><b>K-Means → logistic churn per cluster (Topic 05).</b> Use K-Means to build behavioral segments, then train a Logistic Regression churn classifier on each segment. You not only predict WHO churns but also get "which type of customer" for free — that combination is what actually shapes the retention offer.</p>
+    <p class="ru">K-Means → har cluster ka logistic churn (Topic 05).</p>
+    <p class="en"><b>PCA first, then K-Means on the PCs (Topic 07).</b> With many correlated features, run PCA, keep the top components, and cluster in that smaller space. Distances become more meaningful (less noise), it's cheaper, and you can even plot clusters on PC1 vs PC2.</p>
+    <p class="ru">Pehle PCA, phir PCs par K-Means (Topic 07).</p>
+    <p class="en"><b>K-Means vs DBSCAN sanity check (Topic 03).</b> Run both on the same data — K-Means forces k round clusters, DBSCAN finds arbitrary shapes and labels outliers as noise. Comparing the two segmentations on the same customers is a great notebook exercise and interview story.</p>
+    <p class="ru">K-Means vs DBSCAN aazmaish (Topic 03).</p>
 
-    <h2>Interview Q&amp;A</h2>
+    <h2 class="en">Interview Q&amp;A</h2>
+    <h2 class="ru">Interview ke sawal-jawab</h2>
     <div class="qa"><div class="q">How do you choose the number of clusters k?</div><div class="a">Main tool: the elbow method — run K-Means for k = 1..10, plot WCSS vs k, and pick the bend where adding another cluster stops reducing WCSS much. Alternatives: the silhouette score (how well-separated clusters are, tested over several k) or a business constraint — if marketing can only handle 4 campaigns, k = 4 regardless of the elbow.</div></div>
     <div class="qa"><div class="q">What is WCSS and what does the inertia_ attribute contain?</div><div class="a">WCSS is the within-cluster sum of squares: the total of squared Euclidean distances between every point and its assigned centroid. K-Means tries to minimize it. sklearn's <code>inertia_</code> is exactly WCSS after fitting.</div></div>
     <div class="qa"><div class="q">Why does feature scaling matter for K-Means?</div><div class="a">K-Means assigns points by Euclidean distance. If one feature has a much bigger range (income in 15–137k$) than another (score 1–99), that feature dominates the distance and clustering is effectively done on one axis. StandardScaler puts every feature at mean 0, std 1 so they contribute equally.</div></div>

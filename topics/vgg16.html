@@ -116,7 +116,7 @@
     <h2>Diagram</h2>
     <figure>
       <img src="https://upload.wikimedia.org/wikipedia/en/8/83/VGG_neural_network.png" alt="VGG neural network architecture: alternating convolutional and max-pooling layers followed by fully-connected layers">
-      <figcaption>Source: Wikipedia/Wikimedia Commons</figcaption>
+      <figcaption><span class="en">Source: Wikipedia/Wikimedia Commons</span><span class="ru">Zariya: Wikipedia/Wikimedia Commons</span></figcaption>
     </figure>
     <p class="en">Notice the rhythm: convolution blocks (in red) with more and more channels, each cut by a max-pooling layer (blue) that halves height and width, ending in the fully-connected head &mdash; exactly the conv/pool mechanics from <a href="cnn.html">Topic 02</a>, just deeper and more regular.</p>
     <p class="ru">Rhythm par ghor karein: convolution blocks (red mein) jin ke channels barhte jate hain, har ek max-pooling layer (blue) se kata hua jo height aur width aadhi kar deti hai, aur aakhir mein fully-connected head &mdash; bilkul <a href="cnn.html">Topic 02</a> ke conv/pool mechanics, bas zyada deep aur zyada regular.</p>
@@ -297,8 +297,8 @@ print("Flattened for SVM / K-Means:", flat.shape)   # (500, 4608)</code></pre>
     <div class="qa"><div class="q en">How does VGG16 relate to the CNN you built in Topic 02?</div><div class="q ru">VGG16 ka Topic 02 wale CNN se kya taluq hai?</div><div class="a en">Same machinery, different scale and origin. Your Topic 02 CNN is a small network you trained from scratch: random filters slowly learning edges for CIFAR-10. VGG16 is that same conv/pool/softmax pattern repeated 13 convolutions deep, with filters already trained on ImageNet &mdash; comparing the two on the same data quantifies exactly what transfer learning adds.</div><div class="a ru">Machinery same, scale aur origin different. Aap ka Topic 02 CNN ek chhota network hai jo aap ne scratch se train kiya: random filters dheere dheere CIFAR-10 ke liye edges seekhte hain. VGG16 wohi conv/pool/softmax pattern 13 convolutions deep repeat karti hai, filters pehle se ImageNet par trained hain &mdash; dono ko same data par compare karna batata hai ke transfer learning exactly kitna add karta hai.</div></div>
 
     <div class="prevnext">
-      <a href="dbscan.html">← DBSCAN (Topic 03)</a>
-      <a href="logistic-regression.html">Logistic Regression (Topic 05) →</a>
+      <a href="dbscan.html"><span class="en">← DBSCAN (Topic 03)</span><span class="ru">← DBSCAN (Topic 03)</span></a>
+      <a href="logistic-regression.html"><span class="en">Logistic Regression (Topic 05) →</span><span class="ru">Logistic Regression (Topic 05) →</span></a>
     </div>
     <p class="footer-note en">HasnainAI &mdash; HCCDA-AI prep &amp; practice. VGG16 architecture: Simonyan &amp; Zisserman, Oxford Visual Geometry Group, 2014. Run the Colab blocks in order; subset sizes are tuned for free Colab.</p>
     <p class="footer-note ru">HasnainAI &mdash; HCCDA-AI ki tayari aur practice. VGG16 architecture: Simonyan &amp; Zisserman, Oxford Visual Geometry Group, 2014. Colab blocks order mein chalayein; subset sizes free Colab ke hisaab se tune kiye gaye hain.</p>
