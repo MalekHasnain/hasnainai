@@ -101,18 +101,18 @@
     <h2 class="ru">4. Math aur stat functions (har algorithm ka toolbox)</h2>
     <p class="en">Every algorithm in this course is built from the same dozen math parts. Learn them once here, recognize them everywhere.</p>
     <p class="ru">Is course ka har algorithm unhi bara-bara math hisson se banta hai. Yahan ek dafa seekh lo — har jagah pehchan lo ge.</p>
-    <div class="term"><b>Mean (μ, x̄):</b> <span class="en">sum of all values ÷ number of values — the average, the balance point of the data.</span><span class="ru">tamam values ka jama ÷ values ki tadaad — average, data ka balance point.</span></div>
+    <div class="term"><b>Mean (μ, x̄):</b> <span class="en">sum of all values ÷ number of values — the average, the balance point of the data.</span><span class="ru">values ka sum ÷ number of values — yani average; data ka balance point.</span></div>
     <p class="en">Worked example — marks of 5 students in a test:</p>
     <p class="ru">Misal — 5 students ke test marks:</p>
     <table>
       <tr><th>Student</th><th>A</th><th>B</th><th>C</th><th>D</th><th>E</th><th>Sum</th></tr>
       <tr><td>Marks (out of 100)</td><td>62</td><td>75</td><td>75</td><td>88</td><td>95</td><td><b>395</b></td></tr>
     </table>
-    <p><span class="en"><b>Mean = 395 ÷ 5 = 79</b> — jama karke tadaad se divide karo, bas yehi formula hai.</span><span class="ru"><b>Mean = 395 ÷ 5 = 79</b> — jama karo, tadaad se divide karo, formula bas itna hi hai.</span></p>
-    <div class="term"><b>Median:</b> <span class="en">the middle value after sorting — half the data sits below it, half above. Robust: one crazy value barely moves it (mean jumps).</span><span class="ru">sort karne ke baad ka darmiyani value — aadha data neeche, aadha upar. Mazboot: ek ajeeb value isse kam hilaati hai (mean uchhalta hai).</span></div>
+    <p><span class="en"><b>Mean = 395 ÷ 5 = 79</b> — jama karke tadaad se divide karo, bas yehi formula hai.</span><span class="ru"><b>Mean = 395 ÷ 5 = 79</b> — values ko add karo, unki count se divide karo, formula bas itna hi hai.</span></p>
+    <div class="term"><b>Median:</b> <span class="en">the middle value after sorting — half the data sits below it, half above. Robust: one crazy value barely moves it (mean jumps).</span><span class="ru">sort karne ke baad ka middle value — aadha data isse neeche, aadha upar. Robust: ek outlier isse zyada hila nahi pata (mean jump kar jata hai).</span></div>
     <p class="en">Same marks, sorted: 62, 75, <b>75</b>, 88, 95 → median = <b>75</b> (3rd of 5). Add one rich kid scoring 100 → mean jumps to 82.5, median moves only to 81.5.</p>
-    <p class="ru">Wohi marks, sorted: 62, 75, <b>75</b>, 88, 95 → median = <b>75</b> (5 mein se 3rd). Ek 100-score wala student add karo → mean 82.5 ko uchhalta hai, median sirf 81.5 tak hilta hai.</p>
-    <div class="term"><b>Variance (σ²):</b> <span class="en">average of squared distances from the mean — how spread out the data is. Steps: (1) subtract mean from every value, (2) square each answer, (3) average the squares.</span><span class="ru">mean se doori ke squares ka average — data kitna phaila hua hai. Steps: (1) har value se mean minus karo, (2) har jawab ka square karo, (3) squares ka average lo.</span></div>
+    <p class="ru">Wohi marks, sorted: 62, 75, <b>75</b>, 88, 95 → median = <b>75</b> (5 mein se 3rd). Ek 100-score student add karo → mean 82.5 tak jump karta hai, median sirf 81.5 tak.</p>
+    <div class="term"><b>Variance (σ²):</b> <span class="en">average of squared distances from the mean — how spread out the data is. Steps: (1) subtract mean from every value, (2) square each answer, (3) average the squares.</span><span class="ru">mean se distance ke squares ka average — batata hai data kitna spread out hai. Steps: (1) har value mein se mean minus karo, (2) har answer square karo, (3) squares ka average lo.</span></div>
     <p class="en">Worked example — same marks, mean = 79:</p>
     <p class="ru">Misal — wohi marks, mean = 79:</p>
     <table>
@@ -120,26 +120,107 @@
       <tr><td>x − mean</td><td>−17</td><td>−4</td><td>−4</td><td>+9</td><td>+16</td><td><b>0</b> ✓</td></tr>
       <tr><td>(x − mean)²</td><td>289</td><td>16</td><td>16</td><td>81</td><td>256</td><td><b>658</b></td></tr>
     </table>
-    <p><span class="en"><b>Variance = 658 ÷ 5 = 131.6</b>. Note: deviations always sum to 0 — that's the mean being the balance point.</span><span class="ru"><b>Variance = 658 ÷ 5 = 131.6</b>. Note: deviations ka jama hamesha 0 hota hai — yehi mean ka balance point hona hai.</span></p>
-    <div class="term"><b>Standard deviation (σ, std):</b> <span class="en">square root of variance — spread in the data's own units, so "σ = 5 years" means something.</span><span class="ru">variance ka jar — apne hi units mein phelao, is liye "σ = 5 saal" ka matlab hota hai.</span></div>
-    <p><span class="en"><b>σ = √131.6 ≈ 11.5 marks</b> — typical distance of a student from the class average.</span><span class="ru"><b>σ = √131.6 ≈ 11.5 marks</b> — kisi student ka class average se aam faasla.</span></p>
-    <div class="term"><b>Z-score:</b> <span class="en">how many standard deviations a value is from the mean: z = (x − mean) ÷ σ. This is the anomaly detector — |z| &gt; 3 means "extremely unusual".</span><span class="ru">koi value mean se kitne standard doors hai: z = (x − mean) ÷ σ. Yehi anomaly detector hai — |z| &gt; 3 ka matlab "bahut hi ajeeb".</span></div>
-    <p><span class="en">Student E scored 95 → z = (95 − 79) ÷ 11.5 ≈ <b>+1.39</b> (good but normal). A new student scores 30 → z = (30 − 79) ÷ 11.5 ≈ <b>−4.3</b> → |z| &gt; 3 → <b>anomaly</b>, investigate.</span><span class="ru">Student E ne 95 score kiya → z = (95 − 79) ÷ 11.5 ≈ <b>+1.39</b> (achha magar normal). Naya student 30 score kare → z = (30 − 79) ÷ 11.5 ≈ <b>−4.3</b> → |z| &gt; 3 → <b>anomaly</b>, jaanch karo.</span></p>
+    <p><span class="en"><b>Variance = 658 ÷ 5 = 131.6</b>. Note: deviations always sum to 0 — that's the mean being the balance point.</span><span class="ru"><b>Variance = 658 ÷ 5 = 131.6</b>. Note: deviations ka sum hamesha 0 hota hai — yehi mean ka balance point hona hai.</span></p>
+    <div class="term"><b>Standard deviation (σ, std):</b> <span class="en">square root of variance — spread in the data's own units, so "σ = 5 years" means something.</span><span class="ru">variance ka square root — spread apni original units mein, is liye "σ = 5 saal" ka matlab samajh aata hai.</span></div>
+    <p><span class="en"><b>σ = √131.6 ≈ 11.5 marks</b> — typical distance of a student from the class average.</span><span class="ru"><b>σ = √131.6 ≈ 11.5 marks</b> — kisi student ka class average se typical distance.</span></p>
+    <div class="term"><b>Z-score:</b> <span class="en">how many standard deviations a value is from the mean: z = (x − mean) ÷ σ. This is the anomaly detector — |z| &gt; 3 means "extremely unusual".</span><span class="ru">koi value mean se kitne standard deviations door hai: z = (x − mean) ÷ σ. Yehi anomaly detector hai — |z| &gt; 3 ka matlab "bahut hi unusual".</span></div>
+    <p><span class="en">Student E scored 95 → z = (95 − 79) ÷ 11.5 ≈ <b>+1.39</b> (good but normal). A new student scores 30 → z = (30 − 79) ÷ 11.5 ≈ <b>−4.3</b> → |z| &gt; 3 → <b>anomaly</b>, investigate.</span><span class="ru">Student E ne 95 score kiya → z = (95 − 79) ÷ 11.5 ≈ <b>+1.39</b> (achha magar normal). Naya student 30 score kare → z = (30 − 79) ÷ 11.5 ≈ <b>−4.3</b> → |z| &gt; 3 → <b>anomaly</b>, investigate karo.</span></p>
     <figure>
       <img src="https://upload.wikimedia.org/wikipedia/commons/f/fb/Normal_distribution_pdf.svg" alt="Normal distribution bell curve with standard deviation bands" style="max-width:520px">
       <figcaption><span class="en">The normal distribution (Wikipedia): ~68% of data within ±1σ, 95% within ±2σ, 99.7% within ±3σ — exactly why |z| &gt; 3 flags an anomaly.</span><span class="ru">Normal distribution (Wikipedia): taqreeban 68% data ±1σ ke andar, 95% ±2σ, 99.7% ±3σ — isi liye |z| &gt; 3 wala point anomaly kehta jata hai.</span></figcaption>
     </figure>
-    <div class="term"><b>Covariance:</b> <span class="en">how two variables move together — positive = together, negative = opposite. Awkward units, which is why correlation exists.</span><span class="ru">do variables sath kaise chalti hain — positive = sath, negative = ulat. Units ajeeb hoti hain, isi liye correlation banayi gayi.</span></div>
+    <div class="term"><b>Covariance:</b> <span class="en">how two variables move together — positive = together, negative = opposite. Awkward units, which is why correlation exists.</span><span class="ru">do variables sath kaise chalti hain — positive = sath, negative = ulat. Units ajeeb hote hain (e.g. hours×marks), isi liye correlation banayi gayi.</span></div>
+
+    <p class="en">Worked example — study hours (x) vs test marks (y), 5 students. Means: x̄ = 3, ȳ = 69:</p>
+    <p class="ru">Misal — study hours (x) aur test marks (y), 5 students. Means: x̄ = 3, ȳ = 69:</p>
+    <table>
+      <tr><th>Student</th><th>1</th><th>2</th><th>3</th><th>4</th><th>5</th><th>Sum</th></tr>
+      <tr><td>x (hours)</td><td>1</td><td>2</td><td>3</td><td>4</td><td>5</td><td>15</td></tr>
+      <tr><td>y (marks)</td><td>50</td><td>60</td><td>65</td><td>80</td><td>90</td><td>345</td></tr>
+      <tr><td>(x−x̄)·(y−ȳ)</td><td>38</td><td>9</td><td>0</td><td>11</td><td>42</td><td><b>100</b></td></tr>
+    </table>
+    <p><span class="en"><b>Covariance = 100 ÷ 5 = 20</b> — positive, so the two move together (more hours → more marks). But "20 hours×marks" is a meaningless unit — that is exactly why correlation exists:</span><span class="ru"><b>Covariance = 100 ÷ 5 = 20</b> — positive, yani dono sath chalti hain (zyada hours → zyada marks). Magar "20 hours×marks" unit ka koi matlab nahi — yehi wajah hai ke correlation banayi gayi:</span></p>
     <div class="term"><b>Pearson correlation (r):</b> <span class="en">covariance ÷ (std(X)·std(y)) — scaled to −1…+1. |r| near 1 = strong straight-line relationship.</span><span class="ru">covariance ÷ (std(X)·std(y)) — −1 se +1 tak scale. |r| 1 ke qareeb = mazboot seedha rishta.</span></div>
+
+    <p><span class="en">Continuing: σ<sub>x</sub> = 1.414, σ<sub>y</sub> = 14.283 → r = 20 ÷ (1.414 × 14.283) = <b>0.99</b> — a near-perfect positive straight-line relationship, now as a unit-free number you can compare across any datasets.</span><span class="ru">Aage: σ<sub>x</sub> = 1.414, σ<sub>y</sub> = 14.283 → r = 20 ÷ (1.414 × 14.283) = <b>0.99</b> — taqreeban perfect positive straight-line rishta, ab unit-free number jo kisi bhi datasets ke darmiyan compare ho sakta hai.</span></p>
     <div class="term"><b>Percentile / quartile:</b> <span class="en">Q1 = 25th percentile, Q3 = 75th. <b>IQR = Q3 − Q1</b> — the middle 50% width, the box in a boxplot.</span><span class="ru">Q1 = 25th percentile, Q3 = 75th. <b>IQR = Q3 − Q1</b> — darmiyani 50% ki chaurai, boxplot ka dabba.</span></div>
+
+    <p class="en">Worked example — our sorted marks: 62, 75, 75, 88, 95:</p>
+    <p class="ru">Misal — hamare sorted marks: 62, 75, 75, 88, 95:</p>
+    <table>
+      <tr><th>Statistic</th><th>Calculation</th><th>Value</th><th>Meaning</th></tr>
+      <tr><td>Q1 (25th percentile)</td><td>(62+75)÷2</td><td><b>68.5</b></td><td>25% of students below this</td></tr>
+      <tr><td>Median (Q2)</td><td>middle of 5</td><td><b>75</b></td><td>50% below</td></tr>
+      <tr><td>Q3 (75th percentile)</td><td>(88+95)÷2</td><td><b>91.5</b></td><td>75% below</td></tr>
+      <tr><td>IQR = Q3 − Q1</td><td>91.5 − 68.5</td><td><b>23</b></td><td>middle-50% width</td></tr>
+    </table>
+    <p><span class="en">Outlier fences: Q1 − 1.5×IQR = <b>34</b>, Q3 + 1.5×IQR = <b>126</b> — anything below 34 or above 126 is an outlier. Our class: all inside, no outliers.</span><span class="ru">Outlier fences: Q1 − 1.5×IQR = <b>34</b>, Q3 + 1.5×IQR = <b>126</b> — 34 se neeche ya 126 se upar koi bhi value outlier hai. Hamari class: sab andar, koi outlier nahi.</span></p>
     <div class="term"><b>Distance metrics:</b> <span class="en">Euclidean = straight-line distance (√ of summed squared differences) — what K-Means uses; Manhattan = city-block distance.</span><span class="ru">Euclidean = seedhi line doori — K-Means yehi use karta hai; Manhattan = shehar ke blocks wali doori.</span></div>
+
+    <p class="en">Worked example — student A at point (1, 2), student B at point (4, 6):</p>
+    <p class="ru">Misal — student A point (1, 2) par, student B point (4, 6) par:</p>
+    <table>
+      <tr><th>Metric</th><th>Calculation</th><th>Distance</th></tr>
+      <tr><td>Euclidean</td><td>√((4−1)² + (6−2)²) = √(9+16)</td><td><b>5</b></td></tr>
+      <tr><td>Manhattan</td><td>|4−1| + |6−2| = 3 + 4</td><td><b>7</b></td></tr>
+    </table>
+    <p><span class="en">Euclidean = "as the crow flies"; Manhattan = a taxi driving block by block. K-Means uses Euclidean to pick the nearest centroid.</span><span class="ru">Euclidean = "kauwa udta hua jo seedha jaye"; Manhattan = taxi block-by-block chalta hua. K-Means nearest centroid chunne ke liye Euclidean use karta hai.</span></p>
     <div class="term"><b>Matrix / eigenvector / eigenvalue / determinant:</b> <span class="en">a matrix transforms vectors; an eigenvector is a direction it only stretches (not rotates), the eigenvalue (λ) is the stretch factor; the determinant is the volume-scaling factor. PCA finds the eigenvectors of the covariance matrix — biggest λ = direction of most spread.</span><span class="ru">matrix vectors ko transform karti hai; eigenvector woh simt hai jise sirf khicha jata hai (ghumaya nahi), eigenvalue (λ) khichao ka factor hai; determinant volume ka factor hai. PCA covariance matrix ke eigenvectors nikalti hai — sab se bara λ = sab se zyada phelao ki simt.</span></div>
+
+    <p class="en">Worked example — matrix M = [[2,0],[0,3]] stretches x by 2 and y by 3:</p>
+    <p class="ru">Misal — matrix M = [[2,0],[0,3]] x ko 2 se aur y ko 3 se stretch karti hai:</p>
+    <table>
+      <tr><th>Vector</th><th>M × vector</th><th>Result</th></tr>
+      <tr><td>(1, 0)</td><td>(2, 0)</td><td>same direction, stretched ×2 → <b>eigenvector, λ = 2</b></td></tr>
+      <tr><td>(0, 1)</td><td>(0, 3)</td><td>same direction, stretched ×3 → <b>eigenvector, λ = 3</b></td></tr>
+      <tr><td>(1, 1)</td><td>(2, 3)</td><td>direction bent — not an eigenvector</td></tr>
+    </table>
+    <p><span class="en">In PCA the covariance matrix plays the role of M: its biggest-λ eigenvector = the direction where data spreads most = the first principal component.</span><span class="ru">PCA mein covariance matrix M ka role play karti hai: iska sab se bara-λ eigenvector = woh direction jahan data sab se zyada spread hai = first principal component.</span></p>
     <div class="term"><b>Derivative &amp; gradient descent:</b> <span class="en">the derivative is the slope; gradient descent loops: measure the error's slope, step downhill, repeat — the training engine of neural networks.</span><span class="ru">derivative dhalwan (slope) hai; gradient descent ka loop: error ka slope naapo, neeche qadam barhao, dohrate jao — neural networks ka training engine.</span></div>
+
+    <p class="en">Worked example — minimize f(x) = (x−4)². Derivative (slope) = 2(x−4). Learning rate 0.3, start at x = 0:</p>
+    <p class="ru">Misal — f(x) = (x−4)² ko minimize karo. Derivative (slope) = 2(x−4). Learning rate 0.3, start x = 0:</p>
+    <table>
+      <tr><th>Step</th><th>0</th><th>1</th><th>2</th><th>3</th><th>4</th><th>5</th></tr>
+      <tr><td>x</td><td>0.0</td><td>2.40</td><td>3.36</td><td>3.74</td><td>3.90</td><td>3.96</td></tr>
+    </table>
+    <p><span class="en">Each step: new x = x − 0.3 × slope. Steps shrink as the slope flattens; x converges to 4 — the minimum. Neural networks run this exact loop with millions of numbers at once.</span><span class="ru">Har step: new x = x − 0.3 × slope. Slope flat hota jata hai to steps chhote hote jate hain; x minimum (4) ki taraf converge karta hai. Neural networks yehi loop ek waqt mein millions of numbers par chalate hain.</span></p>
     <div class="term"><b>Sigmoid (logistic) function:</b> <span class="en">σ(z) = 1/(1+e<sup>−z</sup>) — squashes any number into (0, 1), S-shaped. Turns a raw score into a probability; the heart of Logistic Regression.</span><span class="ru">σ(z) = 1/(1+e<sup>−z</sup>) — kisi bhi number ko (0, 1) mein daba deta hai, S shakal ka. Raw score ko probability banata hai; Logistic Regression ka dil.</span></div>
+
+    <p class="en">Feed numbers through σ(z) = 1/(1+e<sup>−z</sup>):</p>
+    <p class="ru">Numbers ko σ(z) = 1/(1+e<sup>−z</sup>) se guzaro:</p>
+    <table>
+      <tr><th>z</th><th>−4</th><th>−2</th><th>0</th><th>+2</th><th>+4</th></tr>
+      <tr><td>σ(z)</td><td>0.02</td><td>0.12</td><td>0.50</td><td>0.88</td><td>0.98</td></tr>
+    </table>
+    <p><span class="en">Output is always between 0 and 1 → read it as a probability. σ(0) = 0.5 is the decision boundary; z = +2 already means "88% sure yes".</span><span class="ru">Output hamesha 0 aur 1 ke darmiyan → ise probability ki tarah parho. σ(0) = 0.5 decision boundary hai; z = +2 ka matlab "88% sure yes".</span></p>
     <div class="term"><b>Softmax:</b> <span class="en">sigmoid's multi-class sibling — converts a vector of scores into probabilities summing to 1. CNN output layer.</span><span class="ru">sigmoid ka multi-class bhai — scores ke vector ko aisi probabilities mein badalta hai jin ka jama 1 ho. CNN ka output layer.</span></div>
+
+    <p class="en">Worked example — a CNN's final scores for cat / dog / horse = [5, 3, 1]:</p>
+    <p class="ru">Misal — CNN ke final scores cat / dog / horse ke liye = [5, 3, 1]:</p>
+    <table>
+      <tr><th>Class</th><th>Score</th><th>e<sup>score</sup></th><th>÷ sum (171.2)</th></tr>
+      <tr><td>Cat</td><td>5</td><td>148.4</td><td><b>0.87</b></td></tr>
+      <tr><td>Dog</td><td>3</td><td>20.1</td><td><b>0.12</b></td></tr>
+      <tr><td>Horse</td><td>1</td><td>2.7</td><td><b>0.016</b></td></tr>
+    </table>
+    <p><span class="en">Bigger score → bigger share; the shares always sum to 1 (87 + 12 + 1.6 ≈ 100%).</span><span class="ru">Bara score → bara share; shares ka total hamesha 1 hota hai (87 + 12 + 1.6 ≈ 100%).</span></p>
     <div class="term"><b>Log loss / cross-entropy:</b> <span class="en">the classification loss — brutally punishes confident wrong predictions.</span><span class="ru">classification ka loss — purzor ghalat predictions ko sakht saza deta hai.</span></div>
+
+    <p class="en">Worked example — the truth is "yes" (y = 1):</p>
+    <p class="ru">Misal — asal jawab "yes" hai (y = 1):</p>
+    <table>
+      <tr><th>Model says</th><th>Loss = −ln(p)</th><th>Verdict</th></tr>
+      <tr><td>0.9 yes</td><td>0.105</td><td>nearly right — tiny penalty</td></tr>
+      <tr><td>0.1 yes</td><td>2.303</td><td>confidently wrong — 22× penalty</td></tr>
+    </table>
+    <p><span class="en">That asymmetry is why models learn to avoid confident mistakes.</span><span class="ru">Yehi asymmetry wajah hai ke models confident galtiyon se bhaagte hain.</span></p>
     <div class="term"><b>Argmax:</b> <span class="en">the <i>index</i> of the largest value — "which class has the top probability."</span><span class="ru">sab se bare value ka <i>index</i> — "kis class ki probability sab se zyada hai."</span></div>
+
+    <p><span class="en">From the softmax table: probabilities [0.87, 0.12, 0.016] → argmax = index 0 = <b>"cat"</b>. Argmax doesn't care how big the value is — only WHICH slot holds the biggest one.</span><span class="ru">Softmax table se: probabilities [0.87, 0.12, 0.016] → argmax = index 0 = <b>"cat"</b>. Argmax ko value ke size se koi matlab nahi — sirf ye ke sab se bari value KIS slot mein hai.</span></p>
     <div class="term"><b>Normalization / scaling:</b> <span class="en">squeezing features to comparable ranges. Critical for anything measuring distance or variance: K-Means, SVM, PCA, KNN.</span><span class="ru">features ko milti-julti hadon mein lana. Distance ya variance napne wale har algorithm ke liye zaroori: K-Means, SVM, PCA, KNN.</span></div>
+
+    <p><span class="en">Why it matters — two features: age (0–100) and income (0–1,000,000). Raw distance is dominated by income; age becomes invisible. Min-max scale both to 0–1 and they weigh equally. Rule of thumb: any algorithm whose math contains "distance", "variance" or "gradient" needs scaling first.</span><span class="ru">Yeh zaroori kyun hai — do features: age (0–100) aur income (0–1,000,000). Raw distance mein income hi sab kuch hai; age gayab ho jati hai. Min-max scaling se dono 0–1 mein aa kar barabar weight deti hain. Rule of thumb: jis algorithm ke math mein "distance", "variance" ya "gradient" ho, scaling pehle karo.</span></p>
 
     <h2 class="en">5. The learning families</h2>
     <h2 class="ru">5. Learning ki qismein</h2>
