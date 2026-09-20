@@ -68,6 +68,9 @@
         sidebar.classList.add("open");
         backdrop.classList.add("show");
       });
+      document.addEventListener("keydown", function (e) {
+        if (e.key === "Escape") { sidebar.classList.remove("open"); backdrop.classList.remove("show"); }
+      });
       backdrop.addEventListener("click", function () {
         sidebar.classList.remove("open");
         backdrop.classList.remove("show");
