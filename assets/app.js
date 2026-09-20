@@ -10,7 +10,12 @@
   }
   function setLang(l) {
     try { localStorage.setItem("hai-lang", l); } catch (e) {}
-    applyLang();
+    var root = document.documentElement;
+    root.classList.add("lang-fading");
+    setTimeout(function () {
+      applyLang();
+      root.classList.remove("lang-fading");
+    }, 180); // fade out -> swap -> fade in
   }
   function getTheme() {
     var v = null;

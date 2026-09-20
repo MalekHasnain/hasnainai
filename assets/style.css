@@ -19,7 +19,10 @@
   --sans: 'Source Sans 3', -apple-system, 'Segoe UI', sans-serif;
 }
 * { box-sizing: border-box; }
+[hidden] { display: none !important; }  /* language toggle must beat any display rule */
 html { scroll-behavior: smooth; }
+main > *, .term, .qa, .callout { transition: opacity .18s ease, transform .18s ease; }
+.lang-fading main > * { opacity: 0; transform: translateY(4px); }
 body {
   margin: 0; background: var(--bg); color: var(--text);
   font-family: var(--sans);
@@ -46,11 +49,12 @@ a:hover { text-decoration: underline; text-decoration-color: #0E6E5C55; text-und
 .sidebar nav a.active { background: var(--accent-soft); color: var(--accent); border-left: 3px solid var(--accent); font-weight: 600; }
 .sidebar nav .num { color: var(--muted); font-size: .76rem; margin-right: 7px; font-family: var(--mono); }
 .sidebar .side-box {
-  margin-top: 14px; padding: 11px 12px; border: 1px solid var(--border);
-  border-radius: 9px; background: var(--bg);
+  margin-top: 14px; padding: 11px 12px; border: 1px solid var(--accent);
+  border-left-width: 3px;
+  border-radius: 9px; background: var(--accent-soft);
 }
-.sidebar .side-box .box-title { font-size: .74rem; letter-spacing: .04em; text-transform: uppercase; color: var(--muted); }
-.sidebar .side-box a { display: block; margin-top: 4px; font-size: .87rem; font-weight: 600; }
+.sidebar .side-box .box-title { font-size: .74rem; letter-spacing: .04em; text-transform: uppercase; color: var(--accent); font-weight: 700; }
+.sidebar .side-box a { display: block; margin-top: 4px; font-size: .87rem; font-weight: 700; color: var(--accent); }
 
 main { flex: 1; padding: 40px 52px; max-width: 980px; }
 h1 {
