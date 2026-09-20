@@ -58,8 +58,7 @@
       <span class="chip ru">Library: TensorFlow / Keras</span>
     </div>
 
-    <h2 class="en">What it is</h2>
-    <h2 class="ru">Yeh kya hai</h2>
+    <h2>What it is</h2>
     <p class="en">A <b>Convolutional Neural Network (CNN)</b> is a neural network designed to recognize patterns in images. Instead of looking at an image as one giant list of pixels, a CNN slides small <b>filters</b> across the image to detect local patterns — first edges, then corners and textures, then object parts like "wheel" or "eye", then whole objects like "cat" or "airplane".</p>
     <p class="ru">Ek <b>Convolutional Neural Network (CNN)</b> aisa neural network hai jo images ke andar patterns pehchanne ke liye banaya gaya hai. Image ko ek lambi pixel list ki tarah dekhne ke bajaye, CNN chhote chhote <b>filters</b> image par slide karta hai aur local patterns pakarta hai — pehle edges, phir corners aur textures, phir object ke hisse jaise "wheel" ya "eye", phir poore objects jaise "cat" ya "airplane".</p>
     <p class="en">Why not just feed raw pixels into a normal network? A tiny 32&times;32 color image already has 3,072 input numbers, and a normal fully-connected layer would need a weight for every one of them. A CNN reuses the <b>same small filter everywhere</b> in the image, so it has far fewer parameters, trains faster, and recognizes a cat whether it sits in the corner or the center of the photo.</p>
@@ -69,8 +68,7 @@
     <p class="en">In this page we build a small CNN that classifies 32&times;32 color photos into 10 classes (CIFAR-10) and reach roughly 70% test accuracy in about 5 minutes on a free Colab GPU — even a plain CPU session finishes in a reasonable time because the model is intentionally small.</p>
     <p class="ru">Is page par hum ek chhota CNN banate hain jo 32&times;32 color photos ko 10 classes mein classify karta hai (CIFAR-10) aur free Colab GPU par taqreeban 5 minute mein lagbhag 70% test accuracy tak pohanch jata hai — CPU session par bhi theek time mein complete ho jata hai kyunke model jaan-boojh kar chhota rakha gaya hai.</p>
 
-    <h2 class="en">The math inside</h2>
-    <h2 class="ru">Andar ki math</h2>
+    <h2>The math inside</h2>
     <p class="en">The whole pipeline is just four simple operations repeated: convolution, ReLU, pooling, and at the end flattening + a softmax layer (softmax is <a href="../concepts.html">already explained in Core Concepts</a>).</p>
     <p class="ru">Poora pipeline bas chaar simple operations ka repeat hai: convolution, ReLU, pooling, aur aakhir mein flattening + ek softmax layer (softmax <a href="../concepts.html">Core Concepts mein pehle se samjhaya gaya hai</a>).</p>
 
@@ -108,8 +106,7 @@
     <p class="en">The final dense layer turns the flattened features into 10 raw scores, and the softmax (a <a href="../concepts.html">Core Concepts</a> term) converts them into probabilities that sum to 1. Training minimizes cross-entropy loss by <a href="../concepts.html">gradient descent — see Core Concepts</a>; the sigmoid, its 2-class cousin, appears again in Topic 05 (Logistic Regression).</p>
     <p class="ru">Aakhri dense layer flattened features ko 10 raw scores mein badalti hai, aur softmax (ek <a href="../concepts.html">Core Concepts</a> term) unhein probabilities mein badal deta hai jin ka jama 1 hota hai. Training cross-entropy loss ko <a href="../concepts.html">gradient descent se minimize karti hai — Core Concepts dekhen</a>; sigmoid, iska 2-class cousin, Topic 05 (Logistic Regression) mein dobara aata hai.</p>
 
-    <h2 class="en">Diagram</h2>
-    <h2 class="ru">Diagram</h2>
+    <h2>Diagram</h2>
     <figure><img src="https://upload.wikimedia.org/wikipedia/commons/6/63/Typical_cnn.png" alt="Typical CNN architecture: input image, convolution layers, pooling, fully connected layer, output classes"><figcaption><span class="en">Source: Wikipedia/Wikimedia Commons</span><span class="ru">Manba: Wikipedia/Wikimedia Commons</span></figcaption></figure>
     <p class="en">Notice how the image gets spatially smaller but deeper (more feature maps) after each conv+pool stage, then flattens into a vector for the fully-connected part.</p>
     <p class="ru">Dhyan den ke har conv+pool stage ke baad image spatially chhoti magar deep (zyada feature maps) hoti jati hai, phir fully-connected hisse ke liye ek vector mein flatten ho jati hai.</p>
@@ -117,13 +114,11 @@
     <p class="en">Notice the dense part of the CNN is exactly this classic network: every neuron connected to the previous layer — convolution is what feeds it better features than raw pixels.</p>
     <p class="ru">Dekhen ke CNN ka dense hissa bilkul yahi classic network hai: har neuron pichli layer se juda hua — convolution usse raw pixels se behtar features deta hai.</p>
 
-    <h2 class="en">Dataset (Kaggle)</h2>
-    <h2 class="ru">Dataset (Kaggle)</h2>
+    <h2>Dataset (Kaggle)</h2>
     <p class="en"><b>CIFAR-10</b> — Kaggle slug <code>pankrzysiu/cifar10-python</code> (fetchable with kagglehub). It contains 60,000 tiny color photographs, each 32&times;32 pixels with 3 color channels, evenly split across 10 classes: airplane, automobile, bird, cat, deer, dog, frog, horse, ship, truck. 50,000 images are for training and 10,000 for testing; the target is simply the class name of the object in the photo. The Kaggle copy ships as a tar.gz of Python pickle batches, so in Colab the simplest loading path is Keras's built-in <code>cifar10.load_data()</code>, which downloads the exact same data already unpacked — the Kaggle dataset is your reference/source citation for it.</p>
     <p class="ru"><b>CIFAR-10</b> — Kaggle slug <code>pankrzysiu/cifar10-python</code> (kagglehub se fetch hota hai). Is mein 60,000 chhoti color photographs hain, har ek 32&times;32 pixels ki 3 color channels ke saath, 10 classes mein barabar baanti hain: airplane, automobile, bird, cat, deer, dog, frog, horse, ship, truck. 50,000 images training ke liye aur 10,000 testing ke liye; target bas photo mein object ka class name hai. Kaggle wali copy Python pickle batches ki tar.gz hoti hai, is liye Colab mein sab se aasan loading rasta Keras ka built-in <code>cifar10.load_data()</code> hai, jo bilkul yahi data pehle se unpack ho kar download karta hai — Kaggle dataset iska reference/source citation hai.</p>
 
-    <h2 class="en">Practice code — run in Google Colab, top to bottom</h2>
-    <h2 class="ru">Practice code — Google Colab mein upar se neeche tak chalayen</h2>
+    <h2>Practice code — run in Google Colab, top to bottom</h2>
     <div class="callout en">Blocks must run in order. Copy each block into a Colab cell and press Shift+Enter. The model is deliberately small so the free tier (GPU or even CPU) finishes all 10 epochs in roughly 5 minutes.</div>
     <div class="callout ru">Blocks order mein chalne chahiye. Har block ko Colab cell mein copy karen aur Shift+Enter dabayen. Model jaan-boojh kar chhota rakha gaya hai taake free tier (GPU ya CPU bhi) ke saare 10 epochs taqreeban 5 minute mein complete ho jayen.</div>
 
@@ -301,8 +296,7 @@ plt.show()
 # Reading it: the diagonal = correct predictions; the cat/dog block
 # is usually the brightest off-diagonal error zone</code></pre>
 
-    <h2 class="en">Real-world use cases &amp; companies</h2>
-    <h2 class="ru">Asli duniya ke use cases aur companies</h2>
+    <h2>Real-world use cases &amp; companies</h2>
     <table>
       <tr><th><span class="en">Use case</span><span class="ru">Use case</span></th><th><span class="en">Who uses it</span><span class="ru">Kaun use karta hai</span></th></tr>
       <tr><td><span class="en">Search your photos by what's in them ("beach", "dog")</span><span class="ru">Apni photos mein mojud cheez ke zariye search karo ("beach", "dog")</span></td><td><span class="en">Google Photos</span><span class="ru">Google Photos</span></td></tr>
@@ -311,8 +305,7 @@ plt.show()
       <tr><td><span class="en">Screening chest X-rays for pneumonia and other findings</span><span class="ru">Chest X-rays mein pneumonia aur doosri cheezon ki screening</span></td><td><span class="en">Hospitals / CheXNet-style medical AI</span><span class="ru">Hospitals / CheXNet-style medical AI</span></td></tr>
     </table>
 
-    <h2 class="en">Combining with other algorithms (project ideas)</h2>
-    <h2 class="ru">Doosre algorithms ke saath milana (project ideas)</h2>
+    <h2>Combining with other algorithms (project ideas)</h2>
     <p class="en"><b>CNN features &rarr; SVM classifier.</b> Chop off the final softmax layer and use the CNN's Flatten output as a feature vector; train an SVM on those features instead of the dense layer. You compare a deep model with a classic classifier on identical deep features.</p>
     <p class="ru"><b>CNN features &rarr; SVM classifier.</b> Aakhri softmax layer hata den aur CNN ke Flatten output ko feature vector ke tor par use karen; us dense layer ki jagah un features par SVM train karen. Is tarah aap ek deep model aur ek classic classifier ko bilkul same deep features par compare karte hain.</p>
     <p class="en"><b>CNN &rarr; sigmoid for 2 classes (Logistic Regression link).</b> Merge CIFAR-10 into two super-classes (animal vs vehicle) and replace the 10-neuron softmax with a 1-neuron sigmoid output — the last layer then works exactly like the Logistic Regression of Topic 05, and you can compare its weights-based decision with the CNN's.</p>
@@ -322,8 +315,7 @@ plt.show()
     <p class="en"><b>Error analysis with the Confusion Matrix.</b> Take the confusion matrix from Block 11 (Topic 01) and train a second, targeted CNN only on the most-confused class pair (e.g. cat vs dog) — a clean mini-project on its own.</p>
     <p class="ru"><b>Confusion Matrix ke saath error analysis.</b> Block 11 (Topic 01) wala confusion matrix len aur sirf sab se zyada confuse hone wale class pair (maslan cat vs dog) par doosra, targeted CNN train karen — woh apne aap mein ek saaf mini-project hai.</p>
 
-    <h2 class="en">Interview Q&amp;A</h2>
-    <h2 class="ru">Interview ke sawal o jawab</h2>
+    <h2>Interview Q&amp;A</h2>
     <div class="qa">
       <div class="q en">Why convolution instead of fully-connected layers for images?</div>
       <div class="q ru">Images ke liye fully-connected layers ki jagah convolution kyun?</div>

@@ -58,9 +58,9 @@
 
     <h2>What it is (short intro)</h2>
     <p class="en">A classifier predicts categories — sick/healthy, spam/not-spam. But <b>how many of its predictions were right, and in which way were the mistakes made?</b> The confusion matrix answers exactly that: a simple 2×2 (or n×n for more classes) table comparing <b>what the model predicted</b> against <b>the truth</b>.</p>
-    <p class="ru">Ek classifier categories predict karta hai — sick/healthy, spam/not-spam. Lekin sawal ye hai: <b>uski predictions mein se kitni sahi thi, aur galtiyan kis tarah ki gayi?</b> Confusion matrix bilkul yehi batata hai: ek simple 2×2 table (zyada classes ke liye n×n) jo <b>model ne jo predict kiya</b> usay <b>truth</b> se compare karti hai.</p>
+    <p class="ru">Ek classifier categories predict karta hai — sick/healthy, spam/not-spam. Lekin sawal ye hai: <b>how many of its predictions were right, and in which way were the mistakes made?</b> Confusion matrix bilkul yehi batata hai: ek simple 2×2 table (zyada classes ke liye n×n) jo <b>model ne jo predict kiya</b> usay <b>truth</b> se compare karti hai.</p>
     <p class="en">It is called "confusing" because the mistakes reveal where the model gets confused. Every classification algorithm you will study — Logistic Regression, CNN, VGG16, RNN — is graded with this same table. That is why your teacher asked about it first: it is the <b>report card of all classifiers</b>.</p>
-    <p class="ru">Iska naam "confusion" is liye hai kyunki galtiyan batati hain ke model kahan confuse hota hai. Jo bhi classification algorithm aap parhenge — Logistic Regression, CNN, VGG16, RNN — sab ki grading isi table se hoti hai. Isi liye teacher ne sab se pehle ye poocha: ye <b>har classifier ka report card</b> hai.</p>
+    <p class="ru">Iska naam "confusion" is liye hai kyunki galtiyan batati hain ke model kahan confuse hota hai. Jo bhi classification algorithm aap parhenge — Logistic Regression, CNN, VGG16, RNN — sab ki grading isi table se hoti hai. Isi liye teacher ne sab se pehle ye poocha: ye <b>the report card of all classifiers</b> hai.</p>
     <p class="en">Regression models (Topic 06, 09) do NOT use it — they predict continuous numbers and are graded with MAE/MSE/R² instead (<a href="../concepts.html">Core Concepts</a>).</p>
     <p class="ru">Regression models (Topic 06, 09) ye use <b>nahi</b> karte — wo continuous numbers predict karte hain aur unki grading MAE/MSE/R² se hoti hai (<a href="../concepts.html">Core Concepts</a>).</p>
 
@@ -102,7 +102,7 @@
       <div class="note">precision aur recall ko mila kar ek balanced number (inka harmonic mean)</div>
     </div>
     <div class="callout yellow en"><b>When accuracy lies:</b> if only 1% of transactions are fraud, a lazy model that always says "not fraud" scores 99% accuracy while catching ZERO fraud. With <b>imbalanced data</b>, always read precision/recall, not just accuracy. Our dataset is mildly imbalanced (357 benign vs 212 malignant) — good practice ground.</div>
-    <div class="callout yellow ru"><b>Jab accuracy jhoot bolti hai:</b> agar sirf 1% transactions fraud hon, to ek sust model jo hamesha "not fraud" kahe, 99% accuracy score kar leta hai — aur ZERO fraud pakarta hai. <b>Imbalanced data</b> ke saath hamesha precision/recall parho, sirf accuracy nahi. Hamara dataset halka sa imbalanced hai (357 benign vs 212 malignant) — practice ke liye achi jagah.</div>
+    <div class="callout yellow ru"><b>When accuracy lies:</b> agar sirf 1% transactions fraud hon, to ek sust model jo hamesha "not fraud" kahe, 99% accuracy score kar leta hai — aur ZERO fraud pakarta hai. <b>Imbalanced data</b> ke saath hamesha precision/recall parho, sirf accuracy nahi. Hamara dataset halka sa imbalanced hai (357 benign vs 212 malignant) — practice ke liye achi jagah.</div>
     <p class="en">Train/test split, overfitting and other shared ideas are <a href="../concepts.html">already explained in Core Concepts</a>.</p>
     <p class="ru">Train/test split, overfitting aur baqi shared concepts <a href="../concepts.html">Core Concepts mein pehle se samjhaye gaye hain</a>.</p>
 
@@ -227,7 +227,7 @@ print(classification_report(y_test, y_pred, target_names=["benign", "malignant"]
 
     <h2>Combining with other algorithms (project ideas)</h2>
     <p class="en"><b>1. Grade every classifier you build.</b> Topics 05 (Logistic), 02 (CNN), 04 (VGG16) and 10 (RNN) all end with this matrix — build one project where you compare all their matrices side by side.</p>
-    <p class="ru"><b>1. Har classifier ki grading karo jo tum banao.</b> Topics 05 (Logistic), 02 (CNN), 04 (VGG16) aur 10 (RNN) sab isi matrix par khatam hote hain — ek aisa project banao jahan in sab ki matrices side by side compare karo.</p>
+    <p class="ru"><b>1. Grade every classifier you build.</b> Topics 05 (Logistic), 02 (CNN), 04 (VGG16) aur 10 (RNN) sab isi matrix par khatam hote hain — ek aisa project banao jahan in sab ki matrices side by side compare karo.</p>
     <p class="en"><b>2. Matrix-guided threshold tuning.</b> Shift the 0.5 decision boundary of Logistic Regression (Topic 05) to trade precision for recall until FN is minimized — a real medical-device workflow.</p>
     <p class="ru"><b>2. Matrix se threshold tuning.</b> Logistic Regression (Topic 05) ka 0.5 decision boundary shift karo taake precision ko recall ke badle de kar FN kam se kam ho jaye — asli medical-device workflow.</p>
     <p class="en"><b>3. Error analysis with clustering.</b> Run K-Means (Topic 08) on the FN samples only — discover <i>which kind</i> of tumor the model misses, then engineer features to fix it.</p>

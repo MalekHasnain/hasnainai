@@ -58,8 +58,7 @@
       <span class="chip ru">Library: scikit-learn</span>
     </div>
 
-    <h2 class="en">What it is</h2>
-    <h2 class="ru">Yeh kya hai</h2>
+    <h2>What it is</h2>
     <p class="en"><strong>DBSCAN</strong> (Density-Based Spatial Clustering of Applications with Noise) groups points that are packed closely together, and marks any point that sits alone in a sparse region as <strong>noise</strong>. Unlike K-Means, you never tell it how many clusters you want — it discovers the number of clusters by itself from the density of the data.</p>
     <p class="ru"><strong>DBSCAN</strong> (Density-Based Spatial Clustering of Applications with Noise) aise points ko group mein jorta hai jo pas paas bheer mein hon, aur jo point akele khaali (sparse) ilaqay mein baitha ho use <strong>noise</strong> mark kar deta hai. K-Means ki tarah aapko batana nahi padta ke kitne clusters chahiye — yeh clusters ki tadaad khud, data ki density dekh kar, discover karta hai.</p>
     <p class="en">The intuition is simple: a cluster is a <em>crowded neighborhood</em>. If you stand on a point and there are enough neighbors within walking distance, you are in a dense area — part of a cluster. If you look around and see almost nobody nearby, you are out in the wilderness — you are noise (an outlier).</p>
@@ -67,8 +66,7 @@
     <p class="en">Because sparse, isolated points get labeled as noise instead of being forced into the nearest cluster, DBSCAN doubles as an <strong>anomaly detector</strong>. That is its superpower: it clusters and finds outliers in one pass, and it can find clusters of arbitrary shape (rings, crescents, blobs) that K-Means cannot.</p>
     <p class="ru">Kyunke khaale, tanha points ko zabardasti nazdeeki ke cluster mein daalne ke bajaye noise label milta hai, DBSCAN saath saath ek <strong>anomaly detector</strong> bhi hai. Yehi is ki khaas taqat hai: yeh ek hi baar mein clustering bhi karta hai aur outliers bhi dhoondta hai, aur har kisi shape ke clusters (rings, crescents, blobs) dhoond sakta hai jo K-Means nahi dhoond sakta.</p>
 
-    <h2 class="en">The math inside</h2>
-    <h2 class="ru">Andar ki math</h2>
+    <h2>The math inside</h2>
     <p class="en">DBSCAN measures how close points are with Euclidean distance (<a href="../concepts.html">already explained in Core Concepts</a>) on <a href="../concepts.html">normalized</a> / standardized features — scaling matters because distance-based algorithms are dominated by whichever feature has the biggest raw range.</p>
     <p class="ru">DBSCAN points ke darmiyan qurbani (closeness) Euclidean distance se napta hai (<a href="../concepts.html">Core Concepts mein pehle samjhaya gaya hai</a>) aur <a href="../concepts.html">normalized</a> / standardized features par — scaling zaroori hai kyunke distance-based algorithms par woh feature haavi ho jata hai jiska raw range sab se bara ho.</p>
 
@@ -96,8 +94,7 @@
     <p class="en">Density-reachability is how clusters grow: starting from one core point, DBSCAN keeps absorbing neighbors-of-neighbors, so one cluster is the full set of points reachable by chaining dense neighborhoods together.</p>
     <p class="ru">Density-reachability se clusters barhte hain: ek core point se shuru hokar DBSCAN neighbors-of-neighbors ko absorb karta rehta hai, is liye ek cluster dense neighborhoods ki chain se reachable tamam points ka mukammal set hota hai.</p>
 
-    <h2 class="en">Diagram</h2>
-    <h2 class="ru">Diagram</h2>
+    <h2>Diagram</h2>
     <figure>
       <img src="https://upload.wikimedia.org/wikipedia/commons/a/af/DBSCAN-Illustration.svg" alt="DBSCAN illustration showing core points (red), border points (yellow) and noise points (blue) with eps neighborhood circles">
       <figcaption class="en">Source: Wikipedia/Wikimedia Commons</figcaption>
@@ -106,13 +103,11 @@
     <p class="en">Notice the three point roles at once: red points are core points (their eps circle holds &ge; min_samples neighbors), yellow points are border points (inside a core point's circle but not dense themselves), and the blue point out on its own is noise — the anomaly.</p>
     <p class="ru">Teenon roles ek saath dekhein: laal points core points hain (unkay eps circle mein &ge; min_samples neighbors hain), peelay points border points hain (kisi core point ke circle ke andar magar khud dense nahi), aur akela neela point jo alag khara hai woh noise hai — yehi anomaly hai.</p>
 
-    <h2 class="en">Dataset (Kaggle)</h2>
-    <h2 class="ru">Dataset (Kaggle)</h2>
+    <h2>Dataset (Kaggle)</h2>
     <p class="en"><strong>Mall Customer Segmentation Dataset</strong> — kagglehub slug <code>vjchoudhary7/customer-segmentation-tutorial-in-python</code> (file <code>Mall_Customers.csv</code>). A mall collected data on 200 of its customers: <code>CustomerID</code>, <code>Genre</code> (gender), <code>Age</code>, <code>Annual Income (k$)</code>, and <code>Spending Score (1-100)</code> — a score the mall assigned each customer based on buying behavior. There is no target column: this is unsupervised learning, so the question is not "predict Y" but "what natural groups (and oddballs) exist among customers?" We cluster on Annual Income vs Spending Score to find customer segments and spot unusual customers.</p>
     <p class="ru"><strong>Mall Customer Segmentation Dataset</strong> — kagglehub slug <code>vjchoudhary7/customer-segmentation-tutorial-in-python</code> (file <code>Mall_Customers.csv</code>). Ek mall ne apne 200 customers ka data jama kiya: <code>CustomerID</code>, <code>Genre</code> (gender), <code>Age</code>, <code>Annual Income (k$)</code>, aur <code>Spending Score (1-100)</code> — yeh score mall ne har customer ko us ki kharidari ke behavior ki bunyaad par diya. Koi target column nahi hai: yeh unsupervised learning hai, to sawal yeh nahi ke "Y predict karo" balke yeh ke "customers mein kaun se natural groups (aur anokhe log) mojood hain?" Hum Annual Income vs Spending Score par cluster karte hain taake customer segments mil sakein aur ghair-mamooli customers nazar aa sakein.</p>
 
-    <h2 class="en">Practice code — run in Google Colab, top to bottom</h2>
-    <h2 class="ru">Practice code — Google Colab mein oopar se neeche tak chalayein</h2>
+    <h2>Practice code — run in Google Colab, top to bottom</h2>
     <div class="callout en">Blocks must run in order. Copy each block into a Colab cell and run it before moving to the next — later blocks depend on variables created earlier.</div>
     <div class="callout ru">Blocks tarteeb se chalne chahiye. Har block ko Colab ke ek cell mein copy karein aur chalayein, phir agay barhein — baad wale blocks pehle banaye gaye variables par depend karte hain.</div>
 
@@ -267,8 +262,7 @@ else:
     # If everything collapsed into one cluster or all noise, tuning is needed
     print("Fewer than 2 clusters - adjust eps / min_samples and rerun.")</code></pre>
 
-    <h2 class="en">Real-world use cases &amp; companies</h2>
-    <h2 class="ru">Asli duniya ke use cases aur companies</h2>
+    <h2>Real-world use cases &amp; companies</h2>
     <table>
       <tr><th class="en">Use case</th><th class="ru">Use case</th><th class="en">Who / how</th><th class="ru">Kaun / kaise</th></tr>
       <tr><td class="en">Fraud &amp; anomaly detection in card transactions</td><td class="ru">Card transactions mein fraud aur anomaly detection</td><td class="en">Visa and Mastercard-style payment networks flag transactions that fall in sparse regions of spending behavior (unusual amount, location, velocity) for review — density-based noise = suspicious activity</td><td class="ru">Visa aur Mastercard jaisi payment networks aisi transactions review ke liye flag karti hain jo spending behavior ke khaali (sparse) ilaqon mein girti hain (ghair-mamooli amount, location, velocity) — density-based noise hi suspicious activity hai</td></tr>
@@ -276,8 +270,7 @@ else:
       <tr><td class="en">Geospatial hotspot detection</td><td class="ru">Geospatial hotspot detection</td><td class="en">City planners and mapping platforms (e.g. OpenStreetMap-based analyses, Uber-style pickup heatmaps) find dense pockets of events — crime hotspots, accident zones, ride demand — and ignore scattered rural noise</td><td class="ru">City planners aur mapping platforms (misal ke tor par OpenStreetMap based analyses, Uber jaise pickup heatmaps) events ke dense pockets dhoondte hain — crime hotspots, accident zones, ride demand — aur bikhra hua rural noise ignore karte hain</td></tr>
     </table>
 
-    <h2 class="en">Combining with other algorithms (project ideas)</h2>
-    <h2 class="ru">Dusre algorithms ke saath milana (project ideas)</h2>
+    <h2>Combining with other algorithms (project ideas)</h2>
     <p class="en"><strong>Clean outliers before K-Means.</strong> Run DBSCAN first on the mall data, drop the -1 noise points, then run K-Means on the survivors. K-Means is sensitive to outliers because it minimizes squared distances to centroids, so removing DBSCAN's noise gives tighter, more stable customer segments (and you can compare each method's silhouette score).</p>
     <p class="ru"><strong>K-Means se pehle outliers saaf karein.</strong> Pehle mall data par DBSCAN chalayein, -1 noise points hata dein, phir bache hue points par K-Means chalayein. K-Means outliers ka asar qabool karta hai kyunke woh centroids tak squared distances minimize karta hai, is liye DBSCAN ka noise hata dene se customer segments tight aur zyada stable ho jate hain (aur har method ka silhouette score compare bhi kar sakte hain).</p>
     <p class="en"><strong>DBSCAN anomalies &rarr; Logistic Regression labels.</strong> Use DBSCAN's noise points on the transaction dataset as "suspicious" examples and a sample of cluster points as "normal", then train Logistic Regression to <em>classify</em> new transactions as fraud/normal in real time — DBSCAN does the labeling, Logistic Regression does the deploying. Evaluate with a Confusion Matrix.</p>
@@ -285,8 +278,7 @@ else:
     <p class="en"><strong>Visualize high-dimensional clusters with PCA.</strong> Cluster customers on all numeric columns with DBSCAN, then apply PCA to project the data to 2D for plotting — PCA compresses the features while keeping most of the variance, so you can actually <em>see</em> the density structure DBSCAN found.</p>
     <p class="ru"><strong>High-dimensional clusters ko PCA se dekhein.</strong> Tamam numeric columns par DBSCAN se customers cluster karein, phir plot karne ke liye PCA laga kar data ko 2D par project karein — PCA features ko compress karta hai magar zyada tar variance bacha leta hai, is liye aap DBSCAN jo density structure dhoonda hai use <em>dekh</em> bhi sakte hain.</p>
 
-    <h2 class="en">Interview Q&amp;A</h2>
-    <h2 class="ru">Interview Q&amp;A (sawal o jawab)</h2>
+    <h2>Interview Q&amp;A</h2>
     <div class="qa">
       <div class="q en">What is the difference between DBSCAN and K-Means?</div>
       <div class="q ru">DBSCAN aur K-Means mein kya farq hai?</div>

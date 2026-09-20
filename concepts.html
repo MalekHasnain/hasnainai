@@ -47,13 +47,11 @@
     </nav>
   </aside>
   <main>
-    <h1 class="en">Core Concepts</h1>
-    <h1 class="ru">Bunyadi Concepts</h1>
+    <h1>Core Concepts</h1>
     <p class="en">Each concept below is defined <b>once</b>, in learning order — every definition builds on the one before it, and the topic pages link back here instead of repeating. Read top to bottom the first time; afterwards use it as your dictionary.</p>
     <p class="ru">Neeche har concept <b>ek hi baar</b> define hua hai, seekhne ki tarteeb mein — har taaruf pichle par khara hota hai, aur topic pages yahan wapas link karte hain baja ye dohrane ke. Pehli dafa upar se neeche parho; uske baad ise dictionary ki tarah use karo.</p>
 
-    <h2 class="en">1. The data you learn from</h2>
-    <h2 class="ru">1. Woh data jis se seekha jata hai</h2>
+    <h2>1. The data you learn from</h2>
     <p class="en">Everything starts with a <b>table of examples</b>. Before any algorithm, you must be able to name the parts of that table.</p>
     <p class="ru">Har cheez ka aaghaz <b>misalon ki table</b> se hota hai. Kisi algorithm se pehle aapko is table ke hisson ke naam aane chahiye.</p>
     <div class="term"><b>Sample:</b> <span class="en">one row of the dataset — one house, one patient, one image. 1,000 rows = 1,000 samples the model can learn from.</span><span class="ru">dataset ki ek row — ek ghar, ek mareez, ek tasveer. 1,000 rows = 1,000 misalein jin se model seekh sakta hai.</span></div>
@@ -68,8 +66,7 @@
     <div class="term"><b>Non-probability sample:</b> <span class="en">chosen by convenience or judgment (convenience, snowball, quota). Cheaper, but biased — findings may not generalize.</span><span class="ru">aasani ya raye se chuna gaya (convenience, snowball, quota). Sasta magar biased — nateeja population par laagu na ho.</span></div>
     <div class="term"><b>Imputer / missing data:</b> <span class="en">real datasets have empty cells. An imputer fills them mechanically — e.g. <code>SimpleImputer(strategy='mean')</code> replaces each hole with that column's mean.</span><span class="ru">asli datasets mein khali cells hoti hain. Imputer unhe mechanical tor par bhar deta hai — masalan mean strategy har khali jagah us column ka average laga deti hai.</span></div>
 
-    <h2 class="en">2. How a model is graded honestly</h2>
-    <h2 class="ru">2. Model ka imaandaar imtihan</h2>
+    <h2>2. How a model is graded honestly</h2>
     <p class="en">The one mistake that ruins every ML project: grading a student on a question it has already seen.</p>
     <p class="ru">Woh ek ghalti jo har ML project barbaad kar deti hai: student ko us sawal par imtihana dena jo usne pehle hi dekh rakha ho.</p>
     <div class="term"><b>Train/test split:</b> <span class="en">hide part of the data (commonly 20%) before training. The model learns from the 80% and is graded on the unseen 20%. <code>random_state</code> freezes the shuffle so results are reproducible.</span><span class="ru">training se pehle data ka hissa (aam tor par 20%) chhupa do. Model 80% se seekhta hai aur an-dekhe 20% par imtihana hota hai. random_state shuffle ko fix rakhta hai taake nateeja dohraya ja sake.</span></div>
@@ -92,13 +89,11 @@
       <figcaption><span class="en">Overfitting made visible (Wikipedia): the green curve weaves through every point but fails on new data; the black line captures the reproducible trend.</span><span class="ru">Overfitting aankhon ke saamne (Wikipedia): hari curve har point se guzarti hai magar naye data par fail hoti hai; kaali line woh trend hai jo naya namoona bhi dohraye.</span></figcaption>
     </figure>
 
-    <h2 class="en">3. Data problems you must handle</h2>
-    <h2 class="ru">3. Data ke masail jin ka hal zaroori hai</h2>
+    <h2>3. Data problems you must handle</h2>
     <div class="term"><b>Anomaly / outlier detection:</b> <span class="en"><b>IQR rule</b> — below Q1 − 1.5·IQR or above Q3 + 1.5·IQR; <b>Z-score</b> — |z| &gt; 3; <b>DBSCAN</b> noise points (Topic 03); Isolation Forest. A boxplot shows them visually.</span><span class="ru"><b>IQR rule</b> — Q1 − 1.5·IQR se neeche ya Q3 + 1.5·IQR se upar; <b>Z-score</b> — |z| &gt; 3; <b>DBSCAN</b> ke noise points (Topic 03); Isolation Forest. Boxplot se aankhon se dikh jate hain.</span></div>
     <div class="term"><b>Data augmentation:</b> <span class="en">creating synthetic examples — jittering (small noise on features), SMOTE (synthetic point between a sample and a neighbor), bootstrapping (sampling with replacement); images: flip/rotate/crop. Overdone augmentation adds bias.</span><span class="ru">masnoori misalein banana — jittering (features par chhota shor), SMOTE (misal aur uske hamsaye ke darmiyan naya point), bootstrapping (wapas rakh kar namoona); tasveeron ke liye: palto/ghumao/kaato. Had se zyada augmentation bias daalta hai.</span></div>
 
-    <h2 class="en">4. Math &amp; stat functions (the toolbox every algorithm uses)</h2>
-    <h2 class="ru">4. Math aur stat functions (har algorithm ka toolbox)</h2>
+    <h2>4. Math &amp; stat functions (the toolbox every algorithm uses)</h2>
     <p class="en">Every algorithm in this course is built from the same dozen math parts. Learn them once here, recognize them everywhere.</p>
     <p class="ru">Is course ka har algorithm unhi bara-bara math hisson se banta hai. Yahan ek dafa seekh lo — har jagah pehchan lo ge.</p>
     <div class="term"><b>Mean (μ, x̄):</b> <span class="en">sum of all values ÷ number of values — the average, the balance point of the data.</span><span class="ru">values ka sum ÷ number of values — yani average; data ka balance point.</span></div>
@@ -222,8 +217,7 @@
 
     <p><span class="en">Why it matters — two features: age (0–100) and income (0–1,000,000). Raw distance is dominated by income; age becomes invisible. Min-max scale both to 0–1 and they weigh equally. Rule of thumb: any algorithm whose math contains "distance", "variance" or "gradient" needs scaling first.</span><span class="ru">Yeh zaroori kyun hai — do features: age (0–100) aur income (0–1,000,000). Raw distance mein income hi sab kuch hai; age gayab ho jati hai. Min-max scaling se dono 0–1 mein aa kar barabar weight deti hain. Rule of thumb: jis algorithm ke math mein "distance", "variance" ya "gradient" ho, scaling pehle karo.</span></p>
 
-    <h2 class="en">5. The learning families</h2>
-    <h2 class="ru">5. Learning ki qismein</h2>
+    <h2>5. The learning families</h2>
     <table>
       <tr><th>Family</th><th>Signal</th><th>Question</th><th>Topics</th></tr>
       <tr><td>Supervised — regression</td><td>labels, continuous target</td><td>"how much?"</td><td>06, 09</td></tr>

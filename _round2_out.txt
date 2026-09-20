@@ -1,0 +1,327 @@
+########## EXACT LINES ##########
+
+===== concepts.html =====
+L168: <div class="term"><b>Matrix / eigenvector / eigenvalue / determinant:</b> <span class="en">a matrix transforms vectors; an eigenvector is a direction it only stretches (not rotates), the eigenvalue (λ) is the stretch factor; the determinant is the volume-scaling factor. PCA finds the eigenvectors of the covariance matrix — biggest λ = direction of most spread.</span><span class="ru">matrix vectors
+L179: <div class="term"><b>Derivative &amp; gradient descent:</b> <span class="en">the derivative is the slope; gradient descent loops: measure the error's slope, step downhill, repeat — the training engine of neural networks.</span><span class="ru">derivative dhalwan (slope) hai; gradient descent ka loop: error ka slope naapo, neeche qadam barhao, dohrate jao — neural networks ka training engine.</span
+L197: <div class="term"><b>Softmax:</b> <span class="en">sigmoid's multi-class sibling — converts a vector of scores into probabilities summing to 1. CNN output layer.</span><span class="ru">sigmoid ka multi-class bhai — scores ke vector ko aisi probabilities mein badalta hai jin ka jama 1 ho. CNN ka output layer.</span></div>
+
+===== topics/cnn.html =====
+L78: <div class="term ru"><b>Filter (kernel) &amp; convolution:</b> learnable weights ka ek chhota grid (maslan 3&times;3). Convolution yeh filter image par slide karta hai aur har position par dot product nikaalta hai: filter weights ko neeche wali pixel values se multiply kar ke jama karo. Har position par ek output number.</div>
+L109: <p class="ru">Aakhri dense layer flattened features ko 10 raw scores mein badalti hai, aur softmax (ek <a href="../concepts.html">Core Concepts</a> term) unhein probabilities mein badal deta hai jin ka jama 1 hota hai. Training cross-entropy loss ko <a href="../concepts.html">gradient descent se minimize karti hai — Core Concepts dekhen</a>; sigmoid, iska 2-class cousin, Topic 05 (Logistic Regress
+
+===== topics/confusion-matrix.html =====
+L101: <div class="formula ru">F1 = 2 × (Precision × Recall) / (Precision + Recall)
+
+===== topics/dbscan.html =====
+L64: <p class="ru"><strong>DBSCAN</strong> (Density-Based Spatial Clustering of Applications with Noise) aise points ko group mein jorta hai jo pas paas bheer mein hon, aur jo point akele khaali (sparse) ilaqay mein baitha ho use <strong>noise</strong> mark kar deta hai. K-Means ki tarah aapko batana nahi padta ke kitne clusters chahiye — yeh clusters ki tadaad khud, data ki density dekh kar, discover 
+L112: <p class="ru"><strong>Mall Customer Segmentation Dataset</strong> — kagglehub slug <code>vjchoudhary7/customer-segmentation-tutorial-in-python</code> (file <code>Mall_Customers.csv</code>). Ek mall ne apne 200 customers ka data jama kiya: <code>CustomerID</code>, <code>Genre</code> (gender), <code>Age</code>, <code>Annual Income (k$)</code>, aur <code>Spending Score (1-100)</code> — yeh score mall
+L294: <div class="a ru">Teen bare farq. (1) Clusters ki tadaad: K-Means ko pehle se k chahiye; DBSCAN khud data se discover karta hai. (2) Shape: K-Means sirf gol, barabar size ke blobs dhoond sakta hai kyunke woh points ko sab se nazdeek centroid par assign karta hai; DBSCAN density ka parcha leta hai, is liye rings, crescents aur kisi bhi shape ke clusters dhoond sakta hai. (3) Noise: K-Means har poin
+L302: <div class="a ru">eps neighborhood ka radius hai — DBSCAN har point se kitni door tak dekh kar neighbors ginta hai. min_samples itne neighbors ki tadaad hai jo kisi point ko core (dense) banane ke liye chahiye. Chhota eps ya bara min_samples &rarr; kai points noise ban jate hain; bara eps &rarr; alag alag clusters mil kar ek blob ban jate hain. eps ko k-distance plot se tune karein (k-th nearest n
+
+===== topics/kmeans.html =====
+L59: <p class="ru">K-Means ek unsupervised algorithm hai jo data ko k girohon (clusters) mein taakta hai bina koi label diye..</p>
+L100: <p class="ru">Dekho centroids (chalte hue crosses) apne clusters ke darmiyan kaise chalte hain.</p>
+L105: <p class="ru">Mall Customers — kagglehub slug.</p>
+L161: <p class="ru">K-Means Euclidean distance par bana hai. Income ka span.</p>
+L193: <p class="ru">Elabow 5 ki taraf ishara karta hai, to final model 5 clusters ke saath fit karte hain.</p>
+L203: <p class="ru">labels_ har customer ka cluster number (0-4) deta hai.</p>
+L234: <p class="ru">groupby-mean numbers ko kahani mein badal deta hai.</p>
+L277: <p class="ru">Pehle PCA, phir PCs par K-Means (Topic 07).</p>
+
+===== topics/multiple-regression.html =====
+L75: <div class="term ru"><b>Multicollinearity:</b> jab do features aapas mein strongly correlated hon (misal: area aur bedrooms ki tadaad), to unke coefficients unstable ho jate hain aur interpret karna mushkil ho jata hai — model faisla nahi kar pata ke credit kis feature ko dena hai. Correlation heatmap se check karein; fix yeh hai ke PCA (Topic 07) lagaayein ya us jodi ka aik feature drop kar dein.
+
+===== topics/pca.html =====
+L63: <p class="ru">Kamaal yeh hai ke nayi features purani mein se nikaali nahi jaatin — woh purani features ke combinations se banaye gaye <b>naye directions</b> hain. Har direction (aik <i>principal component</i>) aisa chuna jaata hai ke data jahan sab se zyada phaila hua ho wahin ishara kare. Direction 1 (PC1) sab se zyada variance pakadta hai, PC2 us se thora kam, aur aise hi aage — aur har componen
+L114: <div class="term ru"><b>Explained variance ratio:</b> har component ka apna eigenvalue tamam eigenvalues ke jame par divide hua — dataset ki total variance (information) ka woh hissa jo yeh aik component apne paas rakhta hai. sklearn mein yeh <code>pca.explained_variance_ratio_</code> hai; misal ke tor par [0.92, 0.05] ka matlab PC1 ke paas 92% information hai aur PC2 ke paas aura 5%. Aap inhein j
+L130: <p class="ru"><b>uciml/iris</b> kagglehub ke zariye → file <code>Iris.csv</code>. Classic Iris dataset, jise Edgar Anderson ne jama kiya aur R.A. Fisher (1936) ne mashhoor kiya: 150 iris ke phool, har phool par 4 numeric features — sepal length, sepal width, petal length, petal width (sab cm mein) — plus aik <code>Species</code> column jis mein teen balanced classes hain (<i>Iris-setosa</i>, <i>Ir
+L290: <h2 class="ru">Dusre algorithms ke saath mila kar use karna (project ideas)</h2>
+
+===== topics/simple-linear-regression.html =====
+L63: <p class="ru">200 saal purana hone ke bawajood (Gauss aur Legendre, 1800s ke shuru mein, sayaron ki orbits ke liye) yeh aaj bhi rozana istemal hota hai — kyunke tez, samjhaane ke qabil, aur aksar kaafi acha hai.</p>
+L70: <p class="ru">Model ek seedhi line hai do parameters ke saath — slope b1 (dhalwan) aur intercept b0 (line jahan y-axis ko kaat ti hai).</p>
+L73: <p class="ru">Har input x ke liye yeh predicted y nikalta hai (y-hat kehte hain, kyunke asli y se thora different hota hai).</p>
+L76: <p class="ru">Slope = x aur y ki covariance ÷ x ka variance — 'sath chalna, apne phelao se normalized'.</p>
+L85: <p class="ru">Ordinary Least Squares woh b0, b1 chunta hai jin se squared residuals ka jama sab se chhota ho.</p>
+L98: <p class="ru">Vertical dashed hisson par nazar daalo: har ek residual hai — point aur line ka gap. OLS inhi k squares ka jama chhota karta hai.</p>
+L103: <p class="ru">prokshitha/home-value-insights (kagglehub se) — house_price_regression_dataset.csv, 1,000 gharon ki 8 columns. Hum ek hi feature use karte hain: Square_Footage → House_Price. Topic 09 poore 7 features se isi data par MLR karta hai.</p>
+L197: <p class="ru">fit OLS chalata hai aur line ke dono numbers save karta hai. Intercept base value hai; slope har extra sq ft ka dollar asar.</p>
+L250: <p class="ru">Phal: model ko aisi square footage do jo usne kabhi nahi dekhi — turant price ka andaza. Zillow isi tarah shuru hua tha.</p>
+L278: <p class="ru">Residuals + anomaly detection: line fit hone ke baad jis gharon ke residuals bohat bare hon (IQR rule se bahar), woh anomalous gharse hain — mehnga/sasta factor ka signal.</p>
+
+===== topics/logistic-regression.html =====
+L59: <p class="en">Logistic regression answers a yes/no question with a probability. Instead of predicting a number like simple linear regression does, it predicts the <b>chance</b> that a sample belongs to class 1: the chance a passenger survives, an email is spam, a card transaction is fraud.</p>
+L60: <p class="ru">Logistic regression kisi yes/no sawal ka jawab probability ke saath deti hai. Koi number (jaise price) predict karne ke bajaye yeh kisi waqea ke hone ka chance batati hai.</p>
+L61: <p class="en">The trick: take the exact same linear equation regression uses (b<sub>0</sub> + b<sub>1</sub>x<sub>1</sub> + … + b<sub>n</sub>x<sub>n</sub>), then push that score through the <b>sigmoid function</b>, which squashes any number into the range (0, 1). Now the output can be read as a probability. If the probability is 0.5 or higher, predict class 1; otherwise class 0. That 0.5 cut-off is
+L62: <p class="ru">Trick yeh hai: regression wali bilkul wohi linear equation lo.</p>
+L63: <p class="en">Training works like every supervised model: it has labeled examples (each Titanic passenger is marked Survived 0 or 1), it makes predictions, measures how wrong it was with <b>log loss</b>, and nudges its coefficients to reduce that error. Unlike linear regression's squared-error loss, log loss punishes confident wrong predictions brutally — predicting 0.99 probability of survival fo
+L64: <p class="ru">Training har supervised model ki tarah chalti hai.</p>
+L65: <p class="en">Despite the name, logistic regression is a <b>classifier</b> — one of the first you should learn, because it is fast, interpretable (you can read each coefficient as an effect on the odds), and it is literally the last layer of many neural networks. Here we train it on the Titanic dataset: predict which passengers survived, and finally read precision/recall from the confusion matrix 
+L66: <p class="ru">Naam ke bawajood (regression likha hai) yeh ek classifier hai.</p>
+L91: <p class="en">Notice the S-shape: hugely negative scores get squeezed toward 0, hugely positive ones toward 1, and the crossing point sits exactly at probability 0.5 where z = 0 — that is the decision boundary in action.</p>
+L92: <p class="ru">Dhyan do S-shape par: bara manfi score 0 ki taraf daba jata hai.</p>
+L154: <p class="en">Math needs numbers, so Sex becomes 0/1 and Embarked becomes 0/1/2 codes; we also drop columns we won't use.</p>
+L155: <p class="ru">Math ko numbers chahiye, is liye Sex 0/1 ban jata hai.</p>
+L277: <p class="en"><b>Logistic regression as the last layer of a neural network.</b> A CNN like VGG16 ends with a softmax layer, which is exactly the multi-class generalization of sigmoid + log loss. Conceptually, VGG16 = feature extractor + logistic-style classifier bolted on top; an RNN classifier ends the same way.</p>
+L278: <p class="ru">Neural network ke aakhri layer ke tor par logistic regression.</p>
+L279: <p class="en"><b>Full evaluation wrap.</b> Whatever the pipeline, grade it with the confusion matrix, precision/recall and cross-validation from Topic 01 and Core Concepts — accuracy alone hides class imbalance (as the Titanic data already shows: ~62% died).</p>
+L280: <p class="ru">Poora evaluation wrap. Pipeline kuch bhi ho.</p>
+
+
+########## TRUNCATION (ru < 45% of en, en>=120 chars) ##########
+topics/kmeans.html enL58 ruL59 ratio=0.44
+   EN(242): K-Means is an unsupervised algorithm that splits data into k groups (clusters) without ever seeing a label. You choose k in advance — "split my customers into 5 groups" — and the algorithm finds the 5
+   RU(107): K-Means ek unsupervised algorithm hai jo data ko k girohon (clusters) mein taakta hai bina koi label diye..
+topics/kmeans.html enL60 ruL61 ratio=0.20
+   EN(363): The intuition is simple: a cluster is a bunch of points that sit close together, and each cluster can be represented by its center (the centroid — the mean position of all its members). K-Means altern
+   RU(73): Samajh aasan hai: cluster woh points ka giroh hai jo aas paas baithe hon.
+topics/kmeans.html enL62 ruL63 ratio=0.18
+   EN(310): Unlike DBSCAN (Topic 03), K-Means needs k upfront, works best on round, similarly-sized blobs, and always assigns every point to some cluster — there are no "noise" points. In return it's fast, scales
+   RU(57): DBSCAN (Topic 03) ke ulat, K-Means ko pehle se k chahiye.
+topics/kmeans.html enL64 ruL65 ratio=0.24
+   EN(179): It's the classic customer-segmentation tool: feed in income and spending score, and out come segments like "high income, low spending" that marketing teams can target differently.
+   RU(43): Yeh classic customer-segmentation tool hai.
+topics/kmeans.html enL90 ruL91 ratio=0.34
+   EN(266): Note that distances are Euclidean distance, already explained in Core Concepts, and centroid updates use the mean, also in Core Concepts. Because the algorithm is built on distances, feature scaling (
+   RU(91): Dhyan do ke dooriyan Euclidean distance hain, jo Core Concepts mein samjhayi ja chuki hain.
+topics/kmeans.html enL99 ruL100 ratio=0.37
+   EN(218): Watch how the centroids (the moving crosses) walk toward the middle of their clusters iteration after iteration — each move is step 3 (centroid = mean of members), and they freeze once every point kee
+   RU(81): Dekho centroids (chalte hue crosses) apne clusters ke darmiyan kaise chalte hain.
+topics/kmeans.html enL104 ruL105 ratio=0.07
+   EN(488): Mall Customers — kagglehub slug vjchoudhary7/customer-segmentation-tutorial-in-python, file Mall_Customers.csv. It has 200 rows, one per mall customer, with 5 columns: CustomerID, Genre (gender), Age,
+   RU(32): Mall Customers — kagglehub slug.
+topics/kmeans.html enL112 ruL113 ratio=0.33
+   EN(129): Everything we need: pandas/numpy for data, kagglehub to fetch the dataset, sklearn for scaling and K-Means, matplotlib for plots.
+   RU(43): Jo kuch chahiye: pandas/numpy data ke liye.
+topics/kmeans.html enL160 ruL161 ratio=0.25
+   EN(227): K-Means is built on Euclidean distance. Income spans ~15–137 while spending spans ~1–99; unscaled, income differences would dominate and squash the spending information. StandardScaler centers both co
+   RU(56): K-Means Euclidean distance par bana hai. Income ka span.
+topics/kmeans.html enL170 ruL171 ratio=0.41
+   EN(203): We don't know the right number of clusters, so we run K-Means for k = 1..10, record WCSS (inertia_) each time, and look for the elbow — the k where the curve bends and adding clusters stops helping mu
+   RU(84): Clusters ki sahi tadaad maloom nahi, is liye k = 1..10 ke liye K-Means chalate hain.
+topics/kmeans.html enL192 ruL193 ratio=0.39
+   EN(222): The elbow points at 5, so we fit the final model with 5 clusters. random_state makes results reproducible; n_init=10 retries from 10 random starting positions because K-Means can otherwise get stuck i
+   RU(86): Elabow 5 ki taraf ishara karta hai, to final model 5 clusters ke saath fit karte hain.
+topics/kmeans.html enL202 ruL203 ratio=0.27
+   EN(198): labels_ gives the cluster number (0–4) of every customer; cluster_centers_ holds the 5 centroid coordinates in scaled space. We inverse-transform them back to real dollars/score so they're readable.
+   RU(54): labels_ har customer ka cluster number (0-4) deta hai.
+topics/kmeans.html enL233 ruL234 ratio=0.30
+   EN(168): groupby-mean turns numbers into a story: average income, spending, and age per cluster. That's how we name the 5 customer types and hand marketing something actionable.
+   RU(51): groupby-mean numbers ko kahani mein badal deta hai.
+topics/kmeans.html enL249 ruL250 ratio=0.26
+   EN(189): K-Means is a real model: predict assigns a brand-new customer to the nearest fitted centroid — same rule the training loop used. Remember to scale the new input with the SAME fitted scaler.
+   RU(49): K-Means ek asli model hai: predict naya customer.
+topics/kmeans.html enL272 ruL273 ratio=0.17
+   EN(318): K-Means segments → one model per segment (Topic 09). Cluster customers first with K-Means, then fit a separate Multiple Regression inside each cluster (e.g. predict spending from age + income per segm
+   RU(54): K-Means segments → har segment ka ek model (Topic 09).
+topics/kmeans.html enL274 ruL275 ratio=0.17
+   EN(300): K-Means → logistic churn per cluster (Topic 05). Use K-Means to build behavioral segments, then train a Logistic Regression churn classifier on each segment. You not only predict WHO churns but also g
+   RU(51): K-Means → har cluster ka logistic churn (Topic 05).
+topics/kmeans.html enL276 ruL277 ratio=0.17
+   EN(253): PCA first, then K-Means on the PCs (Topic 07). With many correlated features, run PCA, keep the top components, and cluster in that smaller space. Distances become more meaningful (less noise), it's c
+   RU(43): Pehle PCA, phir PCs par K-Means (Topic 07).
+topics/kmeans.html enL278 ruL279 ratio=0.14
+   EN(267): K-Means vs DBSCAN sanity check (Topic 03). Run both on the same data — K-Means forces k round clusters, DBSCAN finds arbitrary shapes and labels outliers as noise. Comparing the two segmentations on t
+   RU(38): K-Means vs DBSCAN aazmaish (Topic 03).
+topics/logistic-regression.html enL61 ruL62 ratio=0.18
+   EN(347): The trick: take the exact same linear equation regression uses (b0 + b1x1 + … + bnxn), then push that score through the sigmoid function, which squashes any number into the range (0, 1). Now the outpu
+   RU(62): Trick yeh hai: regression wali bilkul wohi linear equation lo.
+topics/logistic-regression.html enL63 ruL64 ratio=0.12
+   EN(423): Training works like every supervised model: it has labeled examples (each Titanic passenger is marked Survived 0 or 1), it makes predictions, measures how wrong it was with log loss, and nudges its co
+   RU(50): Training har supervised model ki tarah chalti hai.
+topics/logistic-regression.html enL65 ruL66 ratio=0.15
+   EN(404): Despite the name, logistic regression is a classifier — one of the first you should learn, because it is fast, interpretable (you can read each coefficient as an effect on the odds), and it is literal
+   RU(62): Naam ke bawajood (regression likha hai) yeh ek classifier hai.
+topics/logistic-regression.html enL82 ruL83 ratio=0.26
+   EN(184): The training error being minimized — log loss (cross-entropy), which already lives in Core Concepts. Training finds the coefficients b that minimize it (via gradient descent at scale).
+   RU(47): Jo training error minimize hota hai — log loss.
+topics/logistic-regression.html enL91 ruL92 ratio=0.31
+   EN(206): Notice the S-shape: hugely negative scores get squeezed toward 0, hugely positive ones toward 1, and the crossing point sits exactly at probability 0.5 where z = 0 — that is the decision boundary in a
+   RU(64): Dhyan do S-shape par: bara manfi score 0 ki taraf daba jata hai.
+topics/logistic-regression.html enL170 ruL171 ratio=0.41
+   EN(212): The imputer fills missing Age values (median) before the data reaches the model — "imputer used to fill none value". A ColumnTransformer applies the imputer only where needed and keeps everything in o
+   RU(87): Imputer missing Age values (median se) bhar deta hai data model tak puhanchne se pehle.
+topics/logistic-regression.html enL273 ruL274 ratio=0.15
+   EN(281): PCA → Logistic Regression. On wide data (hundreds of features), run PCA first to compress to the top components that carry most variance, then fit logistic regression on those scores. You fight overfi
+   RU(43): PCA → Logistic Regression. Chauri data par.
+topics/logistic-regression.html enL275 ruL276 ratio=0.30
+   EN(280): K-Means segments + logistic per segment. Cluster customers with K-Means, then train a separate logistic churn model inside each segment — passengers in segment A and segment B can have different coeff
+   RU(83): K-Means segments + har segment ka apna logistic. K-Means se customers cluster karo.
+topics/logistic-regression.html enL277 ruL278 ratio=0.21
+   EN(293): Logistic regression as the last layer of a neural network. A CNN like VGG16 ends with a softmax layer, which is exactly the multi-class generalization of sigmoid + log loss. Conceptually, VGG16 = feat
+   RU(62): Neural network ke aakhri layer ke tor par logistic regression.
+topics/logistic-regression.html enL279 ruL280 ratio=0.19
+   EN(237): Full evaluation wrap. Whatever the pipeline, grade it with the confusion matrix, precision/recall and cross-validation from Topic 01 and Core Concepts — accuracy alone hides class imbalance (as the Ti
+   RU(44): Poora evaluation wrap. Pipeline kuch bhi ho.
+topics/simple-linear-regression.html enL75 ruL76 ratio=0.36
+   EN(245): The slope is the covariance of x and y divided by the variance of x — both already explained in Core Concepts. If x and y move together (positive covariance), the slope is positive; the more spread x 
+   RU(89): Slope = x aur y ki covariance ÷ x ka variance — 'sath chalna, apne phelao se normalized'.
+topics/simple-linear-regression.html enL102 ruL103 ratio=0.39
+   EN(587): prokshitha/home-value-insights via kagglehub, file house_price_regression_dataset.csv — a synthetic dataset of 1,000 houses built for practicing price prediction. Each row is one house; columns includ
+   RU(231): prokshitha/home-value-insights (kagglehub se) — house_price_regression_dataset.csv, 1,000 gharon ki 8 columns. Hum ek hi feature use karte hain: Square_Footage → House_Price. Topic 09 poore 7 features
+topics/simple-linear-regression.html enL275 ruL276 ratio=0.40
+   EN(332): Stepping stone to Multiple Regression (Topic 09): refit the same dataset with all 7 features. The OLS math is identical — the slope formula becomes matrix algebra — and watch R² climb as rooms, age, a
+   RU(132): Multiple Regression (Topic 09) ki taraf seedhi: isi dataset par saari 7 features add karo — wahi math, bari equation, aur behtar R².
+
+
+########## RU ENDING '..' ##########
+topics/kmeans.html L59: K-Means ek unsupervised algorithm hai jo data ko k girohon (clusters) mein taakta hai bina koi label diye..
+topics/kmeans.html L80: Initialization — algorithm kahan se shuru hota hai..
+topics/kmeans.html L83: Har point apne sab se qareeb centroid ke cluster mein shamil ho jata hai..
+
+
+########## CROSS-PAGE FACTS ##########
+
+--- 200 (mall customers) ---
+  topics/dbscan.html L112 [ru]: Mall Customer Segmentation Dataset — kagglehub slug vjchoudhary7/customer-segmentation-tutorial-in-python (file Mall_Customers.csv). Ek mall ne apne 2
+  topics/kmeans.html L104 [en]: Mall Customers — kagglehub slug vjchoudhary7/customer-segmentation-tutorial-in-python, file Mall_Customers.csv. It has 200 rows, one per mall customer
+  topics/kmeans.html L143 [-]: # 200 rows, 5 columns expected
+  topics/kmeans.html L155 [-]: # Quick sanity check: 200 rows, 2 columns, no missing values
+  topics/kmeans.html L204 [-]: # Cluster assignment (0..4) for each of the 200 customers
+  topics/kmeans.html L294 [-]: HasnainAI — HCCDA-AI prep. K-Means clustering on the Mall Customers dataset (200 rows), k chosen by the elbow method. Practice in Colab, break the cod
+
+--- k=5 / 5 clusters ---
+  topics/kmeans.html L189 [-]: # Expect a sharp bend at k=5: WCSS plummets until 5, then flattens
+  topics/kmeans.html L191 [-]: BLOCK 7: Fit K-Means with k = 5
+  topics/kmeans.html L192 [en]: The elbow points at 5, so we fit the final model with 5 clusters. random_state makes results reproducible; n_init=10 retries from 10 random starting p
+  topics/kmeans.html L192 [en]: The elbow points at 5, so we fit the final model with 5 clusters. random_state makes results reproducible; n_init=10 retries from 10 random starting p
+  topics/kmeans.html L193 [ru]: Elabow 5 ki taraf ishara karta hai, to final model 5 clusters ke saath fit karte hain.
+  topics/kmeans.html L194 [-]: # Final model: 5 clusters, 10 restarts, fixed seed for reproducibility
+  topics/kmeans.html L227 [-]: plt.title("Mall Customer Segments (K-Means, k=5)")
+
+--- VGG16 layers ---
+  topics/cnn.html L366 [-]: VGG16 (Topic 04) is a specific famous CNN architecture: 13 convolutional layers with 3×3 filters plus 3 dense layers, ~138M parameters, trained on Ima
+  topics/cnn.html L366 [-]: VGG16 (Topic 04) is a specific famous CNN architecture: 13 convolutional layers with 3×3 filters plus 3 dense layers, ~138M parameters, trained on Ima
+  topics/cnn.html L367 [-]: VGG16 (Topic 04) ek mashhoor khaas CNN architecture hai: 3×3 filters wali 13 convolutional layers aur 3 dense layers, ~138M parameters, ImageNet ke 1.
+  topics/cnn.html L367 [-]: VGG16 (Topic 04) ek mashhoor khaas CNN architecture hai: 3×3 filters wali 13 convolutional layers aur 3 dense layers, ~138M parameters, ImageNet ke 1.
+  topics/vgg16.html L62 [en]: VGG16 is a convolutional neural network architecture published in 2014 by the Visual Geometry Group at Oxford. The "16" counts its weight layers: 13 c
+  topics/vgg16.html L63 [ru]: VGG16 ek convolutional neural network architecture hai jo 2014 mein Oxford ke Visual Geometry Group ne publish ki. Iska "16" iske weight layers ginta 
+  topics/vgg16.html L290 [-]: VGG16 is ~138M parameters — why is it considered "simple"?VGG16 ~138M parameters ki hai — phir bhi "simple" kyun mani jati hai?Simple refers to archit
+  topics/vgg16.html L290 [-]: VGG16 is ~138M parameters — why is it considered "simple"?VGG16 ~138M parameters ki hai — phir bhi "simple" kyun mani jati hai?Simple refers to archit
+
+--- 224 ---
+
+--- 1000 classes ---
+  topics/cnn.html L366 [-]: VGG16 (Topic 04) is a specific famous CNN architecture: 13 convolutional layers with 3×3 filters plus 3 dense layers, ~138M parameters, trained on Ima
+  topics/cnn.html L367 [-]: VGG16 (Topic 04) ek mashhoor khaas CNN architecture hai: 3×3 filters wali 13 convolutional layers aur 3 dense layers, ~138M parameters, ImageNet ke 1.
+
+--- Titanic 891 ---
+  topics/logistic-regression.html L96 [-]: yasserh/titanic-dataset via kagglehub — file Titanic-Dataset.csv. The classic ML starter dataset: 891 passengers from the 1912 Titanic sinking, one ro
+  topics/logistic-regression.html L140 [-]: # Shape = (rows, columns) — 891 passengers
+
+--- 62% ---
+  topics/logistic-regression.html L279 [en]: Full evaluation wrap. Whatever the pipeline, grade it with the confusion matrix, precision/recall and cross-validation from Topic 01 and Core Concepts
+
+--- Iris 150 ---
+  topics/pca.html L129 [en]: uciml/iris via kagglehub → file Iris.csv. The classic Iris dataset, collected by Edgar Anderson and made famous by R.A. Fisher (1936): 150 iris flower
+  topics/pca.html L130 [ru]: uciml/iris kagglehub ke zariye → file Iris.csv. Classic Iris dataset, jise Edgar Anderson ne jama kiya aur R.A. Fisher (1936) ne mashhoor kiya: 150 ir
+  topics/pca.html L168 [-]: print(df.shape)                     # (150, 5): 150 flowers, 5 columns
+  topics/pca.html L168 [-]: print(df.shape)                     # (150, 5): 150 flowers, 5 columns
+  topics/pca.html L189 [en]: fit_transform does the whole eigen-math pipeline on the scaled data — covariance matrix, eigenvalues/eigenvectors, sort, keep the top 2, project — and
+  topics/pca.html L190 [ru]: fit_transform scaled data par poora eigen-math pipeline chala deta hai — covariance matrix, eigenvalues/eigenvectors, sort, top 2 rakhna, project — au
+  topics/pca.html L193 [-]: print("before PCA:", X_scaled.shape)  # (150, 4)
+  topics/pca.html L194 [-]: print("after  PCA:", X_pca.shape)     # (150, 2) — 4 features compressed to 2
+
+--- income 15-137 ---
+  topics/dbscan.html L185 [en]: DBSCAN is distance-based (Euclidean), and income ranges ~15–137 while spending ranges 1–99 — unscaled, income differences would dominate every eps-nei
+  topics/dbscan.html L186 [ru]: DBSCAN distance-based (Euclidean) hai, aur income ki range taqreeban 15–137 hai jabke spending ki range 1–99 — bina scaling ke income ka farq har eps-
+  topics/dbscan.html L309 [-]: DBSCAN is built on Euclidean distance. If income ranges 15–137 and spending 1–99, the income axis dominates the distance and eps effectively measures 
+  topics/dbscan.html L310 [-]: DBSCAN Euclidean distance par bana hua hai. Agar income ki range 15–137 ho aur spending ki 1–99, to income axis distance par haavi ho jati hai aur eps
+  topics/kmeans.html L160 [en]: K-Means is built on Euclidean distance. Income spans ~15–137 while spending spans ~1–99; unscaled, income differences would dominate and squash the sp
+  topics/kmeans.html L285 [-]: Why does feature scaling matter for K-Means?K-Means assigns points by Euclidean distance. If one feature has a much bigger range (income in 15–137k$) 
+
+--- spending 1-99 ---
+  topics/dbscan.html L185 [en]: DBSCAN is distance-based (Euclidean), and income ranges ~15–137 while spending ranges 1–99 — unscaled, income differences would dominate every eps-nei
+  topics/dbscan.html L186 [ru]: DBSCAN distance-based (Euclidean) hai, aur income ki range taqreeban 15–137 hai jabke spending ki range 1–99 — bina scaling ke income ka farq har eps-
+  topics/dbscan.html L309 [-]: DBSCAN is built on Euclidean distance. If income ranges 15–137 and spending 1–99, the income axis dominates the distance and eps effectively measures 
+  topics/dbscan.html L310 [-]: DBSCAN Euclidean distance par bana hua hai. Agar income ki range 15–137 ho aur spending ki 1–99, to income axis distance par haavi ho jati hai aur eps
+  topics/kmeans.html L160 [en]: K-Means is built on Euclidean distance. Income spans ~15–137 while spending spans ~1–99; unscaled, income differences would dominate and squash the sp
+  topics/kmeans.html L285 [-]: Why does feature scaling matter for K-Means?K-Means assigns points by Euclidean distance. If one feature has a much bigger range (income in 15–137k$) 
+
+--- CIFAR-10 / 10 classes ---
+  topics/cnn.html L55 [-]: Dataset: Kaggle pankrzysiu/cifar10-python
+  topics/cnn.html L56 [-]: Dataset: Kaggle pankrzysiu/cifar10-python
+  topics/cnn.html L69 [en]: In this page we build a small CNN that classifies 32×32 color photos into 10 classes (CIFAR-10) and reach roughly 70% test accuracy in about 5 minutes
+  topics/cnn.html L69 [en]: In this page we build a small CNN that classifies 32×32 color photos into 10 classes (CIFAR-10) and reach roughly 70% test accuracy in about 5 minutes
+  topics/cnn.html L70 [ru]: Is page par hum ek chhota CNN banate hain jo 32×32 color photos ko 10 classes mein classify karta hai (CIFAR-10) aur free Colab GPU par taqreeban 5 mi
+  topics/cnn.html L70 [ru]: Is page par hum ek chhota CNN banate hain jo 32×32 color photos ko 10 classes mein classify karta hai (CIFAR-10) aur free Colab GPU par taqreeban 5 mi
+  topics/cnn.html L122 [en]: CIFAR-10 — Kaggle slug pankrzysiu/cifar10-python (fetchable with kagglehub). It contains 60,000 tiny color photographs, each 32×32 pixels with 3 color
+  topics/cnn.html L122 [en]: CIFAR-10 — Kaggle slug pankrzysiu/cifar10-python (fetchable with kagglehub). It contains 60,000 tiny color photographs, each 32×32 pixels with 3 color
+  topics/cnn.html L122 [en]: CIFAR-10 — Kaggle slug pankrzysiu/cifar10-python (fetchable with kagglehub). It contains 60,000 tiny color photographs, each 32×32 pixels with 3 color
+  topics/cnn.html L122 [en]: CIFAR-10 — Kaggle slug pankrzysiu/cifar10-python (fetchable with kagglehub). It contains 60,000 tiny color photographs, each 32×32 pixels with 3 color
+  topics/cnn.html L123 [ru]: CIFAR-10 — Kaggle slug pankrzysiu/cifar10-python (kagglehub se fetch hota hai). Is mein 60,000 chhoti color photographs hain, har ek 32×32 pixels ki 3
+  topics/cnn.html L123 [ru]: CIFAR-10 — Kaggle slug pankrzysiu/cifar10-python (kagglehub se fetch hota hai). Is mein 60,000 chhoti color photographs hain, har ek 32×32 pixels ki 3
+  topics/cnn.html L123 [ru]: CIFAR-10 — Kaggle slug pankrzysiu/cifar10-python (kagglehub se fetch hota hai). Is mein 60,000 chhoti color photographs hain, har ek 32×32 pixels ki 3
+  topics/cnn.html L123 [ru]: CIFAR-10 — Kaggle slug pankrzysiu/cifar10-python (kagglehub se fetch hota hai). Is mein 60,000 chhoti color photographs hain, har ek 32×32 pixels ki 3
+  topics/cnn.html L142 [-]: BLOCK 2: Load CIFAR-10
+  topics/cnn.html L143 [en]: Keras ships CIFAR-10 built-in — one call downloads the same 60,000 images as the Kaggle dataset pankrzysiu/cifar10-python (listed here via kagglehub p
+  topics/cnn.html L143 [en]: Keras ships CIFAR-10 built-in — one call downloads the same 60,000 images as the Kaggle dataset pankrzysiu/cifar10-python (listed here via kagglehub p
+  topics/cnn.html L143 [en]: Keras ships CIFAR-10 built-in — one call downloads the same 60,000 images as the Kaggle dataset pankrzysiu/cifar10-python (listed here via kagglehub p
+  topics/cnn.html L144 [ru]: Keras ke andar CIFAR-10 built-in aata hai — ek call wahi 60,000 images download kar leti hai jo Kaggle dataset pankrzysiu/cifar10-python mein hain (ya
+  topics/cnn.html L144 [ru]: Keras ke andar CIFAR-10 built-in aata hai — ek call wahi 60,000 images download kar leti hai jo Kaggle dataset pankrzysiu/cifar10-python mein hain (ya
+  topics/cnn.html L144 [ru]: Keras ke andar CIFAR-10 built-in aata hai — ek call wahi 60,000 images download kar leti hai jo Kaggle dataset pankrzysiu/cifar10-python mein hain (ya
+  topics/cnn.html L145 [-]: # Load the CIFAR-10 dataset that comes packaged with Keras
+  topics/cnn.html L146 [-]: # Same data as Kaggle pankrzysiu/cifar10-python, pre-unpacked
+  topics/cnn.html L147 [-]: (x_train, y_train), (x_test, y_test) = keras.datasets.cifar10.load_data()
+  topics/cnn.html L266 [-]: # on CIFAR-10; the big pretrained VGG16 of Topic 04 does much better)
+  topics/cnn.html L287 [en]: Link back to Topic 01: the confusion matrix shows which classes the CNN confuses — on CIFAR-10, cats and dogs get mixed constantly.
+  topics/cnn.html L288 [ru]: Topic 01 wapas se link: confusion matrix dikhata hai ke CNN kaun si classes mix kar deta hai — CIFAR-10 par cats aur dogs barabar ghul mil jate hain.
+  topics/cnn.html L299 [-]: plt.title('CNN confusion matrix (CIFAR-10)')
+  topics/cnn.html L318 [en]: CNN → sigmoid for 2 classes (Logistic Regression link). Merge CIFAR-10 into two super-classes (animal vs vehicle) and replace the 10-neuron softmax wi
+  topics/cnn.html L319 [ru]: CNN → 2 classes ke liye sigmoid (Logistic Regression link). CIFAR-10 ko do super-classes mein mila den (animal vs vehicle) aur 10-neuron softmax ki ja
+  topics/confusion-matrix.html L245 [-]: Q5. Where does the confusion matrix fit for CNN/VGG16 (image classifiers)?Exactly the same place — after predicting test images, the matrix becomes nu
+  topics/confusion-matrix.html L246 [-]: Q5. CNN/VGG16 (image classifiers) ke liye confusion matrix kahan aati hai?Bilkul wahin jagah — test images predict karne ke baad matrix num_classes × 
+  topics/vgg16.html L55 [-]: Dataset: CIFAR-10 (Kaggle: pankrzysiu/cifar10-python)
+  topics/vgg16.html L55 [-]: Dataset: CIFAR-10 (Kaggle: pankrzysiu/cifar10-python)
+  topics/vgg16.html L56 [-]: Dataset: CIFAR-10 (Kaggle: pankrzysiu/cifar10-python)
+  topics/vgg16.html L56 [-]: Dataset: CIFAR-10 (Kaggle: pankrzysiu/cifar10-python)
+  topics/vgg16.html L68 [en]: In this topic we load VGG16 with ImageNet weights, freeze it, bolt on a small 10-class head, and teach it CIFAR-10 — the same dataset you classified w
+  topics/vgg16.html L69 [ru]: Is topic mein hum VGG16 ko ImageNet weights ke saath load karenge, freeze karenge, upar ek chhota 10-class head lagayenge, aur usay CIFAR-10 par sikha
+  topics/vgg16.html L119 [en]: CIFAR-10 — same dataset as Topic 02. Kaggle version: pankrzysiu/cifar10-python (kagglehub slug). 60,000 32×32 colour images in 10 classes (airplane, a
+  topics/vgg16.html L119 [en]: CIFAR-10 — same dataset as Topic 02. Kaggle version: pankrzysiu/cifar10-python (kagglehub slug). 60,000 32×32 colour images in 10 classes (airplane, a
+  topics/vgg16.html L119 [en]: CIFAR-10 — same dataset as Topic 02. Kaggle version: pankrzysiu/cifar10-python (kagglehub slug). 60,000 32×32 colour images in 10 classes (airplane, a
+  topics/vgg16.html L119 [en]: CIFAR-10 — same dataset as Topic 02. Kaggle version: pankrzysiu/cifar10-python (kagglehub slug). 60,000 32×32 colour images in 10 classes (airplane, a
+  topics/vgg16.html L120 [ru]: CIFAR-10 — Topic 02 jaisa hi dataset. Kaggle version: pankrzysiu/cifar10-python (kagglehub slug). 60,000 32×32 colour images 10 classes mein (airplane
+  topics/vgg16.html L120 [ru]: CIFAR-10 — Topic 02 jaisa hi dataset. Kaggle version: pankrzysiu/cifar10-python (kagglehub slug). 60,000 32×32 colour images 10 classes mein (airplane
+  topics/vgg16.html L120 [ru]: CIFAR-10 — Topic 02 jaisa hi dataset. Kaggle version: pankrzysiu/cifar10-python (kagglehub slug). 60,000 32×32 colour images 10 classes mein (airplane
+  topics/vgg16.html L120 [ru]: CIFAR-10 — Topic 02 jaisa hi dataset. Kaggle version: pankrzysiu/cifar10-python (kagglehub slug). 60,000 32×32 colour images 10 classes mein (airplane
+  topics/vgg16.html L139 [-]: BLOCK 2: Load a CIFAR-10 subset
+  topics/vgg16.html L140 [en]: CIFAR-10 is built into Keras, so loading it is one call. We keep the first 5000 train / 1000 test images so free Colab finishes quickly — classes stay
+  topics/vgg16.html L141 [ru]: CIFAR-10 Keras ke andar built hai, toh load karna ek call ka kaam hai. Hum pehli 5000 train / 1000 test images rakhte hain taake free Colab jaldi khat
+  topics/vgg16.html L142 [-]: # CIFAR-10 ships inside Keras, so one call downloads the ready-made train/test split
+  topics/vgg16.html L143 [-]: # (same dataset as Topic 02: 60000 32x32 colour images, 10 classes)
+  topics/vgg16.html L144 [-]: from tensorflow.keras.datasets import cifar10
+  topics/vgg16.html L145 [-]: (X_train_full, y_train_full), (X_test_full, y_test_full) = cifar10.load_data()
+  topics/vgg16.html L197 [-]: layers.Dense(10, activation="softmax")       # 10 outputs = CIFAR-10 class probabilities
+  topics/vgg16.html L230 [-]: plt.title("VGG16 transfer learning - CIFAR-10 (subset)")
+  topics/vgg16.html L242 [-]: prob = model.predict(X_test[i:i+1], verbose=0)[0]     # softmax over 10 classes
+  topics/vgg16.html L276 [en]: VGG16 + K-Means: unsupervised image grouping. Forget the labels entirely: embed 1000 images with the frozen base, reduce with PCA (Topic 07) to ~50 di
+  topics/vgg16.html L276 [en]: VGG16 + K-Means: unsupervised image grouping. Forget the labels entirely: embed 1000 images with the frozen base, reduce with PCA (Topic 07) to ~50 di
+  topics/vgg16.html L277 [ru]: VGG16 + K-Means: unsupervised image grouping. Labels ko bilkul bhool jayein: 1000 images ko frozen base se embed karein, PCA (Topic 07) se ~50 dims ta
+  topics/vgg16.html L286 [-]: What do weights="imagenet" and include_top=False each do?weights="imagenet" aur include_top=False har ek kya karti hain?weights="imagenet" loads the p
+  topics/vgg16.html L286 [-]: What do weights="imagenet" and include_top=False each do?weights="imagenet" aur include_top=False har ek kya karti hain?weights="imagenet" loads the p
+  topics/vgg16.html L289 [-]: Why did we resize CIFAR-10 images and run preprocess_input on them?Hum ne CIFAR-10 images resize kyun ki aur un par preprocess_input kyun chalaya?The 
+  topics/vgg16.html L289 [-]: Why did we resize CIFAR-10 images and run preprocess_input on them?Hum ne CIFAR-10 images resize kyun ki aur un par preprocess_input kyun chalaya?The 
+  topics/vgg16.html L291 [-]: How does VGG16 relate to the CNN you built in Topic 02?VGG16 ka Topic 02 wale CNN se kya taluq hai?Same machinery, different scale and origin. Your To
+  topics/vgg16.html L291 [-]: How does VGG16 relate to the CNN you built in Topic 02?VGG16 ka Topic 02 wale CNN se kya taluq hai?Same machinery, different scale and origin. Your To
+
+
+########## JARGON FULL SCAN (ru spans) ##########
+concepts.html L111 hits=['jama', 'tadaad']: Mean = 395 ÷ 5 = 79 — jama karke tadaad se divide karo, bas yehi formula hai.Mean = 395 ÷ 5 = 79 — values ko add karo, unki count se divide karo, formula bas itna hi hai.
+concepts.html L168 hits=['phelao']: Matrix / eigenvector / eigenvalue / determinant: a matrix transforms vectors; an eigenvector is a direction it only stretches (not rotates), the eigenvalue (λ) is the str
+concepts.html L179 hits=['dhalwan']: Derivative & gradient descent: the derivative is the slope; gradient descent loops: measure the error's slope, step downhill, repeat — the training engine of neural netwo
+concepts.html L197 hits=['jama']: Softmax: sigmoid's multi-class sibling — converts a vector of scores into probabilities summing to 1. CNN output layer.sigmoid ka multi-class bhai — scores ke vector ko a
+topics/cnn.html L109 hits=['jama']: Aakhri dense layer flattened features ko 10 raw scores mein badalti hai, aur softmax (ek Core Concepts term) unhein probabilities mein badal deta hai jin ka jama 1 hota h
+topics/dbscan.html L64 hits=['tadaad']: DBSCAN (Density-Based Spatial Clustering of Applications with Noise) aise points ko group mein jorta hai jo pas paas bheer mein hon, aur jo point akele khaali (sparse) il
+topics/dbscan.html L112 hits=['jama']: Mall Customer Segmentation Dataset — kagglehub slug vjchoudhary7/customer-segmentation-tutorial-in-python (file Mall_Customers.csv). Ek mall ne apne 200 customers ka data
+topics/kmeans.html L59 hits=['giroh']: K-Means ek unsupervised algorithm hai jo data ko k girohon (clusters) mein taakta hai bina koi label diye..
+topics/kmeans.html L61 hits=['giroh']: Samajh aasan hai: cluster woh points ka giroh hai jo aas paas baithe hon.
+topics/kmeans.html L171 hits=['tadaad']: Clusters ki sahi tadaad maloom nahi, is liye k = 1..10 ke liye K-Means chalate hain.
+topics/pca.html L63 hits=['phaila']: Kamaal yeh hai ke nayi features purani mein se nikaali nahi jaatin — woh purani features ke combinations se banaye gaye naye directions hain. Har direction (aik principal
+topics/pca.html L94 hits=['jame']: Aapke notes se match karte hue: square value = A (expand karne ke baad λ2 ke saath baithne wala coefficient — yahan yeh 1 hai, aur A diagonal variances ke jame ke barabar
+topics/pca.html L130 hits=['jama']: uciml/iris kagglehub ke zariye → file Iris.csv. Classic Iris dataset, jise Edgar Anderson ne jama kiya aur R.A. Fisher (1936) ne mashhoor kiya: 150 iris ke phool, har pho
+topics/simple-linear-regression.html L70 hits=['dhalwan']: Model ek seedhi line hai do parameters ke saath — slope b1 (dhalwan) aur intercept b0 (line jahan y-axis ko kaat ti hai).
+topics/simple-linear-regression.html L76 hits=['phelao']: Slope = x aur y ki covariance ÷ x ka variance — 'sath chalna, apne phelao se normalized'.
+topics/simple-linear-regression.html L85 hits=['jama']: Ordinary Least Squares woh b0, b1 chunta hai jin se squared residuals ka jama sab se chhota ho.
+topics/simple-linear-regression.html L98 hits=['jama']: Vertical dashed hisson par nazar daalo: har ek residual hai — point aur line ka gap. OLS inhi k squares ka jama chhota karta hai.
+topics/vgg16.html L203 hits=['jama']: Sirf ~170k head parameters train hote hain — 14.7M base weights apni jagah jamay rahte hain. 5000 images par teen epochs transfer learning ka asar dekhne ke liye kaafi ha

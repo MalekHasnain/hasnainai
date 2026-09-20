@@ -1,0 +1,310 @@
+{
+ "pages": {
+  "index.html": [],
+  "concepts.html": [
+   {
+    "line": 168,
+    "quote": "matrix vectors ko transform karti hai; eigenvector woh simt hai jise sirf khicha jata hai (ghumaya nahi), eigenvalue (\u03bb) khichao ka factor hai; determinant volume ka factor hai. PCA covariance matrix ke eigenvectors nikalti hai \u2014 sab se bara \u03bb = sab se zyada phelao ki simt.",
+    "why": "ru translates technical term into Urdu: 'phelao' (~spread); term must stay English"
+   },
+   {
+    "line": 179,
+    "quote": "derivative dhalwan (slope) hai; gradient descent ka loop: error ka slope naapo, neeche qadam barhao, dohrate jao \u2014 neural networks ka training engine.",
+    "why": "ru translates technical term into Urdu: 'dhalwan' (~slope); term must stay English"
+   },
+   {
+    "line": 197,
+    "quote": "sigmoid ka multi-class bhai \u2014 scores ke vector ko aisi probabilities mein badalta hai jin ka jama 1 ho. CNN ka output layer.",
+    "why": "ru translates technical term into Urdu: 'jama' (~sum); term must stay English"
+   },
+   {
+    "line": 168,
+    "quote": "matrix vectors ko transform karti hai; eigenvector woh simt hai jise sirf khicha jata hai (ghumaya nahi), eigenvalue (\u03bb) khichao ka factor hai; determinant volume ka factor hai. PCA covariance matrix ke eigenvectors nikalti hai \u2014 sab se bara \u03bb = sab se zyada phelao ki simt.",
+    "why": "en sibling uses 'spread' but ru replaces it with Urdu (pair at line 168)"
+   }
+  ],
+  "topics/cnn.html": [
+   {
+    "line": 78,
+    "quote": "Filter (kernel) & convolution: learnable weights ka ek chhota grid (maslan 3\u00d73). Convolution yeh filter image par slide karta hai aur har position par dot product nikaalta hai: filter weights ko neeche wali pixel values se multiply kar ke jama karo. Har position par ek output number.",
+    "why": "ru translates technical term into Urdu: 'jama' (~sum); term must stay English"
+   },
+   {
+    "line": 109,
+    "quote": "Aakhri dense layer flattened features ko 10 raw scores mein badalti hai, aur softmax (ek Core Concepts term) unhein probabilities mein badal deta hai jin ka jama 1 hota hai. Training cross-entropy loss ko gradient descent se minimize karti hai \u2014 Core Concepts dekhen; sigmoid, iska 2-class cousin, To",
+    "why": "ru translates technical term into Urdu: 'jama' (~sum); term must stay English"
+   },
+   {
+    "line": 78,
+    "quote": "Filter (kernel) & convolution: learnable weights ka ek chhota grid (maslan 3\u00d73). Convolution yeh filter image par slide karta hai aur har position par dot product nikaalta hai: filter weights ko neeche wali pixel values se multiply kar ke jama karo. Har position par ek output number.",
+    "why": "en sibling uses 'sum' but ru replaces it with Urdu (pair at line 77)"
+   },
+   {
+    "line": 109,
+    "quote": "Aakhri dense layer flattened features ko 10 raw scores mein badalti hai, aur softmax (ek Core Concepts term) unhein probabilities mein badal deta hai jin ka jama 1 hota hai. Training cross-entropy loss ko gradient descent se minimize karti hai \u2014 Core Concepts dekhen; sigmoid, iska 2-class cousin, To",
+    "why": "en sibling uses 'sum' but ru replaces it with Urdu (pair at line 108)"
+   }
+  ],
+  "topics/confusion-matrix.html": [
+   {
+    "line": 101,
+    "quote": "F1 = 2 \u00d7 (Precision \u00d7 Recall) / (Precision + Recall)\n      precision aur recall ko mila kar ek balanced number (inka harmonic mean)",
+    "why": "ru translates technical term into Urdu: 'mila kar' (~sum(?) \u2014 translated jargon); term must stay English"
+   }
+  ],
+  "topics/dbscan.html": [
+   {
+    "line": 64,
+    "quote": "DBSCAN (Density-Based Spatial Clustering of Applications with Noise) aise points ko group mein jorta hai jo pas paas bheer mein hon, aur jo point akele khaali (sparse) ilaqay mein baitha ho use noise mark kar deta hai. K-Means ki tarah aapko batana nahi padta ke kitne clusters chahiye \u2014 yeh clusters",
+    "why": "ru translates technical term into Urdu: 'tadaad' (~count); term must stay English"
+   },
+   {
+    "line": 112,
+    "quote": "Mall Customer Segmentation Dataset \u2014 kagglehub slug vjchoudhary7/customer-segmentation-tutorial-in-python (file Mall_Customers.csv). Ek mall ne apne 200 customers ka data jama kiya: CustomerID, Genre (gender), Age, Annual Income (k$), aur Spending Score (1-100) \u2014 yeh score mall ne har customer ko us",
+    "why": "ru translates technical term into Urdu: 'jama' (~sum); term must stay English"
+   },
+   {
+    "line": 294,
+    "quote": "Teen bare farq. (1) Clusters ki tadaad: K-Means ko pehle se k chahiye; DBSCAN khud data se discover karta hai. (2) Shape: K-Means sirf gol, barabar size ke blobs dhoond sakta hai kyunke woh points ko sab se nazdeek centroid par assign karta hai; DBSCAN density ka parcha leta hai, is liye rings, cres",
+    "why": "ru translates technical term into Urdu: 'tadaad' (~count); term must stay English"
+   },
+   {
+    "line": 302,
+    "quote": "eps neighborhood ka radius hai \u2014 DBSCAN har point se kitni door tak dekh kar neighbors ginta hai. min_samples itne neighbors ki tadaad hai jo kisi point ko core (dense) banane ke liye chahiye. Chhota eps ya bara min_samples \u2192 kai points noise ban jate hain; bara eps \u2192 alag alag clusters mil kar ek b",
+    "why": "ru translates technical term into Urdu: 'tadaad' (~count); term must stay English"
+   },
+   {
+    "line": 302,
+    "quote": "eps neighborhood ka radius hai \u2014 DBSCAN har point se kitni door tak dekh kar neighbors ginta hai. min_samples itne neighbors ki tadaad hai jo kisi point ko core (dense) banane ke liye chahiye. Chhota eps ya bara min_samples \u2192 kai points noise ban jate hain; bara eps \u2192 alag alag clusters mil kar ek b",
+    "why": "en sibling uses 'count' but ru replaces it with Urdu (pair at line 301)"
+   }
+  ],
+  "topics/kmeans.html": [
+   {
+    "line": 171,
+    "quote": "Clusters ki sahi tadaad maloom nahi, is liye k = 1..10 ke liye K-Means chalate hain.",
+    "why": "ru translates technical term into Urdu: 'tadaad' (~count); term must stay English"
+   },
+   {
+    "line": 59,
+    "quote": "EN: K-Means is an unsupervised algorithm that splits data into k groups (clusters) without ever seeing a label. You choose k in advance \u2014 \"split my customers into 5 || RU: K-Means ek unsupervised algorithm hai jo data ko k girohon (clusters) mein taakta hai bina koi label diye..",
+    "why": "number mismatch in en/ru pair (en line 58): en=['5'] ru=[]; missing_in_ru=['5'], extra_in_ru=[]"
+   },
+   {
+    "line": 100,
+    "quote": "EN: Watch how the centroids (the moving crosses) walk toward the middle of their clusters iteration after iteration \u2014 each move is step 3 (centroid = mean of member || RU: Dekho centroids (chalte hue crosses) apne clusters ke darmiyan kaise chalte hain.",
+    "why": "number mismatch in en/ru pair (en line 99): en=['3'] ru=[]; missing_in_ru=['3'], extra_in_ru=[]"
+   },
+   {
+    "line": 105,
+    "quote": "EN: Mall Customers \u2014 kagglehub slug vjchoudhary7/customer-segmentation-tutorial-in-python, file Mall_Customers.csv. It has 200 rows, one per mall customer, with 5 c || RU: Mall Customers \u2014 kagglehub slug.",
+    "why": "number mismatch in en/ru pair (en line 104): en=['1', '100', '200', '5', '7'] ru=[]; missing_in_ru=['1', '100', '200', '5', '7'], extra_in_ru=[]"
+   },
+   {
+    "line": 161,
+    "quote": "EN: K-Means is built on Euclidean distance. Income spans ~15\u2013137 while spending spans ~1\u201399; unscaled, income differences would dominate and squash the spending inf || RU: K-Means Euclidean distance par bana hai. Income ka span.",
+    "why": "number mismatch in en/ru pair (en line 160): en=['0', '1', '137', '15', '99'] ru=[]; missing_in_ru=['0', '1', '137', '15', '99'], extra_in_ru=[]"
+   },
+   {
+    "line": 193,
+    "quote": "EN: The elbow points at 5, so we fit the final model with 5 clusters. random_state makes results reproducible; n_init=10 retries from 10 random starting positions b || RU: Elabow 5 ki taraf ishara karta hai, to final model 5 clusters ke saath fit karte hain.",
+    "why": "number mismatch in en/ru pair (en line 192): en=['10', '5'] ru=['5']; missing_in_ru=['10'], extra_in_ru=[]"
+   },
+   {
+    "line": 203,
+    "quote": "EN: labels_ gives the cluster number (0\u20134) of every customer; cluster_centers_ holds the 5 centroid coordinates in scaled space. We inverse-transform them back to r || RU: labels_ har customer ka cluster number (0-4) deta hai.",
+    "why": "number mismatch in en/ru pair (en line 202): en=['0', '4', '5'] ru=['0', '4']; missing_in_ru=['5'], extra_in_ru=[]"
+   },
+   {
+    "line": 234,
+    "quote": "EN: groupby-mean turns numbers into a story: average income, spending, and age per cluster. That's how we name the 5 customer types and hand marketing something act || RU: groupby-mean numbers ko kahani mein badal deta hai.",
+    "why": "number mismatch in en/ru pair (en line 233): en=['5'] ru=[]; missing_in_ru=['5'], extra_in_ru=[]"
+   },
+   {
+    "line": 277,
+    "quote": "EN: PCA first, then K-Means on the PCs (Topic 07). With many correlated features, run PCA, keep the top components, and cluster in that smaller space. Distances bec || RU: Pehle PCA, phir PCs par K-Means (Topic 07).",
+    "why": "number mismatch in en/ru pair (en line 276): en=['07', '1', '2'] ru=['07']; missing_in_ru=['1', '2'], extra_in_ru=[]"
+   },
+   {
+    "line": 59,
+    "quote": "K-Means ek unsupervised algorithm hai jo data ko k girohon (clusters) mein taakta hai bina koi label diye..",
+    "why": "possible unfinished text: double-dot '..' mid/ending (half-finished?)"
+   },
+   {
+    "line": 59,
+    "quote": "K-Means ek unsupervised algorithm hai jo data ko k girohon (clusters) mein taakta hai bina koi label diye..",
+    "why": "possible unfinished text: ellipsis right before tag close (truncated sentence)"
+   },
+   {
+    "line": 80,
+    "quote": "Initialization \u2014 algorithm kahan se shuru hota hai..",
+    "why": "possible unfinished text: double-dot '..' mid/ending (half-finished?)"
+   },
+   {
+    "line": 80,
+    "quote": "Initialization \u2014 algorithm kahan se shuru hota hai..",
+    "why": "possible unfinished text: ellipsis right before tag close (truncated sentence)"
+   },
+   {
+    "line": 83,
+    "quote": "Har point apne sab se qareeb centroid ke cluster mein shamil ho jata hai..",
+    "why": "possible unfinished text: double-dot '..' mid/ending (half-finished?)"
+   },
+   {
+    "line": 83,
+    "quote": "Har point apne sab se qareeb centroid ke cluster mein shamil ho jata hai..",
+    "why": "possible unfinished text: ellipsis right before tag close (truncated sentence)"
+   }
+  ],
+  "topics/logistic-regression.html": [
+   {
+    "line": 60,
+    "quote": "EN: Logistic regression answers a yes/no question with a probability. Instead of predicting a number like simple linear regression does, it predicts the chance that || RU: Logistic regression kisi yes/no sawal ka jawab probability ke saath deti hai. Koi number (jaise price) predict karne ke bajaye y",
+    "why": "number mismatch in en/ru pair (en line 59): en=['1'] ru=[]; missing_in_ru=['1'], extra_in_ru=[]"
+   },
+   {
+    "line": 62,
+    "quote": "EN: The trick: take the exact same linear equation regression uses (b0 + b1x1 + \u2026 + bnxn), then push that score through the sigmoid function, which squashes any num || RU: Trick yeh hai: regression wali bilkul wohi linear equation lo.",
+    "why": "number mismatch in en/ru pair (en line 61): en=['0', '0.5', '1'] ru=[]; missing_in_ru=['0', '0.5', '1'], extra_in_ru=[]"
+   },
+   {
+    "line": 64,
+    "quote": "EN: Training works like every supervised model: it has labeled examples (each Titanic passenger is marked Survived 0 or 1), it makes predictions, measures how wrong || RU: Training har supervised model ki tarah chalti hai.",
+    "why": "number mismatch in en/ru pair (en line 63): en=['0', '0.99', '1'] ru=[]; missing_in_ru=['0', '0.99', '1'], extra_in_ru=[]"
+   },
+   {
+    "line": 66,
+    "quote": "EN: Despite the name, logistic regression is a classifier \u2014 one of the first you should learn, because it is fast, interpretable (you can read each coefficient as a || RU: Naam ke bawajood (regression likha hai) yeh ek classifier hai.",
+    "why": "number mismatch in en/ru pair (en line 65): en=['01'] ru=[]; missing_in_ru=['01'], extra_in_ru=[]"
+   },
+   {
+    "line": 92,
+    "quote": "EN: Notice the S-shape: hugely negative scores get squeezed toward 0, hugely positive ones toward 1, and the crossing point sits exactly at probability 0.5 where z  || RU: Dhyan do S-shape par: bara manfi score 0 ki taraf daba jata hai.",
+    "why": "number mismatch in en/ru pair (en line 91): en=['0', '0.5', '1'] ru=['0']; missing_in_ru=['0.5', '1'], extra_in_ru=[]"
+   },
+   {
+    "line": 155,
+    "quote": "EN: Math needs numbers, so Sex becomes 0/1 and Embarked becomes 0/1/2 codes; we also drop columns we won't use. || RU: Math ko numbers chahiye, is liye Sex 0/1 ban jata hai.",
+    "why": "number mismatch in en/ru pair (en line 154): en=['0', '1', '2'] ru=['0', '1']; missing_in_ru=['2'], extra_in_ru=[]"
+   },
+   {
+    "line": 278,
+    "quote": "EN: Logistic regression as the last layer of a neural network. A CNN like VGG16 ends with a softmax layer, which is exactly the multi-class generalization of sigmoi || RU: Neural network ke aakhri layer ke tor par logistic regression.",
+    "why": "number mismatch in en/ru pair (en line 277): en=['16'] ru=[]; missing_in_ru=['16'], extra_in_ru=[]"
+   },
+   {
+    "line": 280,
+    "quote": "EN: Full evaluation wrap. Whatever the pipeline, grade it with the confusion matrix, precision/recall and cross-validation from Topic 01 and Core Concepts \u2014 accurac || RU: Poora evaluation wrap. Pipeline kuch bhi ho.",
+    "why": "number mismatch in en/ru pair (en line 279): en=['01', '62%'] ru=[]; missing_in_ru=['01', '62%'], extra_in_ru=[]"
+   }
+  ],
+  "topics/multiple-regression.html": [
+   {
+    "line": 75,
+    "quote": "Multicollinearity: jab do features aapas mein strongly correlated hon (misal: area aur bedrooms ki tadaad), to unke coefficients unstable ho jate hain aur interpret karna mushkil ho jata hai \u2014 model faisla nahi kar pata ke credit kis feature ko dena hai. Correlation heatmap se check karein; fix yeh ",
+    "why": "ru translates technical term into Urdu: 'tadaad' (~count); term must stay English"
+   },
+   {
+    "line": 75,
+    "quote": "Multicollinearity: jab do features aapas mein strongly correlated hon (misal: area aur bedrooms ki tadaad), to unke coefficients unstable ho jate hain aur interpret karna mushkil ho jata hai \u2014 model faisla nahi kar pata ke credit kis feature ko dena hai. Correlation heatmap se check karein; fix yeh ",
+    "why": "en sibling uses 'count' but ru replaces it with Urdu (pair at line 74)"
+   }
+  ],
+  "topics/pca.html": [
+   {
+    "line": 63,
+    "quote": "Kamaal yeh hai ke nayi features purani mein se nikaali nahi jaatin \u2014 woh purani features ke combinations se banaye gaye naye directions hain. Har direction (aik principal component) aisa chuna jaata hai ke data jahan sab se zyada phaila hua ho wahin ishara kare. Direction 1 (PC1) sab se zyada varian",
+    "why": "ru translates technical term into Urdu: 'phaila hua' (~spread); term must stay English"
+   },
+   {
+    "line": 114,
+    "quote": "Explained variance ratio: har component ka apna eigenvalue tamam eigenvalues ke jame par divide hua \u2014 dataset ki total variance (information) ka woh hissa jo yeh aik component apne paas rakhta hai. sklearn mein yeh pca.explained_variance_ratio_ hai; misal ke tor par [0.92, 0.05] ka matlab PC1 ke paa",
+    "why": "ru translates technical term into Urdu: 'jama' (~sum); term must stay English"
+   },
+   {
+    "line": 130,
+    "quote": "uciml/iris kagglehub ke zariye \u2192 file Iris.csv. Classic Iris dataset, jise Edgar Anderson ne jama kiya aur R.A. Fisher (1936) ne mashhoor kiya: 150 iris ke phool, har phool par 4 numeric features \u2014 sepal length, sepal width, petal length, petal width (sab cm mein) \u2014 plus aik Species column jis mein ",
+    "why": "ru translates technical term into Urdu: 'jama' (~sum); term must stay English"
+   },
+   {
+    "line": 290,
+    "quote": "Dusre algorithms ke saath mila kar use karna (project ideas)",
+    "why": "ru translates technical term into Urdu: 'mila kar' (~sum(?) \u2014 translated jargon); term must stay English"
+   },
+   {
+    "line": 63,
+    "quote": "Kamaal yeh hai ke nayi features purani mein se nikaali nahi jaatin \u2014 woh purani features ke combinations se banaye gaye naye directions hain. Har direction (aik principal component) aisa chuna jaata hai ke data jahan sab se zyada phaila hua ho wahin ishara kare. Direction 1 (PC1) sab se zyada varian",
+    "why": "en sibling uses 'spread' but ru replaces it with Urdu (pair at line 62)"
+   }
+  ],
+  "topics/rnn.html": [],
+  "topics/simple-linear-regression.html": [
+   {
+    "line": 70,
+    "quote": "Model ek seedhi line hai do parameters ke saath \u2014 slope b1 (dhalwan) aur intercept b0 (line jahan y-axis ko kaat ti hai).",
+    "why": "ru translates technical term into Urdu: 'dhalwan' (~slope); term must stay English"
+   },
+   {
+    "line": 76,
+    "quote": "Slope = x aur y ki covariance \u00f7 x ka variance \u2014 'sath chalna, apne phelao se normalized'.",
+    "why": "ru translates technical term into Urdu: 'phelao' (~spread); term must stay English"
+   },
+   {
+    "line": 85,
+    "quote": "Ordinary Least Squares woh b0, b1 chunta hai jin se squared residuals ka jama sab se chhota ho.",
+    "why": "ru translates technical term into Urdu: 'jama' (~sum); term must stay English"
+   },
+   {
+    "line": 98,
+    "quote": "Vertical dashed hisson par nazar daalo: har ek residual hai \u2014 point aur line ka gap. OLS inhi k squares ka jama chhota karta hai.",
+    "why": "ru translates technical term into Urdu: 'jama' (~sum); term must stay English"
+   },
+   {
+    "line": 76,
+    "quote": "Slope = x aur y ki covariance \u00f7 x ka variance \u2014 'sath chalna, apne phelao se normalized'.",
+    "why": "en sibling uses 'spread' but ru replaces it with Urdu (pair at line 75)"
+   },
+   {
+    "line": 85,
+    "quote": "Ordinary Least Squares woh b0, b1 chunta hai jin se squared residuals ka jama sab se chhota ho.",
+    "why": "en sibling uses 'sum' but ru replaces it with Urdu (pair at line 84)"
+   },
+   {
+    "line": 98,
+    "quote": "Vertical dashed hisson par nazar daalo: har ek residual hai \u2014 point aur line ka gap. OLS inhi k squares ka jama chhota karta hai.",
+    "why": "en sibling uses 'sum' but ru replaces it with Urdu (pair at line 97)"
+   },
+   {
+    "line": 63,
+    "quote": "EN: Despite being over 200 years old (Gauss and Legendre, early 1800s, for astronomy), it is still the first model any data scientist fits \u2014 because the two numbers || RU: 200 saal purana hone ke bawajood (Gauss aur Legendre, 1800s ke shuru mein, sayaron ki orbits ke liye) yeh aaj bhi rozana istemal",
+    "why": "number mismatch in en/ru pair (en line 62): en=['148', '1800', '200'] ru=['1800', '200']; missing_in_ru=['148'], extra_in_ru=[]"
+   },
+   {
+    "line": 73,
+    "quote": "EN: For any input x, this computes the predicted y (written y\u0302, \"y-hat\") by starting at b0 and walking b1 units up for every unit of x. || RU: Har input x ke liye yeh predicted y nikalta hai (y-hat kehte hain, kyunke asli y se thora different hota hai).",
+    "why": "number mismatch in en/ru pair (en line 72): en=['0', '1'] ru=[]; missing_in_ru=['0', '1'], extra_in_ru=[]"
+   },
+   {
+    "line": 103,
+    "quote": "EN: prokshitha/home-value-insights via kagglehub, file house_price_regression_dataset.csv \u2014 a synthetic dataset of 1,000 houses built for practicing price predictio || RU: prokshitha/home-value-insights (kagglehub se) \u2014 house_price_regression_dataset.csv, 1,000 gharon ki 8 columns. Hum ek hi feature",
+    "why": "number mismatch in en/ru pair (en line 102): en=['000', '09', '1', '7'] ru=['000', '09', '1', '7', '8']; missing_in_ru=[], extra_in_ru=['8']"
+   },
+   {
+    "line": 197,
+    "quote": "EN: fit runs OLS and stores the two numbers that define the line. intercept_ is b0, coef_ is b1 \u2014 and b1 converts directly into a dollar sentence. || RU: fit OLS chalata hai aur line ke dono numbers save karta hai. Intercept base value hai; slope har extra sq ft ka dollar asar.",
+    "why": "number mismatch in en/ru pair (en line 196): en=['0', '1'] ru=[]; missing_in_ru=['0', '1'], extra_in_ru=[]"
+   },
+   {
+    "line": 250,
+    "quote": "EN: The payoff: hand the model a square footage it has never seen and get a price. The input must be 2D, just like X during training. || RU: Phal: model ko aisi square footage do jo usne kabhi nahi dekhi \u2014 turant price ka andaza. Zillow isi tarah shuru hua tha.",
+    "why": "number mismatch in en/ru pair (en line 249): en=['2'] ru=[]; missing_in_ru=['2'], extra_in_ru=[]"
+   },
+   {
+    "line": 278,
+    "quote": "EN: Residuals + anomaly detection: after fitting the line, houses with huge residuals (predicted $300k, sold $100k) are mispriced listings. Combine with the IQR rul || RU: Residuals + anomaly detection: line fit hone ke baad jis gharon ke residuals bohat bare hon (IQR rule se bahar), woh anomalous g",
+    "why": "number mismatch in en/ru pair (en line 277): en=['03', '100', '300'] ru=[]; missing_in_ru=['03', '100', '300'], extra_in_ru=[]"
+   }
+  ],
+  "topics/vgg16.html": []
+ }
+}

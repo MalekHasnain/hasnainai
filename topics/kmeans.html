@@ -53,8 +53,7 @@
       <span class="chip">Library: scikit-learn</span>
     </div>
 
-    <h2 class="en">What it is</h2>
-    <h2 class="ru">Yeh kya hai</h2>
+    <h2>What it is</h2>
     <p class="en">K-Means is an unsupervised algorithm that splits data into <b>k</b> groups (clusters) without ever seeing a label. You choose k in advance — "split my customers into 5 groups" — and the algorithm finds the 5 natural groupings hiding in the features.</p>
     <p class="ru">K-Means ek unsupervised algorithm hai jo data ko k girohon (clusters) mein taakta hai bina koi label diye..</p>
     <p class="en">The intuition is simple: a cluster is a bunch of points that sit close together, and each cluster can be represented by its center (the <b>centroid</b> — the mean position of all its members). K-Means alternates between two steps: assign every point to its nearest centroid, then move each centroid to the mean of the points it just captured. Repeat until nothing moves.</p>
@@ -64,8 +63,7 @@
     <p class="en">It's the classic customer-segmentation tool: feed in income and spending score, and out come segments like "high income, low spending" that marketing teams can target differently.</p>
     <p class="ru">Yeh classic customer-segmentation tool hai.</p>
 
-    <h2 class="en">The math inside</h2>
-    <h2 class="ru">Andar ka math</h2>
+    <h2>The math inside</h2>
     <p class="en">K-Means tries to minimize the <b>within-cluster sum of squares (WCSS)</b> — the total squared distance between every point and the centroid of its assigned cluster:</p>
     <p class="ru">K-Means within-cluster sum of squares (WCSS) ko minimize karne ki koshish karta hai.</p>
     <div class="formula">Objective = min &Sigma;<sub>k=1..K</sub> &Sigma;<sub>x &isin; cluster k</sub> ||x &minus; centroid<sub>k</sub>||&sup2;</div>
@@ -90,8 +88,7 @@
     <p class="en">Note that distances are <a href="../concepts.html">Euclidean distance, already explained in Core Concepts</a>, and centroid updates use the <a href="../concepts.html">mean, also in Core Concepts</a>. Because the algorithm is built on distances, <a href="../concepts.html">feature scaling</a> (why we StandardScale below) matters — that's in Core Concepts too.</p>
     <p class="ru">Dhyan do ke dooriyan Euclidean distance hain, jo Core Concepts mein samjhayi ja chuki hain.</p>
 
-    <h2 class="en">Diagram</h2>
-    <h2 class="ru">Diagram</h2>
+    <h2>Diagram</h2>
     <figure>
       <img src="https://upload.wikimedia.org/wikipedia/commons/e/ea/K-means_convergence.gif" alt="Animated GIF of K-Means convergence: points are assigned to the nearest centroid, centroids move to the mean of their members, and the process repeats until stable.">
       <figcaption>Source: Wikipedia/Wikimedia Commons</figcaption>
@@ -99,13 +96,11 @@
     <p class="en">Watch how the centroids (the moving crosses) walk toward the middle of their clusters iteration after iteration — each move is step 3 (centroid = mean of members), and they freeze once every point keeps its assignment.</p>
     <p class="ru">Dekho centroids (chalte hue crosses) apne clusters ke darmiyan kaise chalte hain.</p>
 
-    <h2 class="en">Dataset (Kaggle)</h2>
-    <h2 class="ru">Dataset (Kaggle)</h2>
+    <h2>Dataset (Kaggle)</h2>
     <p class="en"><b>Mall Customers</b> — kagglehub slug <code>vjchoudhary7/customer-segmentation-tutorial-in-python</code>, file <code>Mall_Customers.csv</code>. It has 200 rows, one per mall customer, with 5 columns: CustomerID, Genre (gender), Age, Annual Income (k$), and Spending Score (1–100, assigned by the mall based on buying behavior). There is no target column — that's the point: this is unsupervised learning, and the "answer" (customer segments) is something K-Means discovers on its own from just income and spending score.</p>
     <p class="ru">Mall Customers — kagglehub slug.</p>
 
-    <h2 class="en">Practice code — run in Google Colab, top to bottom</h2>
-    <h2 class="ru">Practice code — Google Colab mein upar se neeche chalayein</h2>
+    <h2>Practice code — run in Google Colab, top to bottom</h2>
     <div class="callout">Blocks must run in order. Copy each block into Colab (or a Jupyter notebook) one at a time and run it before moving to the next — later blocks depend on variables from earlier ones.</div>
 
     <div class="block-label">BLOCK 1: Imports</div>
@@ -257,8 +252,7 @@ cluster = kmeans.predict(new_scaled)
 print("New customer belongs to segment:", cluster[0])
 # That's a high-income, high-spending customer -> a "careless-rich" VIP prospect</code></pre>
 
-    <h2 class="en">Real-world use cases &amp; companies</h2>
-    <h2 class="ru">Asli duniya ke use cases aur companies</h2>
+    <h2>Real-world use cases &amp; companies</h2>
     <table>
       <tr><th>Use case</th><th>Who uses it</th></tr>
       <tr><td>Customer segmentation for targeted marketing and recommendations</td><td>Amazon and Netflix cluster users by behavior to personalize campaigns and homepage rows</td></tr>
@@ -267,8 +261,7 @@ print("New customer belongs to segment:", cluster[0])
       <tr><td>Delivery / service zone design</td><td>Logistics teams cluster addresses into zones for routing and warehouse planning</td></tr>
     </table>
 
-    <h2 class="en">Combining with other algorithms (project ideas)</h2>
-    <h2 class="ru">Dusre algorithms ke saath milana (project ideas)</h2>
+    <h2>Combining with other algorithms (project ideas)</h2>
     <p class="en"><b>K-Means segments → one model per segment (Topic 09).</b> Cluster customers first with K-Means, then fit a separate Multiple Regression inside each cluster (e.g. predict spending from age + income per segment). The per-segment models usually beat one global model because each cluster's relationship is simpler and cleaner.</p>
     <p class="ru">K-Means segments → har segment ka ek model (Topic 09).</p>
     <p class="en"><b>K-Means → logistic churn per cluster (Topic 05).</b> Use K-Means to build behavioral segments, then train a Logistic Regression churn classifier on each segment. You not only predict WHO churns but also get "which type of customer" for free — that combination is what actually shapes the retention offer.</p>
@@ -278,8 +271,7 @@ print("New customer belongs to segment:", cluster[0])
     <p class="en"><b>K-Means vs DBSCAN sanity check (Topic 03).</b> Run both on the same data — K-Means forces k round clusters, DBSCAN finds arbitrary shapes and labels outliers as noise. Comparing the two segmentations on the same customers is a great notebook exercise and interview story.</p>
     <p class="ru">K-Means vs DBSCAN aazmaish (Topic 03).</p>
 
-    <h2 class="en">Interview Q&amp;A</h2>
-    <h2 class="ru">Interview ke sawal-jawab</h2>
+    <h2>Interview Q&amp;A</h2>
     <div class="qa"><div class="q">How do you choose the number of clusters k?</div><div class="a">Main tool: the elbow method — run K-Means for k = 1..10, plot WCSS vs k, and pick the bend where adding another cluster stops reducing WCSS much. Alternatives: the silhouette score (how well-separated clusters are, tested over several k) or a business constraint — if marketing can only handle 4 campaigns, k = 4 regardless of the elbow.</div></div>
     <div class="qa"><div class="q">What is WCSS and what does the inertia_ attribute contain?</div><div class="a">WCSS is the within-cluster sum of squares: the total of squared Euclidean distances between every point and its assigned centroid. K-Means tries to minimize it. sklearn's <code>inertia_</code> is exactly WCSS after fitting.</div></div>
     <div class="qa"><div class="q">Why does feature scaling matter for K-Means?</div><div class="a">K-Means assigns points by Euclidean distance. If one feature has a much bigger range (income in 15–137k$) than another (score 1–99), that feature dominates the distance and clustering is effectively done on one axis. StandardScaler puts every feature at mean 0, std 1 so they contribute equally.</div></div>

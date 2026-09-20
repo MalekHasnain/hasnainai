@@ -54,8 +54,7 @@
       <span class="chip">pandas</span>
     </div>
 
-    <h2 class="en">What it is</h2>
-    <h2 class="ru">Yeh kya hai</h2>
+    <h2>What it is</h2>
     <p class="en">Logistic regression answers a yes/no question with a probability. Instead of predicting a number like simple linear regression does, it predicts the <b>chance</b> that a sample belongs to class 1: the chance a passenger survives, an email is spam, a card transaction is fraud.</p>
     <p class="ru">Logistic regression kisi yes/no sawal ka jawab probability ke saath deti hai. Koi number (jaise price) predict karne ke bajaye yeh kisi waqea ke hone ka chance batati hai.</p>
     <p class="en">The trick: take the exact same linear equation regression uses (b<sub>0</sub> + b<sub>1</sub>x<sub>1</sub> + … + b<sub>n</sub>x<sub>n</sub>), then push that score through the <b>sigmoid function</b>, which squashes any number into the range (0, 1). Now the output can be read as a probability. If the probability is 0.5 or higher, predict class 1; otherwise class 0. That 0.5 cut-off is the <b>decision boundary</b>.</p>
@@ -65,8 +64,7 @@
     <p class="en">Despite the name, logistic regression is a <b>classifier</b> — one of the first you should learn, because it is fast, interpretable (you can read each coefficient as an effect on the odds), and it is literally the last layer of many neural networks. Here we train it on the Titanic dataset: predict which passengers survived, and finally read precision/recall from the confusion matrix — the payoff of Topic 01.</p>
     <p class="ru">Naam ke bawajood (regression likha hai) yeh ek classifier hai.</p>
 
-    <h2 class="en">The math inside</h2>
-    <h2 class="ru">Andar ka math</h2>
+    <h2>The math inside</h2>
     <p class="en">Logistic regression takes a linear combination of the features and passes it through the sigmoid to get a probability:</p>
     <p class="ru">Logistic regression features ka linear combination banati hai aur sigmoid se guzaarti hai.</p>
     <div class="formula">y = &sigma;(b<sub>0</sub> + b<sub>1</sub>x<sub>1</sub> + b<sub>2</sub>x<sub>2</sub> + … + b<sub>n</sub>x<sub>n</sub>)</div>
@@ -85,18 +83,15 @@
     <div class="term"><b>Odds:</b> probability expressed as a ratio — odds = p/(1&minus;p). If p = 0.8, the odds are 0.8/0.2 = 4, i.e. "4 to 1 in favor". Odds can run from 0 to infinity, unlike probability which is stuck in 0–1.</div>
     <div class="term"><b>Odds ratio (how to read a logistic coefficient):</b> for a coefficient b<sub>j</sub>, e<sup>b<sub>j</sub></sup> is the multiplicative change in the odds when feature x<sub>j</sub> increases by 1 unit (other features fixed). b<sub>j</sub> = 0.47 → odds ratio e<sup>0.47</sup> &asymp; 1.6, meaning each extra unit of x<sub>j</sub> multiplies the odds of class 1 by ~1.6 (a 60% increase). A negative coefficient shrinks the odds. This is exactly why logistic regression is called interpretable.</div>
 
-    <h2 class="en">Diagram</h2>
-    <h2 class="ru">Diagram</h2>
+    <h2>Diagram</h2>
     <figure><img src="https://upload.wikimedia.org/wikipedia/commons/8/88/Logistic-curve.svg" alt="The sigmoid (logistic) curve: an S-shaped curve going from 0 to 1, crossing 0.5 at z = 0"><figcaption>Source: Wikipedia/Wikimedia Commons</figcaption></figure>
     <p class="en">Notice the S-shape: hugely negative scores get squeezed toward 0, hugely positive ones toward 1, and the crossing point sits exactly at probability 0.5 where z = 0 — that is the decision boundary in action.</p>
     <p class="ru">Dhyan do S-shape par: bara manfi score 0 ki taraf daba jata hai.</p>
 
-    <h2 class="en">Dataset (Kaggle)</h2>
-    <h2 class="ru">Dataset (Kaggle)</h2>
+    <h2>Dataset (Kaggle)</h2>
     <p><b>yasserh/titanic-dataset</b> via kagglehub — file <code>Titanic-Dataset.csv</code>. The classic ML starter dataset: 891 passengers from the 1912 Titanic sinking, one row per passenger. Target column <code>Survived</code> (0 = died, 1 = survived). Features include <code>Pclass</code> (ticket class 1/2/3), <code>Sex</code>, <code>Age</code>, <code>SibSp</code> (siblings/spouses aboard), <code>Parch</code> (parents/children aboard), <code>Fare</code>, and <code>Embarked</code> (port C/Q/S). The <code>Age</code> column has missing values — which is perfect here, because this topic is where the <b>SimpleImputer</b> gets its moment (your notes: "imputer used to fill none value").</p>
 
-    <h2 class="en">Practice code — run in Google Colab, top to bottom</h2>
-    <h2 class="ru">Practice code — Google Colab mein upar se neeche chalayein</h2>
+    <h2>Practice code — run in Google Colab, top to bottom</h2>
     <div class="callout">Blocks must run in order. Copy each block into Colab exactly as shown; later blocks depend on earlier ones.</div>
 
     <div class="block-label">BLOCK 1: Imports</div>
@@ -257,8 +252,7 @@ print(f"Odds ratio e^b = {np.exp(b_sex):.2f}: being female multiplies the surviv
 new_passenger2 = pd.DataFrame([[1, 1, 30.0, 0, 0, 80.0, 2]], columns=features)
 print(f"Female 1st-class P(survive) = {model.predict_proba(new_passenger2)[0, 1]:.3f}")</code></pre>
 
-    <h2 class="en">Real-world use cases &amp; companies</h2>
-    <h2 class="ru">Asli duniya ke use cases aur companies</h2>
+    <h2>Real-world use cases &amp; companies</h2>
     <table>
       <tr><th>Use case</th><th>Who uses it / example</th></tr>
       <tr><td>Fraud detection</td><td>PayPal and Stripe use logistic-style classifiers to score transactions as fraud probability in real time</td></tr>
@@ -268,8 +262,7 @@ print(f"Female 1st-class P(survive) = {model.predict_proba(new_passenger2)[0, 1]
       <tr><td>Ad click-through prediction</td><td>Meta/Facebook's early news-feed ad CTR models were large-scale logistic regression (paper: "Practical Lessons from Predicting Clicks on Ads at Facebook")</td></tr>
     </table>
 
-    <h2 class="en">Combining with other algorithms (project ideas)</h2>
-    <h2 class="ru">Dusre algorithms ke saath milana (project ideas)</h2>
+    <h2>Combining with other algorithms (project ideas)</h2>
     <p class="en"><b>PCA → Logistic Regression.</b> On wide data (hundreds of features), run PCA first to compress to the top components that carry most variance, then fit logistic regression on those scores. You fight overfitting and speed up training, at the cost of losing the clean odds interpretation.</p>
     <p class="ru">PCA → Logistic Regression. Chauri data par.</p>
     <p class="en"><b>K-Means segments + logistic per segment.</b> Cluster customers with K-Means, then train a separate logistic churn model inside each segment — passengers in segment A and segment B can have different coefficients. Compare against DBSCAN: it also flags noise customers no cluster wants.</p>
@@ -279,8 +272,7 @@ print(f"Female 1st-class P(survive) = {model.predict_proba(new_passenger2)[0, 1]
     <p class="en"><b>Full evaluation wrap.</b> Whatever the pipeline, grade it with the confusion matrix, precision/recall and cross-validation from Topic 01 and Core Concepts — accuracy alone hides class imbalance (as the Titanic data already shows: ~62% died).</p>
     <p class="ru">Poora evaluation wrap. Pipeline kuch bhi ho.</p>
 
-    <h2 class="en">Interview Q&amp;A</h2>
-    <h2 class="ru">Interview ke sawal-jawab</h2>
+    <h2>Interview Q&amp;A</h2>
     <div class="qa"><div class="q">Why is it called "regression" if it classifies?</div><div class="a">Because under the hood it IS a regression: it fits the linear equation b<sub>0</sub> + b<sub>1</sub>x<sub>1</sub> + … + b<sub>n</sub>x<sub>n</sub> (it "regresses" the log-odds of the class onto the features). The sigmoid on top just maps that regression output into a probability, and the 0.5 threshold turns it into a classifier. The name predates the usage.</div></div>
     <div class="qa"><div class="q en">What does a coefficient mean in odds terms?</div>
     <div class="q ru">Coefficient ka matlab odds ki hasti mein kya hai?</div><div class="a">For coefficient b<sub>j</sub>, e<sup>b<sub>j</sub></sup> is the odds ratio: multiply the odds of class 1 by this factor for each one-unit increase in x<sub>j</sub>. b<sub>j</sub> &gt; 0 pushes toward class 1, b<sub>j</sub> &lt; 0 toward class 0. On Titanic, the Sex coefficient is large and positive — being female multiplies survival odds by several times.</div></div>

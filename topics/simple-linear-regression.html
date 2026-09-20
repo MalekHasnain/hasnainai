@@ -53,8 +53,7 @@
       <span class="chip">scikit-learn LinearRegression</span>
     </div>
 
-    <h2 class="en">What it is</h2>
-    <h2 class="ru">Yeh kya hai</h2>
+    <h2>What it is</h2>
     <p class="en">Simple linear regression is the most basic prediction machine in statistics: it draws the best straight line through a cloud of points so you can predict a number from a single number. "Simple" means exactly <b>one input feature</b> — one x, one y. Given a house's square footage, predict its price. Given years of experience, predict salary.</p>
     <p class="ru">Simple linear regression statistics ka sab se bunyadi prediction machine hai: ek feature (X) se ek continuous target (y) predict karna, ek seedhi line ke saath.</p>
     <p class="en">The line it draws is not a guess. There is an exact formula (calculus, no iteration needed) that finds the one line minimizing the total squared error between the points and the line. That procedure is called <b>Ordinary Least Squares (OLS)</b>, and it is the same engine that powers multiple regression with many features later in this course.</p>
@@ -64,8 +63,7 @@
     <p class="en">It is a <a href="../concepts.html">supervised</a> regression method: the target is continuous, and every training row already carries the correct answer.</p>
     <p class="ru">Yeh supervised regression method hai: target continuous hai, aur har training example mein jawab pehle se maloom hai.</p>
 
-    <h2 class="en">The math inside</h2>
-    <h2 class="ru">Andar ka math</h2>
+    <h2>The math inside</h2>
     <p class="en">The model is a straight line with two parameters — the intercept b<sub>0</sub> and the slope b<sub>1</sub>:</p>
     <p class="ru">Model ek seedhi line hai do parameters ke saath — slope b1 (dhalwan) aur intercept b0 (line jahan y-axis ko kaat ti hai).</p>
     <div class="formula">y&#770; = b<sub>0</sub> + b<sub>1</sub>x</div>
@@ -88,8 +86,7 @@
     <div class="term"><b>R&sup2; (R-squared, coefficient of determination):</b> the share of the target's variance the model explains, from 0 to 1. R&sup2; = 1 &minus; (sum of squared residuals) / (variance of y around its mean). 0.85 means 85% of price variation is captured by square footage.</div>
     <div class="term"><b>MAE / RMSE (error in target units):</b> MAE = mean of |residuals| — "on average we're off by $23,000". RMSE = square root of the mean of squared residuals — same units, but punishes large misses more.</div>
 
-    <h2 class="en">Diagram</h2>
-    <h2 class="ru">Diagram</h2>
+    <h2>Diagram</h2>
     <figure>
       <img src="https://upload.wikimedia.org/wikipedia/commons/3/3a/Linear_regression.svg" alt="Scatter plot of data points with a fitted straight regression line; vertical dashed segments show the residuals from each point to the line">
       <figcaption>Source: Wikipedia/Wikimedia Commons</figcaption>
@@ -97,13 +94,11 @@
     <p class="en">Notice the vertical dashed segments: each one is a residual, the gap between a real point and the line — and OLS rotated/shifted the line until the sum of the squares of exactly those segments was as small as possible.</p>
     <p class="ru">Vertical dashed hisson par nazar daalo: har ek residual hai — point aur line ka gap. OLS inhi k squares ka jama chhota karta hai.</p>
 
-    <h2 class="en">Dataset (Kaggle)</h2>
-    <h2 class="ru">Dataset (Kaggle)</h2>
+    <h2>Dataset (Kaggle)</h2>
     <p class="en"><b>prokshitha/home-value-insights</b> via kagglehub, file <code>house_price_regression_dataset.csv</code> — a synthetic dataset of 1,000 houses built for practicing price prediction. Each row is one house; columns include Square_Footage, number of rooms, age, and other property attributes, plus the target <b>House_Price</b>. In this topic we deliberately use <b>only Square_Footage</b> as the single feature — one feature in, one number out, that is what makes it <i>simple</i> linear regression. The full 7-feature version (all columns at once) is Topic 09: Multiple Regression, where the same OLS math scales up to many x's.</p>
     <p class="ru">prokshitha/home-value-insights (kagglehub se) — house_price_regression_dataset.csv, 1,000 gharon ki 8 columns. Hum ek hi feature use karte hain: Square_Footage → House_Price. Topic 09 poore 7 features se isi data par MLR karta hai.</p>
 
-    <h2 class="en">Practice code — run in Google Colab, top to bottom</h2>
-    <h2 class="ru">Practice code — Google Colab mein upar se neeche chalayein</h2>
+    <h2>Practice code — run in Google Colab, top to bottom</h2>
     <div class="callout">Blocks must run in order. Copy each block into a Colab cell and run it before moving to the next — later blocks depend on variables created earlier.</div>
 
     <div class="block-label">BLOCK 1: Imports</div>
@@ -260,8 +255,7 @@ print(f"Predicted price for a 2400 sq ft house: ${predicted_price:,.0f}")
 manual = b0 + b1 * 2400
 print(f"Manual formula b0 + b1*x gives: ${manual:,.0f}")</code></pre>
 
-    <h2 class="en">Real-world use cases &amp; companies</h2>
-    <h2 class="ru">Asli duniya ke use cases aur companies</h2>
+    <h2>Real-world use cases &amp; companies</h2>
     <table>
       <tr><th>Use case</th><th>Who / where</th></tr>
       <tr><td>Salary from years of experience — the classic HR example taught everywhere</td><td>Compensation analytics teams (Glassdoor, Payscale publish experience-vs-pay curves built on the same idea)</td></tr>
@@ -270,8 +264,7 @@ print(f"Manual formula b0 + b1*x gives: ${manual:,.0f}")</code></pre>
       <tr><td>House value from size as a baseline before richer models</td><td>Real-estate estimates (Zillow's Zestimate started from hedonic regression ideas, then scaled up)</td></tr>
     </table>
 
-    <h2 class="en">Combining with other algorithms (project ideas)</h2>
-    <h2 class="ru">Dusre algorithms ke saath milana (project ideas)</h2>
+    <h2>Combining with other algorithms (project ideas)</h2>
     <p class="en"><b>Stepping stone to Multiple Regression (Topic 09):</b> refit the same dataset with all 7 features. The OLS math is identical — the slope formula becomes matrix algebra — and watch R&sup2; climb as rooms, age, and location explain what square footage alone could not. Compare the per-feature coefficients to see which feature moves price most.</p>
     <p class="ru">Multiple Regression (Topic 09) ki taraf seedhi: isi dataset par saari 7 features add karo — wahi math, bari equation, aur behtar R².</p>
     <p class="en"><b>Residuals + anomaly detection:</b> after fitting the line, houses with huge residuals (predicted $300k, sold $100k) are mispriced listings. Combine with the IQR rule or a DBSCAN (Topic 03) run on the residuals to flag them automatically — a classic underpricing/overpricing detector.</p>
@@ -281,8 +274,7 @@ print(f"Manual formula b0 + b1*x gives: ${manual:,.0f}")</code></pre>
     <p class="en"><b>Regression before classification:</b> use the predicted price (or the residual) as an input feature to a Logistic Regression (Topic 05) classifier that decides fast-sell vs slow-sell. Regression outputs often make powerful features for classifiers.</p>
     <p class="ru">Regression pehle, classification baad mein: predicted price (ya residual) ko feature ke tor par Logistic Regression (Topic 05) mein daal kar 'jaldi bike ga / nahi' predict karo.</p>
 
-    <h2 class="en">Interview Q&amp;A</h2>
-    <h2 class="ru">Interview ke sawal-jawab</h2>
+    <h2>Interview Q&amp;A</h2>
     <div class="qa"><div class="q">What is the meaning of the slope and the intercept?</div><div class="a">The slope b<sub>1</sub> is the predicted change in y for a one-unit increase in x — "each extra square foot adds $148". The intercept b<sub>0</sub> is the predicted y when x = 0 — the baseline when the feature is absent. The intercept is sometimes not physically meaningful (a 0 sq ft house) but is required to position the line correctly.</div></div>
     <div class="qa"><div class="q">When does simple linear regression fail?</div><div class="a">When the relationship is not linear (curves need polynomial terms or another model), when one feature is not enough (leaving signal on the table — fix with multiple features), when outliers drag the line (OLS punishes squared errors, so extreme points have huge leverage), and when features are correlated with hidden variables (omitted-variable bias).</div></div>
     <div class="qa"><div class="q">What exactly does OLS minimize, and why square the errors?</div><div class="a">Ordinary Least Squares minimizes the sum of squared residuals &Sigma;(y &minus; y&#770;)&sup2;. Squaring removes the sign so positive and negative misses don't cancel, and it punishes large errors disproportionately — a miss of 4 hurts 16 times as much as a miss of 1. The alternative, sum of absolute errors, is harder to optimize but robust to outliers.</div></div>

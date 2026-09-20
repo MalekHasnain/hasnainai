@@ -55,8 +55,7 @@
       <span class="chip">Library: sklearn (StandardScaler, PCA, LogisticRegression)</span>
     </div>
 
-    <h2 class="en">What it is</h2>
-    <h2 class="ru">Yeh kya hai</h2>
+    <h2>What it is</h2>
     <p class="en">PCA takes a dataset with many features (columns) and squeezes it down to fewer new features while keeping as much of the original information (variance) as possible. As your teacher put it: <b>"PCA converts high features to low features."</b> If you have 4 measurements per flower, PCA can find 2 new "super-features" that carry almost all of the 4 original measurements' story.</p>
     <p class="ru">PCA aik aise dataset — jis mein bohat saari features (columns) hon — ko chhoti si tayyada nayi features tak le aata hai, lekin original information (variance) jitni ho sake bachata rehta hai. Jaise aapke teacher ne kaha: <b>"PCA converts high features to low features."</b> Agar aapke paas har phool ke 4 measurements hon, to PCA 2 nayi "super-features" dhoond sakta hai jo 4 original measurements ki taqreeban poori kahani apne andar rakhte hain.</p>
     <p class="en">The trick is that the new features are not picked from the old ones — they are <b>new directions</b> built as combinations of the old ones. Each direction (a <i>principal component</i>) is chosen to point where the data is most spread out. Direction 1 (PC1) captures the most variance, PC2 the next most, and so on, and every component is perpendicular (uncorrelated) to the others.</p>
@@ -66,8 +65,7 @@
     <p class="en">One warning your teacher's comparison makes clear: <b>"SVM is totally opposite to PCA."</b> SVM is a <i>classifier</i> (it draws decision boundaries to predict labels), while PCA is a <i>reducer</i> (it compresses features and predicts nothing). They are not rivals — they work at different jobs, and we'll even chain them (PCA → SVM) in the pipelines section.</p>
     <p class="ru">Aik warning jo aapke teacher ke comparison se saaf hota hai: <b>"SVM is totally opposite to PCA."</b> SVM aik <i>classifier</i> hai (yeh labels predict karne ke liye decision boundaries khinchta hai), jabke PCA aik <i>reducer</i> hai (yeh features ko compress karta hai aur kuch predict nahi karta). Yeh dosre ke rivaled nahi hain — dono ke alag kaam hain, aur hum inhein aage pipelines section mein jor kar bhi dekhein ge (PCA → SVM).</p>
 
-    <h2 class="en">The math inside</h2>
-    <h2 class="ru">Iske andar ka math</h2>
+    <h2>The math inside</h2>
     <p class="en">This is exactly the route from your class notes: <b>mean → covariance matrix → characteristic equation → eigenvalues → eigenvectors → projection</b>. sklearn's <code>PCA</code> does this same math under the hood (via a faster matrix factorization called SVD, which finds the same directions).</p>
     <p class="ru">Yeh bilkul wohi raasta hai jo aapke class notes mein hai: <b>mean → covariance matrix → characteristic equation → eigenvalues → eigenvectors → projection</b>. sklearn ka <code>PCA</code> andar hi andar yehi math karta hai (aik tez matrix factorization ke zariye jise SVD kehte hain, jo wohi directions dhoondta hai).</p>
 
@@ -91,7 +89,7 @@
     <p class="ru">Yahan I identity matrix hai (diagonal par 1, baqi sab 0) aur bars ka matlab determinant hai (<a href="../concepts.html">Core Concepts mein already samjhaya gaya</a>). 2×2 covariance matrix ke liye determinant expand karne se λ mein quadratic equation banti hai:</p>
     <div class="formula">|C − λI| = (xx − λ)(yy − λ) − (xy)² = &lambda;<sup>2</sup> − A&lambda; + B = 0</div>
     <p class="en">Matching your notes: the <b>square value = A</b> (the coefficient that sits on &lambda;<sup>2</sup> after expanding — here it is 1, and A works out to the sum of the diagonal variances) and <b>&lambda; = B's equation</b> — B is the constant term (it equals the determinant of C). Solving this quadratic with the familiar formula gives the two eigenvalues:</p>
-    <p class="ru">Aapke notes se match karte hue: <b>square value = A</b> (expand karne ke baad &lambda;<sup>2</sup> ke saath baithne wala coefficient — yahan yeh 1 hai, aur A diagonal variances ke jame ke barabar nikalta hai) aur <b>&lambda; = B ki equation</b> — B constant term hai (yeh C ke determinant ke barabar hota hai). Is quadratic ko mashhoor formula se solve karne par do eigenvalues milte hain:</p>
+    <p class="ru">Aapke notes se match karte hue: <b>square value = A</b> (expand karne ke baad &lambda;<sup>2</sup> ke saath baithne wala coefficient — yahan yeh 1 hai, aur A diagonal variances ke jame ke barabar nikalta hai) aur <b>the &lambda; = B equation</b> — B constant term hai (yeh C ke determinant ke barabar hota hai). Is quadratic ko mashhoor formula se solve karne par do eigenvalues milte hain:</p>
     <div class="formula">&lambda; = (A &plusmn; &radic;(A² − 4B)) / 2</div>
     <p class="en">Each solution λ is an eigenvalue: the amount of variance along one hidden direction of the data. For a 4-feature dataset like Iris, the same idea gives a degree-4 polynomial with 4 eigenvalues — but sklearn solves it numerically so you never write that by hand.</p>
     <p class="ru">Har solution λ aik eigenvalue hai: data ki kisi chhupi hui direction ke saath variance ki miqdaar. Iris jaise 4-feature dataset par isi idea se degree-4 polynomial banta hai jiske 4 eigenvalues hote hain — lekin sklearn ise numerically solve karta hai, to aapko kabhi haath se likhna nahi padta.</p>
@@ -115,8 +113,7 @@
     <p class="callout en">Standardizing first (<code>StandardScaler</code>, which makes every feature mean 0 and std 1 — <a href="../concepts.html">already explained in Core Concepts</a>) is not optional decoration: PCA chases <i>variance</i>, so any feature measured in bigger units (petal length in cm vs a pixel 0–255) would dominate the components just because its numbers are bigger, not because it matters more.</p>
     <p class="callout ru">Pehle standardize karna (<code>StandardScaler</code>, jo har feature ko mean 0 aur std 1 bana deta hai — <a href="../concepts.html">Core Concepts mein already samjhaya gaya</a>) koi ikhtiyari sajawat nahi: PCA <i>variance</i> ka peechha karta hai, to jo feature baray units mein napa gaya ho (petal length cm mein vs pixel 0–255) woh components par chhaa jayega — sirf is liye ke uske numbers bare hain, ye ke woh zyada ahem ho.</p>
 
-    <h2 class="en">Diagram</h2>
-    <h2 class="ru">Diagram</h2>
+    <h2>Diagram</h2>
     <figure>
       <img src="https://upload.wikimedia.org/wikipedia/commons/f/f5/GaussianScatterPCA.svg" alt="Scatter plot of a 2D Gaussian point cloud with PC1 and PC2 axes drawn over it">
       <figcaption>Source: Wikipedia/Wikimedia Commons</figcaption>
@@ -124,13 +121,11 @@
     <p class="en">Notice that the cloud is tilted: the crowd stretches most along the long arrow — that direction is PC1, the eigenvector with the biggest eigenvalue — and the short perpendicular arrow is PC2. If you kept only PC1 you'd lose just the thin spread of the shadow.</p>
     <p class="ru">Dhyan dein ke cloud tircha hai: bheed sab se zyada lambi arrow ke saath phaili hui hai — wohi direction PC1 hai, sab se bare eigenvalue wala eigenvector — aur chhoti perpendicular arrow PC2 hai. Agar aap sirf PC1 rakhein to aapko sirf saaye ka patla phail khona parega.</p>
 
-    <h2 class="en">Dataset (Kaggle)</h2>
-    <h2 class="ru">Dataset (Kaggle)</h2>
+    <h2>Dataset (Kaggle)</h2>
     <p class="en"><b>uciml/iris</b> via kagglehub → file <code>Iris.csv</code>. The classic Iris dataset, collected by Edgar Anderson and made famous by R.A. Fisher (1936): 150 iris flowers, each measured on 4 numeric features — sepal length, sepal width, petal length, petal width (all in cm) — plus a <code>Species</code> column with three balanced classes (50 each of <i>Iris-setosa</i>, <i>Iris-versicolor</i>, <i>Iris-virginica</i>) and an <code>Id</code> row-number column we drop. It's the perfect PCA demo: 4 features is too many to plot, but 2 PCs are enough to see the species separate.</p>
     <p class="ru"><b>uciml/iris</b> kagglehub ke zariye → file <code>Iris.csv</code>. Classic Iris dataset, jise Edgar Anderson ne jama kiya aur R.A. Fisher (1936) ne mashhoor kiya: 150 iris ke phool, har phool par 4 numeric features — sepal length, sepal width, petal length, petal width (sab cm mein) — plus aik <code>Species</code> column jis mein teen balanced classes hain (<i>Iris-setosa</i>, <i>Iris-versicolor</i>, <i>Iris-virginica</i> — har aik 50) aur aik <code>Id</code> column jo sirf row number hota hai, hum usay drop kar dete hain. Yeh PCA ke liye behtareen demo hai: 4 features plot karne ke liye bohat zyada hain, lekin 2 PCs kaafi hain dekhne ke liye ke species alag ho rahe hain.</p>
 
-    <h2 class="en">Practice code — run in Google Colab, top to bottom</h2>
-    <h2 class="ru">Practice code — Google Colab mein, upar se neeche tak chalayein</h2>
+    <h2>Practice code — run in Google Colab, top to bottom</h2>
     <div class="callout en">Blocks must run in order. Copy each block into a Colab cell and run with Shift+Enter. kagglehub needs no API key for public datasets.</div>
     <div class="callout ru">Blocks tarteeb se chalane hain. Har block ko Colab cell mein copy karein aur Shift+Enter se chalayein. Public datasets ke liye kagglehub ko kisi API key ki zaroorat nahi.</div>
 
@@ -267,8 +262,7 @@ print(f"accuracy with 4 original features: {acc_full:.3f}")
 print(f"accuracy with 2 PCA components:    {acc_pca:.3f}")
 # expect ~0.95-0.98 vs ~0.93-0.98 → same ballpark, half the features stored</code></pre>
 
-    <h2 class="en">Real-world use cases &amp; companies</h2>
-    <h2 class="ru">Asli duniya ke use cases aur companies</h2>
+    <h2>Real-world use cases &amp; companies</h2>
     <table>
       <tr class="en"><th>Use case</th><th>Who uses it / example</th></tr>
       <tr class="ru"><th>Use case</th><th>Kaun use karta hai / misaal</th></tr>
@@ -286,8 +280,7 @@ print(f"accuracy with 2 PCA components:    {acc_pca:.3f}")
     <div class="callout en">From your class notes: <b>"PCA converts high features to low features"</b> — every row of the table above is that one sentence applied to pixels, genes, signals, or yields. And <b>"SVM is totally opposite to PCA"</b>: SVM is a supervised classifier drawing decision boundaries; PCA is an unsupervised reducer compressing columns. One predicts, one compresses — they solve different problems, which is why chaining them (PCA → SVM) works so well.</div>
     <div class="callout ru">Aapke class notes se: <b>"PCA converts high features to low features"</b> — upar wali table ki har row wohi aik jumla hai, pixels, genes, signals ya yields par lagaya hua. Aur <b>"SVM is totally opposite to PCA"</b>: SVM supervised classifier hai jo decision boundaries khinchta hai; PCA unsupervised reducer hai jo columns ko compress karta hai. Aik predict karta hai, aik compress karta hai — dono alag maslon ke hal hain, isi liye dono ko jorna (PCA → SVM) itna acha kaam karta hai.</div>
 
-    <h2 class="en">Combining with other algorithms (project ideas)</h2>
-    <h2 class="ru">Dusre algorithms ke saath mila kar use karna (project ideas)</h2>
+    <h2>Combining with other algorithms (project ideas)</h2>
     <p class="en"><b>PCA → K-Means.</b> Run PCA to get PC1/PC2, then cluster the 2-D scores with K-Means (topic 08). Compare the clusters found to the true Species labels with a Confusion Matrix (topic 01) — you'll see unsupervised K-Means largely rediscovers the classes PCA revealed.</p>
     <p class="ru"><b>PCA → K-Means.</b> PCA chala kar PC1/PC2 lein, phir 2-D scores par K-Means (topic 08) se cluster karein. Mile hue clusters ko asli Species labels se Confusion Matrix (topic 01) par compare karein — aap dekhenge ke unsupervised K-Means wohi classes dobara dhoond leta hai jo PCA ne samne laye the.</p>
     <p class="en"><b>PCA → Logistic Regression / SVM pipeline.</b> Compress with PCA, classify with Logistic Regression (topic 05) or SVM, and compare accuracy and training time against the raw features. This is Block 11 generalized, and the classic "reduce then classify" pattern for high-dimensional data.</p>
@@ -297,8 +290,7 @@ print(f"accuracy with 2 PCA components:    {acc_pca:.3f}")
     <p class="en"><b>PCA as a window into other models.</b> After training Multiple Regression (topic 09), use PCA on the predictors to check for redundant features; and when comparing CNN/VGG16 (topics 02, 04) embeddings, PCA is how you plot those high-dimensional feature vectors in 2-D to see class separation.</p>
     <p class="ru"><b>Dusre models ko jhaankne ke liye PCA.</b> Multiple Regression (topic 09) train karne ke baad predictors par PCA chala kar redundant features check karein; aur jab CNN/VGG16 (topics 02, 04) ke embeddings compare karein to un high-dimensional feature vectors ko 2-D mein plot karne ka tareeqa PCA hi hai taake class separation nazar aaye.</p>
 
-    <h2 class="en">Interview Q&amp;A</h2>
-    <h2 class="ru">Interview ke sawal-o-jawab</h2>
+    <h2>Interview Q&amp;A</h2>
     <div class="qa en"><div class="q">Q: What are the steps of PCA?</div><div class="a">A: (1) Standardize/center each feature (mean 0, std 1). (2) Compute the covariance matrix of the features. (3) Solve the characteristic equation det(C − λI) = 0 to get the eigenvalues. (4) Find the eigenvectors — these are the principal axes. (5) Sort by eigenvalue descending and keep the top k. (6) Project the data onto those k axes: Z = X·W<sup>T</sup>. sklearn's PCA does all of this (via SVD) inside fit_transform.</div></div>
     <div class="qa ru"><div class="q">Q: PCA ke steps kya hain?</div><div class="a">A: (1) Har feature ko standardize/center karein (mean 0, std 1). (2) Features ka covariance matrix banayein. (3) Characteristic equation det(C − λI) = 0 solve kar ke eigenvalues nikaalein. (4) Eigenvectors dhoondein — yehi principal axes hain. (5) Eigenvalues ke hisaab se descending sort karein aur top k rakhein. (6) Data ko un k axes par project karein: Z = X·W<sup>T</sup>. sklearn ka PCA yeh sab fit_transform ke andar (SVD ke zariye) karta hai.</div></div>
     <div class="qa en"><div class="q">Q: Why standardize before PCA?</div><div class="a">A: PCA maximizes variance, and variance is scale-dependent. A feature measured in larger units (salary in rupees vs age in years) has bigger variance and would dominate PC1 for no reason other than its units. StandardScaler puts every feature at mean 0, std 1 so each contributes fairly.</div></div>
