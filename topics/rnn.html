@@ -62,8 +62,10 @@
     </div>
 
     <h2>What it is (short intro)</h2>
-    <p>A CNN (Topic 02) sees an image as one static block of pixels. But text, speech and stock prices are <b>sequences</b> — order carries meaning ("dog bites man" ≠ "man bites dog"). A Recurrent Neural Network reads a sequence <b>one step at a time</b> and carries a running memory of everything it has seen so far.</p>
-    <p>That memory is the <b>hidden state</b>: after each word, the network updates it. At the end of the sentence, the hidden state is a summary of the whole message — which we can classify (spam or not), translate, or continue (autocomplete). Siri, Google Translate and early ChatGPT-style language models all grew from this idea.</p>
+    <p class="en">A CNN (Topic 02) sees an image as one static block of pixels. But text, speech and stock prices are <b>sequences</b> — order carries meaning ("dog bites man" ≠ "man bites dog"). A Recurrent Neural Network reads a sequence <b>one step at a time</b> and carries a running memory of everything it has seen so far.</p>
+    <p class="ru">CNN (Topic 02) tasveer ko pixels ke ek static block samajhta hai. Magar text, bol aur stock prices sequences hain — tarteeb matlab rakhti hai ("dog bites man" aur "man bites dog" ek nahi). RNN sequence ko ek waqt mein ek qadam parhta hai aur ab tak dekhi hui har cheez ki running yaad rakhta hai.</p>
+    <p class="en">That memory is the <b>hidden state</b>: after each word, the network updates it. At the end of the sentence, the hidden state is a summary of the whole message — which we can classify (spam or not), translate, or continue (autocomplete). Siri, Google Translate and early ChatGPT-style language models all grew from this idea.</p>
+    <p class="ru">Woh yaad hidden state hai: har lafz ke baad network use update karti hai. Jumle ke aakhir mein hidden state poore message ka khulasa hota hai — jise hum classify kar sakte hain (spam ya nahi), translate kar sakte hain, ya aage barha sakte hain (autocomplete). Siri, Google Translate aur shuruati language models isi khayal se bade.</p>
 
     <h2>The math inside</h2>
     <div class="formula">h<sub>t</sub> = tanh( W<sub>x</sub>·x<sub>t</sub> + W<sub>h</sub>·h<sub>t−1</sub> + b )
@@ -73,23 +75,27 @@
     <div class="term"><b>Sequence:</b> ordered data — words in a sentence, notes in audio, prices over days. Feed-forward nets (CNN) have no notion of order between inputs; RNNs do.</div>
     <div class="term"><b>Vanishing gradient:</b> in long sequences, learning signals shrink as they travel back through many steps, so a plain RNN forgets things it read early. LSTM and GRU fix this with <b>gates</b> — small valves that learn what to keep, what to forget, and what to expose.</div>
     <div class="term"><b>Tokenization &amp; padding:</b> text → integer tokens (one ID per word), then all sequences are padded with zeros to equal length so they form a matrix.</div>
-    <p>Embeddings turn tokens into vectors (<a href="../concepts.html">Core Concepts</a>); sigmoid and log loss (binary_crossentropy) are also <a href="../concepts.html">already explained in Core Concepts</a>.</p>
+    <p class="en">Embeddings turn tokens into vectors (<a href="../concepts.html">Core Concepts</a>); sigmoid and log loss (binary_crossentropy) are also <a href="../concepts.html">already explained in Core Concepts</a>.</p>
+    <p class="ru">Embeddings tokens ko vectors mein badalte hain (Core Concepts); sigmoid aur log loss (binary_crossentropy) bhi Core Concepts mein samjhayi ja chuki hain.</p>
 
     <h2>Diagram</h2>
     <figure>
       <img src="https://upload.wikimedia.org/wikipedia/commons/7/7d/NN_LSTM-Cell_v2.svg" alt="LSTM cell internals with gates">
       <figcaption>Source: Wikipedia/Wikimedia Commons</figcaption>
     </figure>
-    <p>Notice the LSTM cell's gates (σ boxes): they decide what part of the memory to forget, what new information to store, and what to output — that is the fix for the vanishing-gradient forgetting problem.</p>
+    <p class="en">Notice the LSTM cell's gates (σ boxes): they decide what part of the memory to forget, what new information to store, and what to output — that is the fix for the vanishing-gradient forgetting problem.</p>
+    <p class="ru">LSTM cell ke gates (σ boxes) dekho: yeh decide karte hain yaad ka kaunsa hissa bhoolna hai, koi nayi maloomat rakhni hai, aur kya bahar dikhana hai — yehi vanishing-gradient bhoolne ka ilaaj hai.</p>
 
     <h2>Dataset (Kaggle)</h2>
-    <p><b>SMS Spam Collection</b> — 5,572 real text messages labeled <b>ham</b> (normal) or <b>spam</b>. Target is a category (2 classes), so this is binary classification on text. Small enough to train on free Colab in a couple of minutes, and spam vs not-spam is the classic RNN business use case.</p>
+    <p class="en"><b>SMS Spam Collection</b> — 5,572 real text messages labeled <b>ham</b> (normal) or <b>spam</b>. Target is a category (2 classes), so this is binary classification on text. Small enough to train on free Colab in a couple of minutes, and spam vs not-spam is the classic RNN business use case.</p>
+    <p class="ru">SMS Spam Collection — 5,572 asli text messages, labeled ham (aam) ya spam. Target category hai (2 classes), is liye yeh text par binary classification hai. Free Colab par do minute mein train hota hai, aur spam-vs-not-spam classic RNN business use case hai.</p>
 
     <h2>Practice code — run in Google Colab, top to bottom</h2>
     <div class="callout">Blocks must run in order — each block remembers the ones before it (same kernel session). Copy each block into Colab and run.</div>
 
     <div class="block-label">BLOCK 1: Imports</div>
-    <p>TensorFlow/Keras builds the network; pandas handles the table.</p>
+    <p class="en">TensorFlow/Keras builds the network; pandas handles the table.</p>
+    <p class="ru">TensorFlow/Keras network banata hai; pandas table sambhalta hai.</p>
 <pre><code>import pandas as pd                     # tables
 import numpy as np                      # numerical math
 import tensorflow as tf                 # neural network framework
@@ -102,7 +108,8 @@ from sklearn.metrics import confusion_matrix, classification_report  # Topic 01 
 print("TF version:", tf.__version__)</code></pre>
 
     <div class="block-label">BLOCK 2: Download the dataset from Kaggle</div>
-    <p>kagglehub pulls the SMS spam dataset and prints the path.</p>
+    <p class="en">kagglehub pulls the SMS spam dataset and prints the path.</p>
+    <p class="ru">kagglehub SMS spam dataset laata hai aur path print karta hai.</p>
 <pre><code>import kagglehub
 path = kagglehub.dataset_download("uciml/sms-spam-collection-dataset")  # download + extract
 print("dataset path:", path)
@@ -112,14 +119,16 @@ csv_file = glob.glob(path + "/*.csv")[0]     # find the csv (spam.csv)
 print("csv file:", csv_file)</code></pre>
 
     <div class="block-label">BLOCK 3: Load and clean</div>
-    <p>This file has a legacy encoding and stray unnamed columns — both fixed here.</p>
+    <p class="en">This file has a legacy encoding and stray unnamed columns — both fixed here.</p>
+    <p class="ru">Is file mein purana encoding aur phalti unnamed columns hain — dono yahan theek ki gayi hain.</p>
 <pre><code>df = pd.read_csv(csv_file, encoding="latin-1")   # latin-1 avoids decode errors on old files
 df = df[["v1", "v2"]]                            # keep label + text; drop stray unnamed columns
 df.columns = ["label", "text"]                   # friendlier names
 df["label"].value_counts()                       # 4825 ham vs 747 spam — imbalanced (remember Q: accuracy lies)</code></pre>
 
     <div class="block-label">BLOCK 4: Labels to numbers + split</div>
-    <p>Networks need numbers, and we hold out 20% for honest grading.</p>
+    <p class="en">Networks need numbers, and we hold out 20% for honest grading.</p>
+    <p class="ru">Networks ko numbers chahiye, aur 20% imaandaar imtihan ke liye rok li.</p>
 <pre><code>y = df["label"].map({"ham": 0, "spam": 1}).values    # ham=0, spam=1 (the target)
 X = df["text"].values                                # the raw SMS texts
 
@@ -128,7 +137,8 @@ X_train, X_test, y_train, y_test = train_test_split(
 print("train:", len(X_train), "| test:", len(X_test))</code></pre>
 
     <div class="block-label">BLOCK 5: Tokenize + pad</div>
-    <p>Text → integer IDs → equal-length rows. The only place "language" becomes math.</p>
+    <p class="en">Text → integer IDs → equal-length rows. The only place "language" becomes math.</p>
+    <p class="ru">Text → integer IDs → barabar lambi rows. Yehi woh jagah hai jahan "zabaan" math banti hai.</p>
 <pre><code>VOCAB = 1000                                   # keep only the 1000 most frequent words
 MAXLEN = 40                                    # read at most 40 tokens per message (spam is short)
 tok = Tokenizer(num_words=VOCAB, oov_token="&lt;OOV&gt;")  # rare unseen words become one &lt;OOV&gt; token
@@ -140,7 +150,8 @@ X_test_pad  = pad_sequences(X_test_seq,  maxlen=MAXLEN, padding="post")  # netwo
 print(X_train_pad.shape)                       # (4457, 40)</code></pre>
 
     <div class="block-label">BLOCK 6: Build the RNN</div>
-    <p>Embedding → LSTM → sigmoid: words become vectors, memory reads them, sigmoid outputs a spam probability.</p>
+    <p class="en">Embedding → LSTM → sigmoid: words become vectors, memory reads them, sigmoid outputs a spam probability.</p>
+    <p class="ru">Embedding → LSTM → sigmoid: lafz vectors bante hain, yaad unhe parhti hai, sigmoid spam ki probability deta hai.</p>
 <pre><code>model = Sequential([
     Embedding(VOCAB, 16, input_length=MAXLEN), # word ID -> 16-number vector the network can learn
                                                 # (similar words drift to similar vectors)
@@ -153,7 +164,8 @@ model.compile(optimizer="adam",                 # improved gradient descent (Cor
 model.summary()                                 # layer stack + parameter counts</code></pre>
 
     <div class="block-label">BLOCK 7: Train</div>
-    <p>Five passes over the data, watching validation accuracy on held-out data.</p>
+    <p class="en">Five passes over the data, watching validation accuracy on held-out data.</p>
+    <p class="ru">Data par paas paas (passes), har dafa validation accuracy par nazar.</p>
 <pre><code>history = model.fit(X_train_pad, y_train,
                     epochs=5,                   # 5 full passes (more risks overfitting — watch val_accuracy)
                     validation_split=0.2,       # 20% of train used to watch overfitting live
@@ -161,7 +173,8 @@ model.summary()                                 # layer stack + parameter counts
                     verbose=1)</code></pre>
 
     <div class="block-label">BLOCK 8: Evaluate + confusion matrix</div>
-    <p>The Topic 01 payoff: grade the sequence classifier with the same table every classifier gets.</p>
+    <p class="en">The Topic 01 payoff: grade the sequence classifier with the same table every classifier gets.</p>
+    <p class="ru">Topic 01 ka phal: sequence classifier ko wohi table do jo har classifier ko milti hai.</p>
 <pre><code>loss, acc = model.evaluate(X_test_pad, y_test, verbose=0)  # honest grade on unseen 20%
 print(f"test accuracy: {acc:.4f}")
 
@@ -171,7 +184,8 @@ print(confusion_matrix(y_test, y_pred))                 # [[TN FP][FN TP]]
 print(classification_report(y_test, y_pred, target_names=["ham", "spam"]))  # precision/recall where it matters</code></pre>
 
     <div class="block-label">BLOCK 9: Predict new messages</div>
-    <p>The fun part — feed two handmade messages through the same pipeline.</p>
+    <p class="en">The fun part — feed two handmade messages through the same pipeline.</p>
+    <p class="ru">Mazay wala hissa — do khud banaye messages pipeline se guzaaro.</p>
 <pre><code>new_msgs = ["WINNER! You have won a free prize, claim now!!!",   # obviously spammy
             "Hey, are we still meeting tomorrow?"]               # obviously normal
 new_seq = tok.texts_to_sequences(new_msgs)      # same tokenizer as training (never re-fit!)
@@ -181,7 +195,8 @@ for msg, p in zip(new_msgs, probs):
     print(f"P(spam)={p:.3f} -> {'SPAM' if p &gt;= 0.5 else 'HAM'} | {msg}")</code></pre>
 
     <div class="block-label">BLOCK 10: Training curves (bonus)</div>
-    <p>Accuracy over epochs — if train climbs while validation stalls, that's overfitting arriving.</p>
+    <p class="en">Accuracy over epochs — if train climbs while validation stalls, that's overfitting arriving.</p>
+    <p class="ru">Epochs ke saath accuracy — agar train charhti rahe aur validation atki rahe to overfitting aa rahi hai.</p>
 <pre><code>import matplotlib.pyplot as plt
 plt.plot(history.history["accuracy"], label="train")           # training accuracy per epoch
 plt.plot(history.history["val_accuracy"], label="validation")  # held-out accuracy per epoch
@@ -200,9 +215,12 @@ plt.show()</code></pre>
     </table>
 
     <h2>Combining with other algorithms (project ideas)</h2>
-    <p><b>1. Image captioning.</b> CNN/VGG16 (Topics 02, 04) extracts features from a photo → an RNN turns those features into a written sentence. Classic two-network pipeline.</p>
-    <p><b>2. Topic discovery.</b> Use the RNN's embedding layer output as feature vectors, then K-Means (Topic 08) clusters unlabeled messages into topics — no labels needed.</p>
-    <p><b>3. Spam probability + business rule.</b> The RNN's P(spam) feeds a Logistic-Regression-style threshold decision (Topic 05) tuned with the confusion matrix (Topic 01) to pick the precision/recall trade-off the business wants.</p>
+    <p class="en"><b>1. Image captioning.</b> CNN/VGG16 (Topics 02, 04) extracts features from a photo → an RNN turns those features into a written sentence. Classic two-network pipeline.</p>
+    <p class="ru">1. Image captioning. CNN/VGG16 (Topics 02, 04) photo se features nikalta hai → RNN un features se likha hua jumla banata hai. Classic do-network pipeline.</p>
+    <p class="en"><b>2. Topic discovery.</b> Use the RNN's embedding layer output as feature vectors, then K-Means (Topic 08) clusters unlabeled messages into topics — no labels needed.</p>
+    <p class="ru">2. Topic dhoondna. RNN ki embedding layer ka output feature vectors ke tor par use karo, phir K-Means (Topic 08) be-label messages ko topics mein cluster karta hai — kisi label ki zaroorat nahi.</p>
+    <p class="en"><b>3. Spam probability + business rule.</b> The RNN's P(spam) feeds a Logistic-Regression-style threshold decision (Topic 05) tuned with the confusion matrix (Topic 01) to pick the precision/recall trade-off the business wants.</p>
+    <p class="ru">3. Spam probability + business rule. RNN ka P(spam) Logistic-Regression-style threshold decision (Topic 05) mein jata hai jo confusion matrix (Topic 01) se tune hota hai taake business wala precision/recall balance mile.</p>
 
     <h2>Interview Q&amp;A</h2>
     <div class="qa"><div class="q">Q1. RNN vs feed-forward network (like a CNN)?</div><div class="a">Feed-forward nets process each input independently; an RNN processes sequences step by step and keeps a hidden state (memory) that carries information across steps, so order matters.</div></div>
