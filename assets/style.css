@@ -21,6 +21,7 @@
 * { box-sizing: border-box; }
 [hidden] { display: none !important; }  /* language toggle must beat any display rule */
 html { scroll-behavior: smooth; }
+html, body { max-width: 100%; overflow-x: hidden; }  /* no horizontal scroll, any screen */
 body { padding-top: 47px; }
 main > *, .term, .qa, .callout { transition: opacity .18s ease, transform .18s ease; }
 .lang-fading main > * { opacity: 0; transform: translateY(4px); }
@@ -68,7 +69,7 @@ h1 {
 }
 h2 { font-family: var(--serif); font-size: 1.42rem; margin-top: 46px; color: var(--text); letter-spacing: -0.005em; }
 h3 { font-family: var(--sans); font-size: 1.08rem; font-weight: 700; margin-top: 28px; }
-p, li { color: var(--text); }
+p, li, td, th, .term, .qa { overflow-wrap: break-word; }
 strong, b { font-weight: 600; }
 
 .meta { display: flex; gap: 8px; flex-wrap: wrap; margin: 16px 0 28px; }
@@ -93,7 +94,7 @@ strong, b { font-weight: 600; }
 .formula .note { font-family: var(--sans); color: var(--muted); font-size: .87rem; margin-top: 7px; }
 
 pre {
-  position: relative; background: var(--ink-dark); border: 1px solid #2E333B;
+  position: relative; max-width: 100%; background: var(--ink-dark); border: 1px solid #2E333B;
   border-radius: 10px; padding: 18px; overflow-x: auto; font-size: .86rem; line-height: 1.6;
   box-shadow: 0 1px 3px rgba(40,35,25,.08);
 }
@@ -107,10 +108,11 @@ pre code { font-family: var(--mono); color: #E8E6E0; }
 .block-label { font-size: .8rem; font-weight: 700; color: var(--green); margin: 30px 0 6px; font-family: var(--mono); letter-spacing: .02em; }
 
 figure { margin: 26px 0; text-align: center; }
-figure img { max-width: 100%; border-radius: 9px; background: #fff; padding: 10px; border: 1px solid var(--border); }
+figure img { max-width: 100%; height: auto; border-radius: 9px; background: #fff; padding: 10px; border: 1px solid var(--border); }
 figcaption { font-size: .84rem; color: var(--muted); margin-top: 9px; font-style: italic; }
 
-table { border-collapse: collapse; width: 100%; margin: 18px 0; font-size: .93rem; }
+table { border-collapse: collapse; width: 100%; margin: 18px 0; font-size: .93rem;
+  display: block; overflow-x: auto; max-width: 100%; -webkit-overflow-scrolling: touch; }
 th, td { border: 1px solid var(--border); padding: 9px 13px; text-align: left; }
 th { background: var(--accent-soft); color: var(--text); font-weight: 600; }
 tbody tr:nth-child(even) { background: #FFFFFF; }
@@ -126,7 +128,7 @@ tbody tr:nth-child(odd) { background: var(--bg); }
 .qa .q { background: var(--bg); padding: 11px 17px; font-weight: 700; font-size: .96rem; }
 .qa .a { padding: 11px 17px; border-top: 1px solid var(--border); font-size: .95rem; }
 
-.grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(262px, 1fr)); gap: 15px; margin: 22px 0; }
+.grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(262px, 100%), 1fr)); gap: 15px; margin: 22px 0; }
 .card {
   background: var(--card); border: 1px solid var(--border); border-radius: 11px; padding: 20px;
   transition: border-color .15s, box-shadow .15s;
@@ -170,6 +172,13 @@ a.tb-brand:active { opacity: .7; }
 .backdrop { display: none; position: fixed; inset: 0; background: rgba(20,17,10,.45); z-index: 55; }
 
 .backdrop.show { display: block; }
+@media (min-width: 901px) and (max-width: 1199px) {
+  main { padding: 64px 36px 40px; }        /* tablet/laptop */
+}
+@media (min-width: 1400px) {
+  main { padding: 80px 64px 48px; }        /* big screens: roomier */
+  body { font-size: 18px; }                /* larger type on big displays */
+}
 @media (max-width: 900px) {
   main { padding: 60px 18px 24px; max-width: 100%; }
   h1 { font-size: 1.6rem; }
