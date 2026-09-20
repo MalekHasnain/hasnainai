@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Confusion Matrix — HasnainAI | Classification Evaluation</title>
+<meta name="description" content="Confusion Matrix explained: TP, FP, FN, TN, Accuracy, Precision, Recall, F1 — with runnable Google Colab code blocks on the breast cancer dataset and interview Q&A.">
+<meta name="author" content="Malik Hasnain">
+<link rel="stylesheet" href="/assets/style.css">
+</head>
+<body>
+<div class="layout">
+  <aside class="sidebar">
+    <div class="brand">Hasnain<span>AI</span></div>
+    <div class="tagline">HCCDA-AI prep &amp; practice</div>
+    <nav>
+      <a href="/index.html">🏠 Home</a>
+      <a href="/concepts.html">📚 Core Concepts</a>
+      <div style="color:var(--muted);font-size:.75rem;margin:14px 0 4px 10px;">TOPICS (class sequence)</div>
+      <a href="/topics/confusion-matrix.html" class="active"><span class="num">01</span>Confusion Matrix</a>
+      <a href="/topics/cnn.html"><span class="num">02</span>CNN</a>
+      <a href="/topics/dbscan.html"><span class="num">03</span>DBSCAN</a>
+      <a href="/topics/vgg16.html"><span class="num">04</span>VGG16</a>
+      <a href="/topics/logistic-regression.html"><span class="num">05</span>Logistic Regression</a>
+      <a href="/topics/simple-linear-regression.html"><span class="num">06</span>Simple Linear Regression</a>
+      <a href="/topics/pca.html"><span class="num">07</span>PCA</a>
+      <a href="/topics/kmeans.html"><span class="num">08</span>K-Means</a>
+      <a href="/topics/multiple-regression.html"><span class="num">09</span>Multiple Regression</a>
+      <a href="/topics/rnn.html"><span class="num">10</span>RNN</a>
+      <div style="margin-top:18px;padding:10px;border:1px solid var(--border);border-radius:8px;background:#1f2630;">
+        <div style="font-size:.78rem;color:var(--muted);">🤝 Collaborate on projects</div>
+        <a href="https://wa.me/923446466664" target="_blank" rel="noopener" style="display:block;margin-top:4px;font-size:.85rem;">💬 WhatsApp: +92 344 646 6664</a>
+      </div>
+    </nav>
+  </aside>
+  <main>
+    <h1>Confusion Matrix</h1>
+    <div class="meta">
+      <span class="chip">Evaluation metric (classification)</span>
+      <span class="chip">Kaggle: Breast Cancer Wisconsin</span>
+      <span class="chip">scikit-learn</span>
+    </div>
+
+    <h2>What it is (short intro)</h2>
+    <p>A classifier predicts categories — sick/healthy, spam/not-spam. But <b>how many of its predictions were right, and in which way were the mistakes made?</b> The confusion matrix answers exactly that: a simple 2×2 (or n×n for more classes) table comparing <b>what the model predicted</b> against <b>the truth</b>.</p>
+    <p>It is called "confusing" because the mistakes reveal where the model gets confused. Every classification algorithm you will study — Logistic Regression, CNN, VGG16, RNN — is graded with this same table. That is why your teacher asked about it first: it is the <b>report card of all classifiers</b>.</p>
+    <p>Regression models (Topic 06, 09) do NOT use it — they predict continuous numbers and are graded with MAE/MSE/R² instead (<a href="/concepts.html">Core Concepts</a>).</p>
+
+    <h2>The math inside</h2>
+    <p>The four cells (for a yes/no problem, e.g. "malignant?"):</p>
+    <div class="term"><b>True Positive (TP):</b> model said YES, truth is YES — correct catch.</div>
+    <div class="term"><b>True Negative (TN):</b> model said NO, truth is NO — correct rejection.</div>
+    <div class="term"><b>False Positive (FP):</b> model said YES, truth is NO — <b>false alarm</b> (Type I error).</div>
+    <div class="term"><b>False Negative (FN):</b> model said NO, truth is YES — <b>missed case</b> (Type II error). In cancer detection this is the most dangerous cell.</div>
+    <p>From these four numbers, four ratios:</p>
+    <div class="formula">Accuracy = (TP + TN) / (TP + TN + FP + FN)
+      <div class="note">overall fraction of correct predictions</div>
+    </div>
+    <div class="formula">Precision = TP / (TP + FP)
+      <div class="note">of everything the model flagged, how much was truly positive — trustworthiness of an alarm</div>
+    </div>
+    <div class="formula">Recall (Sensitivity) = TP / (TP + FN)
+      <div class="note">of all true positives, how many the model caught — completeness of the sweep</div>
+    </div>
+    <div class="formula">F1 = 2 × (Precision × Recall) / (Precision + Recall)
+      <div class="note">one balanced number combining precision and recall (their harmonic mean)</div>
+    </div>
+    <div class="callout yellow"><b>When accuracy lies:</b> if only 1% of transactions are fraud, a lazy model that always says "not fraud" scores 99% accuracy while catching ZERO fraud. With <b>imbalanced data</b>, always read precision/recall, not just accuracy. Our dataset is mildly imbalanced (357 benign vs 212 malignant) — good practice ground.</div>
+    <p>Train/test split, overfitting and other shared ideas are <a href="/concepts.html">already explained in Core Concepts</a>.</p>
+
+    <h2>Diagram</h2>
+    <figure>
+      <img src="https://upload.wikimedia.org/wikipedia/commons/0/08/Confusion_Matrix.png" alt="Confusion matrix layout: predicted vs actual with TP, FP, FN, TN cells">
+      <figcaption>Source: Wikipedia/Wikimedia Commons</figcaption>
+    </figure>
+    <p>Notice: rows = actual (truth), columns = predicted. The diagonal (TP, TN) is where the model is right; everything off-diagonal is a mistake, split into false alarms (FP) and missed cases (FN).</p>
+
+    <h2>Dataset (Kaggle)</h2>
+    <p><b>Breast Cancer Wisconsin Diagnostic</b> — 569 tumor samples, 30 numeric measurements each (radius, texture, smoothness…) and one target: <b>diagnosis</b> (M = malignant, B = benign). Real medical data, perfectly clean, and the question "did we miss a malignant tumor?" makes precision/recall feel real. Target here is a <b>category</b>, so this is a classification problem.</p>
+
+    <h2>Practice code — run in Google Colab, top to bottom</h2>
+    <div class="callout">Blocks must run in order — each block remembers the ones before it (same kernel session). Copy each block into Colab and run.</div>
+
+    <div class="block-label">BLOCK 1: Imports</div>
+    <p>Load the libraries: pandas for tables, sklearn for the model, metrics and the confusion matrix tools.</p>
+<pre><code>import pandas as pd                          # tables (DataFrames)
+import numpy as np                           # numerical math
+from sklearn.model_selection import train_test_split   # hold out unseen test data
+from sklearn.linear_model import LogisticRegression    # the classifier engine (full detail in Topic 05)
+from sklearn.metrics import (confusion_matrix, ConfusionMatrixDisplay,  # the star of this topic
+                             accuracy_score, classification_report)
+print("imports OK")</code></pre>
+
+    <div class="block-label">BLOCK 2: Download the dataset from Kaggle</div>
+    <p>kagglehub pulls the dataset straight into the notebook and prints the file path — no manual download, no API key needed.</p>
+<pre><code>import kagglehub                             # Kaggle dataset downloader
+path = kagglehub.dataset_download("uciml/breast-cancer-wisconsin-data")  # download + extract, returns folder path
+print("dataset path:", path)                 # the file path where the data lives
+
+import glob
+csv_file = glob.glob(path + "/*.csv")[0]     # find the .csv inside the folder (name-independent)
+print("csv file:", csv_file)</code></pre>
+
+    <div class="block-label">BLOCK 3: Load and look</div>
+    <p>Read the CSV into a DataFrame and take a first look at shape and columns.</p>
+<pre><code>df = pd.read_csv(csv_file)                   # CSV -> DataFrame
+print("shape:", df.shape)                    # (569 rows, 33 columns)
+print(df.columns.tolist()[:8], "...")        # first few column names
+df.head()                                    # first 5 rows</code></pre>
+
+    <div class="block-label">BLOCK 4: Separate features (X) and target (y)</div>
+    <p>The target is the diagnosis column; the 30 measurements are the features. The id column carries no signal and an empty "Unnamed: 32" column sometimes appears — both are dropped.</p>
+<pre><code>df = df.drop(columns=["id"], errors="ignore")          # id is just a row label, not a signal
+df = df.drop(columns=[c for c in df.columns if c.startswith("Unnamed")], errors="ignore")  # drop stray empty columns
+X = df.drop(columns=["diagnosis"])                     # all 30 numeric measurements = features
+y = df["diagnosis"].map({"B": 0, "M": 1})              # target: map letters to 0 (benign) / 1 (malignant)
+print("X shape:", X.shape, "| y positives:", y.sum())  # 569 rows, 30 features; 212 malignant</code></pre>
+
+    <div class="block-label">BLOCK 5: Train/test split</div>
+    <p>Hide 20% of the data so the matrix is computed on samples the model never saw — an honest evaluation.</p>
+<pre><code>X_train, X_test, y_train, y_test = train_test_split(
+    X, y, test_size=0.2,           # 20% held out for testing
+    random_state=42,               # frozen shuffle -> reproducible split
+    stratify=y)                    # keep the same B/M ratio in train and test (fair for imbalanced data)
+print("train:", len(X_train), "test:", len(X_test))</code></pre>
+
+    <div class="block-label">BLOCK 6: Train a classifier</div>
+    <p>Logistic Regression is just the engine here — full explanation in Topic 05. The job of this page is reading the matrix it produces.</p>
+<pre><code>model = LogisticRegression(max_iter=5000)    # create the classifier; max_iter raised so training fully converges
+model.fit(X_train, y_train)                   # learn from 80% of the data
+print("training done")</code></pre>
+
+    <div class="block-label">BLOCK 7: Predict</div>
+    <p>Predict the held-out 20% — these predictions vs the truth will fill the matrix.</p>
+<pre><code>y_pred = model.predict(X_test)               # predicted class (0/1) for each unseen sample
+comparison = pd.DataFrame({"actual": y_test.values, "predicted": y_pred})
+comparison.head(10)                           # eyeball a few rows first</code></pre>
+
+    <div class="block-label">BLOCK 8: THE CONFUSION MATRIX</div>
+    <p>The whole topic in one command: sklearn counts TP, FP, FN, TN for us.</p>
+<pre><code>cm = confusion_matrix(y_test, y_pred)        # counts the 4 cells: [[TN, FP], [FN, TP]]
+print("Confusion matrix (rows = actual 0/1, columns = predicted 0/1):")
+print(cm)
+tn, fp, fn, tp = cm.ravel()                  # .ravel() unpacks the 2x2 grid into the four numbers
+print(f"TN={tn}  FP={fp}  FN={fn}  TP={tp}")
+
+ConfusionMatrixDisplay.from_predictions(y_test, y_pred)  # draws the colored matrix
+plt_cm = None                                # display uses its own plot</code></pre>
+
+    <div class="block-label">BLOCK 9: Accuracy, precision, recall — the ratios</div>
+    <p>Turn the four counts into the four ratios, by hand AND with sklearn — see that they match.</p>
+<pre><code># by hand (the math, visible):
+acc_by_hand  = (tp + tn) / (tp + tn + fp + fn)     # Accuracy formula
+prec_by_hand = tp / (tp + fp)                       # Precision formula
+rec_by_hand  = tp / (tp + fn)                       # Recall formula
+# by sklearn (the shortcut):
+print(f"Accuracy  : {accuracy_score(y_test, y_pred):.4f} (hand: {acc_by_hand:.4f})")
+print(f"Precision : {prec_by_hand:.4f}")
+print(f"Recall    : {rec_by_hand:.4f}")
+print(classification_report(y_test, y_pred, target_names=["benign", "malignant"]))  # all ratios per class + F1</code></pre>
+    <p>Reading it like an interview answer: <i>"Recall on the malignant class tells me what fraction of real tumors we caught; precision tells me how trustworthy a malignant flag is. In medicine, missing a tumor (FN) is worse than a false alarm (FP), so recall matters more."</i></p>
+
+    <h2>Real-world use cases &amp; companies</h2>
+    <table>
+      <tr><th>Use case</th><th>Who</th></tr>
+      <tr><td>Spam filtering (FP = real mail in spam folder)</td><td>Gmail, Outlook</td></tr>
+      <tr><td>Fraud detection (FN = missed fraud, FP = blocked honest customer)</td><td>PayPal, Stripe, Visa</td></tr>
+      <tr><td>Medical screening (FN = missed disease — worst cell)</td><td>Hospital AI, Google Health</td></tr>
+      <tr><td>Content moderation at scale</td><td>YouTube, Meta</td></tr>
+    </table>
+
+    <h2>Combining with other algorithms (project ideas)</h2>
+    <p><b>1. Grade every classifier you build.</b> Topics 05 (Logistic), 02 (CNN), 04 (VGG16) and 10 (RNN) all end with this matrix — build one project where you compare all their matrices side by side.</p>
+    <p><b>2. Matrix-guided threshold tuning.</b> Shift the 0.5 decision boundary of Logistic Regression (Topic 05) to trade precision for recall until FN is minimized — a real medical-device workflow.</p>
+    <p><b>3. Error analysis with clustering.</b> Run K-Means (Topic 08) on the FN samples only — discover <i>which kind</i> of tumor the model misses, then engineer features to fix it.</p>
+
+    <h2>Interview Q&amp;A</h2>
+    <div class="qa"><div class="q">Q1. What is a confusion matrix?</div><div class="a">A table comparing predicted classes against actual classes for a classifier: TP, FP, FN, TN. From it come accuracy, precision, recall and F1.</div></div>
+    <div class="qa"><div class="q">Q2. Why is accuracy alone not enough?</div><div class="a">With imbalanced classes accuracy can be high while the model catches zero positives — a fraud model that always says "not fraud" scores 99% accuracy. Precision and reveal what accuracy hides.</div></div>
+    <div class="qa"><div class="q">Q3. Precision vs recall — one line each?</div><div class="a">Precision = of my alarms, how many were real (TP/(TP+FP)). Recall = of all real cases, how many I caught (TP/(TP+FN)).</div></div>
+    <div class="qa"><div class="q">Q4. Which is worse: FP or FN?</div><div class="a">Problem-dependent. In cancer screening FN (missed disease) is worse; in spam filtering FP (lost real email) is worse. Choose the metric you optimize accordingly.</div></div>
+    <div class="qa"><div class="q">Q5. Where does the confusion matrix fit for CNN/VGG16 (image classifiers)?</div><div class="a">Exactly the same place — after predicting test images, the matrix becomes num_classes × num_classes; for CIFAR-10 it is 10×10. The diagonal shows which image classes the net confuses.</div></div>
+    <div class="qa"><div class="q">Q6. Does linear regression use a confusion matrix?</div><div class="a">No — regression predicts continuous numbers, so it is graded with MAE, MSE, RMSE and R². The confusion matrix belongs to classification only.</div></div>
+    <div class="qa"><div class="q">Q7. What is F1 score?</div><div class="a">The harmonic mean of precision and recall — a single balanced number, useful when you need both high and classes are imbalanced.</div></div>
+    <div class="qa"><div class="q">Q8. What are Type I and Type II errors?</div><div class="a">Type I = false positive (false alarm, FP). Type II = false negative (missed case, FN).</div></div>
+
+    <div class="prevnext">
+      <a href="/concepts.html">← Core Concepts</a>
+      <a href="/topics/cnn.html">Topic 02: CNN →</a>
+    </div>
+    <p class="footer-note">Built by <b>Malik Hasnain</b> — Huawei HCCDA-AI prep. Diagram: Wikipedia/Wikimedia Commons. Dataset: Kaggle (Breast Cancer Wisconsin).</p>
+  </main>
+</div>
+<script>
+document.querySelectorAll('pre').forEach(p => {
+  const b = document.createElement('button');
+  b.className = 'copy-btn'; b.textContent = 'Copy';
+  b.onclick = () => { navigator.clipboard.writeText(p.innerText); b.textContent = 'Copied!'; setTimeout(()=>b.textContent='Copy',1200); };
+  p.appendChild(b);
+});
+</script>
+</body>
+</html>

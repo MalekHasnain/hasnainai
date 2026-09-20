@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>RNN (Recurrent Neural Network) — HasnainAI | Sequence Models</title>
+<meta name="description" content="Recurrent Neural Network explained: hidden state, LSTM, vanishing gradient, embeddings — with Colab code blocks building an SMS spam classifier and interview Q&A.">
+<meta name="author" content="Malik Hasnain">
+<link rel="stylesheet" href="/assets/style.css">
+</head>
+<body>
+<div class="layout">
+  <aside class="sidebar">
+    <div class="brand">Hasnain<span>AI</span></div>
+    <div class="tagline">HCCDA-AI prep &amp; practice</div>
+    <nav>
+      <a href="/index.html">🏠 Home</a>
+      <a href="/concepts.html">📚 Core Concepts</a>
+      <div style="color:var(--muted);font-size:.75rem;margin:14px 0 4px 10px;">TOPICS (class sequence)</div>
+      <a href="/topics/confusion-matrix.html"><span class="num">01</span>Confusion Matrix</a>
+      <a href="/topics/cnn.html"><span class="num">02</span>CNN</a>
+      <a href="/topics/dbscan.html"><span class="num">03</span>DBSCAN</a>
+      <a href="/topics/vgg16.html"><span class="num">04</span>VGG16</a>
+      <a href="/topics/logistic-regression.html"><span class="num">05</span>Logistic Regression</a>
+      <a href="/topics/simple-linear-regression.html"><span class="num">06</span>Simple Linear Regression</a>
+      <a href="/topics/pca.html"><span class="num">07</span>PCA</a>
+      <a href="/topics/kmeans.html"><span class="num">08</span>K-Means</a>
+      <a href="/topics/multiple-regression.html"><span class="num">09</span>Multiple Regression</a>
+      <a href="/topics/rnn.html" class="active"><span class="num">10</span>RNN</a>
+      <div style="margin-top:18px;padding:10px;border:1px solid var(--border);border-radius:8px;background:#1f2630;">
+        <div style="font-size:.78rem;color:var(--muted);">🤝 Collaborate on projects</div>
+        <a href="https://wa.me/923446466664" target="_blank" rel="noopener" style="display:block;margin-top:4px;font-size:.85rem;">💬 WhatsApp: +92 344 646 6664</a>
+      </div>
+    </nav>
+  </aside>
+  <main>
+    <h1>RNN (Recurrent Neural Network)</h1>
+    <div class="meta">
+      <span class="chip">Neural network / sequences</span>
+      <span class="chip">Kaggle: SMS Spam Collection</span>
+      <span class="chip">TensorFlow / Keras</span>
+    </div>
+
+    <h2>What it is (short intro)</h2>
+    <p>A CNN (Topic 02) sees an image as one static block of pixels. But text, speech and stock prices are <b>sequences</b> — order carries meaning ("dog bites man" ≠ "man bites dog"). A Recurrent Neural Network reads a sequence <b>one step at a time</b> and carries a running memory of everything it has seen so far.</p>
+    <p>That memory is the <b>hidden state</b>: after each word, the network updates it. At the end of the sentence, the hidden state is a summary of the whole message — which we can classify (spam or not), translate, or continue (autocomplete). Siri, Google Translate and early ChatGPT-style language models all grew from this idea.</p>
+
+    <h2>The math inside</h2>
+    <div class="formula">h<sub>t</sub> = tanh( W<sub>x</sub>·x<sub>t</sub> + W<sub>h</sub>·h<sub>t−1</sub> + b )
+      <div class="note">at step t: combine the new input x with the previous memory h — tanh keeps values between −1 and 1 (an activation, same family as ReLU from Topic 02)</div>
+    </div>
+    <div class="term"><b>Hidden state (h):</b> the network's running memory — a vector summarizing everything read so far. Passed from step to step; that loop is what makes the network "recurrent".</div>
+    <div class="term"><b>Sequence:</b> ordered data — words in a sentence, notes in audio, prices over days. Feed-forward nets (CNN) have no notion of order between inputs; RNNs do.</div>
+    <div class="term"><b>Vanishing gradient:</b> in long sequences, learning signals shrink as they travel back through many steps, so a plain RNN forgets things it read early. LSTM and GRU fix this with <b>gates</b> — small valves that learn what to keep, what to forget, and what to expose.</div>
+    <div class="term"><b>Tokenization &amp; padding:</b> text → integer tokens (one ID per word), then all sequences are padded with zeros to equal length so they form a matrix.</div>
+    <p>Embeddings turn tokens into vectors (<a href="/concepts.html">Core Concepts</a>); sigmoid and log loss (binary_crossentropy) are also <a href="/concepts.html">already explained in Core Concepts</a>.</p>
+
+    <h2>Diagram</h2>
+    <figure>
+      <img src="https://upload.wikimedia.org/wikipedia/commons/7/7d/NN_LSTM-Cell_v2.svg" alt="LSTM cell internals with gates">
+      <figcaption>Source: Wikipedia/Wikimedia Commons</figcaption>
+    </figure>
+    <p>Notice the LSTM cell's gates (σ boxes): they decide what part of the memory to forget, what new information to store, and what to output — that is the fix for the vanishing-gradient forgetting problem.</p>
+
+    <h2>Dataset (Kaggle)</h2>
+    <p><b>SMS Spam Collection</b> — 5,572 real text messages labeled <b>ham</b> (normal) or <b>spam</b>. Target is a category (2 classes), so this is binary classification on text. Small enough to train on free Colab in a couple of minutes, and spam vs not-spam is the classic RNN business use case.</p>
+
+    <h2>Practice code — run in Google Colab, top to bottom</h2>
+    <div class="callout">Blocks must run in order — each block remembers the ones before it (same kernel session). Copy each block into Colab and run.</div>
+
+    <div class="block-label">BLOCK 1: Imports</div>
+    <p>TensorFlow/Keras builds the network; pandas handles the table.</p>
+<pre><code>import pandas as pd                     # tables
+import numpy as np                      # numerical math
+import tensorflow as tf                 # neural network framework
+from tensorflow.keras.models import Sequential      # stack-of-layers model container
+from tensorflow.keras.layers import Embedding, LSTM, Dense   # our three layer types
+from tensorflow.keras.preprocessing.text import Tokenizer    # words -> integer tokens
+from tensorflow.keras.preprocessing.sequence import pad_sequences  # equal-length padding
+from sklearn.model_selection import train_test_split
+from sklearn.metrics import confusion_matrix, classification_report  # Topic 01 payoff
+print("TF version:", tf.__version__)</code></pre>
+
+    <div class="block-label">BLOCK 2: Download the dataset from Kaggle</div>
+    <p>kagglehub pulls the SMS spam dataset and prints the path.</p>
+<pre><code>import kagglehub
+path = kagglehub.dataset_download("uciml/sms-spam-collection-dataset")  # download + extract
+print("dataset path:", path)
+
+import glob
+csv_file = glob.glob(path + "/*.csv")[0]     # find the csv (spam.csv)
+print("csv file:", csv_file)</code></pre>
+
+    <div class="block-label">BLOCK 3: Load and clean</div>
+    <p>This file has a legacy encoding and stray unnamed columns — both fixed here.</p>
+<pre><code>df = pd.read_csv(csv_file, encoding="latin-1")   # latin-1 avoids decode errors on old files
+df = df[["v1", "v2"]]                            # keep label + text; drop stray unnamed columns
+df.columns = ["label", "text"]                   # friendlier names
+df["label"].value_counts()                       # 4825 ham vs 747 spam — imbalanced (remember Q: accuracy lies)</code></pre>
+
+    <div class="block-label">BLOCK 4: Labels to numbers + split</div>
+    <p>Networks need numbers, and we hold out 20% for honest grading.</p>
+<pre><code>y = df["label"].map({"ham": 0, "spam": 1}).values    # ham=0, spam=1 (the target)
+X = df["text"].values                                # the raw SMS texts
+
+X_train, X_test, y_train, y_test = train_test_split(
+    X, y, test_size=0.2, random_state=42, stratify=y)  # stratify keeps the ham/spam ratio in both halves
+print("train:", len(X_train), "| test:", len(X_test))</code></pre>
+
+    <div class="block-label">BLOCK 5: Tokenize + pad</div>
+    <p>Text → integer IDs → equal-length rows. The only place "language" becomes math.</p>
+<pre><code>VOCAB = 1000                                   # keep only the 1000 most frequent words
+MAXLEN = 40                                    # read at most 40 tokens per message (spam is short)
+tok = Tokenizer(num_words=VOCAB, oov_token="&lt;OOV&gt;")  # rare unseen words become one &lt;OOV&gt; token
+tok.fit_on_texts(X_train)                      # build the word->index dictionary FROM TRAIN ONLY
+X_train_seq = tok.texts_to_sequences(X_train)  # each message -> list of integer word IDs
+X_test_seq  = tok.texts_to_sequences(X_test)
+X_train_pad = pad_sequences(X_train_seq, maxlen=MAXLEN, padding="post")  # append zeros to length 40
+X_test_pad  = pad_sequences(X_test_seq,  maxlen=MAXLEN, padding="post")  # network needs a rectangular matrix
+print(X_train_pad.shape)                       # (4457, 40)</code></pre>
+
+    <div class="block-label">BLOCK 6: Build the RNN</div>
+    <p>Embedding → LSTM → sigmoid: words become vectors, memory reads them, sigmoid outputs a spam probability.</p>
+<pre><code>model = Sequential([
+    Embedding(VOCAB, 16, input_length=MAXLEN), # word ID -> 16-number vector the network can learn
+                                                # (similar words drift to similar vectors)
+    LSTM(32),                                   # reads the 40 steps, keeps memory via gates, outputs a 32-vector summary
+    Dense(1, activation="sigmoid")              # squashes to (0,1) = P(spam); 2 classes so sigmoid (Core Concepts)
+])
+model.compile(optimizer="adam",                 # improved gradient descent (Core Concepts: gradient descent)
+              loss="binary_crossentropy",       # log loss — punishes confident wrong answers
+              metrics=["accuracy"])
+model.summary()                                 # layer stack + parameter counts</code></pre>
+
+    <div class="block-label">BLOCK 7: Train</div>
+    <p>Five passes over the data, watching validation accuracy on held-out data.</p>
+<pre><code>history = model.fit(X_train_pad, y_train,
+                    epochs=5,                   # 5 full passes (more risks overfitting — watch val_accuracy)
+                    validation_split=0.2,       # 20% of train used to watch overfitting live
+                    batch_size=32,              # 32 messages per gradient update
+                    verbose=1)</code></pre>
+
+    <div class="block-label">BLOCK 8: Evaluate + confusion matrix</div>
+    <p>The Topic 01 payoff: grade the sequence classifier with the same table every classifier gets.</p>
+<pre><code>loss, acc = model.evaluate(X_test_pad, y_test, verbose=0)  # honest grade on unseen 20%
+print(f"test accuracy: {acc:.4f}")
+
+y_prob = model.predict(X_test_pad, verbose=0).ravel()  # spam probabilities in (0,1)
+y_pred = (y_prob &gt;= 0.5).astype(int)                    # 0.5 decision boundary -> class 0/1
+print(confusion_matrix(y_test, y_pred))                 # [[TN FP][FN TP]]
+print(classification_report(y_test, y_pred, target_names=["ham", "spam"]))  # precision/recall where it matters</code></pre>
+
+    <div class="block-label">BLOCK 9: Predict new messages</div>
+    <p>The fun part — feed two handmade messages through the same pipeline.</p>
+<pre><code>new_msgs = ["WINNER! You have won a free prize, claim now!!!",   # obviously spammy
+            "Hey, are we still meeting tomorrow?"]               # obviously normal
+new_seq = tok.texts_to_sequences(new_msgs)      # same tokenizer as training (never re-fit!)
+new_pad = pad_sequences(new_seq, maxlen=MAXLEN, padding="post")
+probs = model.predict(new_pad, verbose=0).ravel()
+for msg, p in zip(new_msgs, probs):
+    print(f"P(spam)={p:.3f} -> {'SPAM' if p &gt;= 0.5 else 'HAM'} | {msg}")</code></pre>
+
+    <div class="block-label">BLOCK 10: Training curves (bonus)</div>
+    <p>Accuracy over epochs — if train climbs while validation stalls, that's overfitting arriving.</p>
+<pre><code>import matplotlib.pyplot as plt
+plt.plot(history.history["accuracy"], label="train")           # training accuracy per epoch
+plt.plot(history.history["val_accuracy"], label="validation")  # held-out accuracy per epoch
+plt.xlabel("epoch"); plt.ylabel("accuracy"); plt.legend()
+plt.title("Train vs validation accuracy — a widening gap = overfitting")
+plt.show()</code></pre>
+
+    <h2>Real-world use cases &amp; companies</h2>
+    <table>
+      <tr><th>Use case</th><th>Who</th></tr>
+      <tr><td>Smart Reply / autocomplete</td><td>Gmail, Google Keyboard</td></tr>
+      <tr><td>Machine translation</td><td>Google Translate (early LSTM era)</td></tr>
+      <tr><td>Voice assistants understanding speech</td><td>Siri, Alexa</td></tr>
+      <tr><td>Time-series forecasting (demand, server load)</td><td>Amazon, Netflix</td></tr>
+      <tr><td>Language models (Transformers are the RNN's descendants)</td><td>OpenAI, Anthropic</td></tr>
+    </table>
+
+    <h2>Combining with other algorithms (project ideas)</h2>
+    <p><b>1. Image captioning.</b> CNN/VGG16 (Topics 02, 04) extracts features from a photo → an RNN turns those features into a written sentence. Classic two-network pipeline.</p>
+    <p><b>2. Topic discovery.</b> Use the RNN's embedding layer output as feature vectors, then K-Means (Topic 08) clusters unlabeled messages into topics — no labels needed.</p>
+    <p><b>3. Spam probability + business rule.</b> The RNN's P(spam) feeds a Logistic-Regression-style threshold decision (Topic 05) tuned with the confusion matrix (Topic 01) to pick the precision/recall trade-off the business wants.</p>
+
+    <h2>Interview Q&amp;A</h2>
+    <div class="qa"><div class="q">Q1. RNN vs feed-forward network (like a CNN)?</div><div class="a">Feed-forward nets process each input independently; an RNN processes sequences step by step and keeps a hidden state (memory) that carries information across steps, so order matters.</div></div>
+    <div class="qa"><div class="q">Q2. What problem does LSTM solve?</div><div class="a">The vanishing gradient problem — plain RNNs forget early inputs in long sequences. LSTM's gates learn what to remember, forget, and output, preserving signal over hundreds of steps.</div></div>
+    <div class="qa"><div class="q">Q3. What is the hidden state?</div><div class="a">A vector summarizing everything read so far, updated at every step: h(t) = tanh(Wx·x(t) + Wh·h(t−1) + b). It's the network's working memory.</div></div>
+    <div class="qa"><div class="q">Q4. Why do we pad sequences?</div><div class="a">Neural networks need rectangular matrices. Messages have different lengths, so we append zeros (after tokenizing) to make every row the same length.</div></div>
+    <div class="qa"><div class="q">Q5. What does the Embedding layer do?</div><div class="a">Maps each word ID to a small learned vector, placing similar words near each other — turning language into geometry the network can compute on.</div></div>
+    <div class="qa"><div class="q">Q6. CNN vs RNN — which inputs?</div><div class="a">CNNs shine on grid data (images: 2D pixel grids); RNNs shine on sequential data (text, audio, time series) where order carries meaning.</div></div>
+    <div class="qa"><div class="q">Q7. Why sigmoid in the last layer here?</div><div class="a">Two classes: sigmoid outputs a single probability P(spam), thresholded at 0.5. Multi-class would use softmax with one output per class.</div></div>
+    <div class="qa"><div class="q">Q8. How would you catch this model overfitting?</div><div class="a">Watch validation accuracy during training (Block 10) — if train keeps rising while validation flattens or falls, stop earlier, use dropout, or gather more data/augment.</div></div>
+    <div class="qa"><div class="q">Q9. Are Transformers RNNs?</div><div class="a">No — they replaced recurrence with attention and process whole sequences in parallel, but they descended from sequence-model ideas; LLMs like GPT are Transformers, not RNNs. Saying this shows you know the field's timeline.</div></div>
+
+    <div class="prevnext">
+      <a href="/topics/multiple-regression.html">← Topic 09: Multiple Regression</a>
+      <a href="/index.html">Home 🏠</a>
+    </div>
+    <p class="footer-note">Built by <b>Malik Hasnain</b> — Huawei HCCDA-AI prep. Diagram: Wikipedia/Wikimedia Commons. Dataset: Kaggle (SMS Spam Collection).</p>
+  </main>
+</div>
+<script>
+document.querySelectorAll('pre').forEach(p => {
+  const b = document.createElement('button');
+  b.className = 'copy-btn'; b.textContent = 'Copy';
+  b.onclick = () => { navigator.clipboard.writeText(p.innerText); b.textContent = 'Copied!'; setTimeout(()=>b.textContent='Copy',1200); };
+  p.appendChild(b);
+});
+</script>
+</body>
+</html>

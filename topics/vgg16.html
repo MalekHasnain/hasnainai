@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>VGG16 — HasnainAI</title>
+  <link rel="stylesheet" href="/assets/style.css">
+</head>
+<body>
+<div class="layout">
+  <aside class="sidebar">
+    <div class="brand">Hasnain<span>AI</span></div>
+    <div class="tagline">HCCDA-AI prep &amp; practice</div>
+    <nav>
+      <a href="/index.html">🏠 Home</a>
+      <a href="/concepts.html">📚 Core Concepts</a>
+      <div style="color:var(--muted);font-size:.75rem;margin:14px 0 4px 10px;">TOPICS (class sequence)</div>
+      <a href="/topics/confusion-matrix.html"><span class="num">01</span>Confusion Matrix</a>
+      <a href="/topics/cnn.html"><span class="num">02</span>CNN</a>
+      <a href="/topics/dbscan.html"><span class="num">03</span>DBSCAN</a>
+      <a href="/topics/vgg16.html" class="active"><span class="num">04</span>VGG16</a>
+      <a href="/topics/logistic-regression.html"><span class="num">05</span>Logistic Regression</a>
+      <a href="/topics/simple-linear-regression.html"><span class="num">06</span>Simple Linear Regression</a>
+      <a href="/topics/pca.html"><span class="num">07</span>PCA</a>
+      <a href="/topics/kmeans.html"><span class="num">08</span>K-Means</a>
+      <a href="/topics/multiple-regression.html"><span class="num">09</span>Multiple Regression</a>
+      <a href="/topics/rnn.html"><span class="num">10</span>RNN</a>
+      <div style="margin-top:18px;padding:10px;border:1px solid var(--border);border-radius:8px;background:#1f2630;">
+        <div style="font-size:.78rem;color:var(--muted);">🤝 Collaborate on projects</div>
+        <a href="https://wa.me/923446466664" target="_blank" rel="noopener" style="display:block;margin-top:4px;font-size:.85rem;">💬 WhatsApp: +92 344 646 6664</a>
+      </div>
+    </nav>
+  </aside>
+  <main>
+    <h1>VGG16</h1>
+    <div class="meta">
+      <span class="chip">Neural network</span>
+      <span class="chip">Pre-trained CNN / Transfer learning</span>
+      <span class="chip">Dataset: CIFAR-10 (Kaggle: pankrzysiu/cifar10-python)</span>
+      <span class="chip">Library: tensorflow.keras</span>
+    </div>
+
+    <h2>What it is</h2>
+    <p>VGG16 is a convolutional neural network architecture published in 2014 by the Visual Geometry Group at Oxford. The "16" counts its weight layers: 13 convolutional layers plus 3 fully-connected (dense) layers at the end. It finished runner-up in the 2014 ImageNet challenge, and its trained weights became one of the most reused artifacts in deep learning.</p>
+    <p>What made VGG16 a breakthrough was not complexity but <b>simplicity</b>. Every single convolution in the network uses a tiny 3&times;3 filter. Instead of one big 7&times;7 filter, VGG stacks small ones: three 3&times;3 convolutions in a row see the same area as one 7&times;7 filter, but with fewer parameters and more non-linear steps in between. The whole network is just "conv, conv, pool" repeated with more and more filters &mdash; a pattern a beginner can read top to bottom (see <a href="/topics/cnn.html">Topic 02 &mdash; CNN</a> for how convolution and pooling work).</p>
+    <p>The reason you still learn VGG16 in 2026 is <b>transfer learning</b>. Training VGG16 from scratch on ImageNet's 1.4 million images took weeks of GPU time, but the downloaded weights are free. The early layers learned generic visual features &mdash; edges, corners, textures &mdash; and those features are useful for almost any image task. So instead of training a giant network on your small dataset, you freeze the learned layers and train only a small classifier on top. You get ImageNet-quality vision with minutes of training.</p>
+    <p>In this topic we load VGG16 with ImageNet weights, freeze it, bolt on a small 10-class head, and teach it CIFAR-10 &mdash; the same dataset you classified with a hand-built CNN in <a href="/topics/cnn.html">Topic 02</a>, so you can directly compare how much the transferred features buy you.</p>
+
+    <h2>The math inside</h2>
+    <p>VGG16 has no exotic math &mdash; convolution, pooling, ReLU and softmax, all <a href="/concepts.html">already explained in Core Concepts</a> (softmax also covered in <a href="/topics/cnn.html">Topic 02</a>). The interesting math is in <i>how the layers compose</i>.</p>
+
+    <div class="formula">
+      layers(VGG16) = 13 conv + 3 dense = 16 weight layers<br>
+      all conv filters = 3&times;3, stride 1 &nbsp;&nbsp;|&nbsp;&nbsp; all max-pools = 2&times;2, stride 2
+      <div class="note">Counts the architecture: 13 convolutions and 3 dense layers, every filter a small 3&times;3 window.</div>
+    </div>
+
+    <div class="formula">
+      receptive field: 2 &times; (3&times;3) &asymp; 5&times;5 &nbsp;&nbsp;|&nbsp;&nbsp; 3 &times; (3&times;3) &asymp; 7&times;7<br>
+      params: stacked 3&times;3 = 2 &times; (3&sup2;&middot;C&sup2;) &lt; 5&sup2;&middot;C&sup2;
+      <div class="note">Stacking two or three small 3&times;3 convolutions covers the same pixels as one 5&times;5 or 7&times;7 filter, with fewer parameters and extra non-linearities in between.</div>
+    </div>
+
+    <div class="formula">
+      output<sub>spatial</sub> = &lfloor;(W &minus; F)/S&rfloor; + 1 &nbsp;&rarr;&nbsp; each 2&times;2 pool halves W,H while filters double: 64&rarr;128&rarr;256&rarr;512
+      <div class="note">Each convolution keeps the spatial size (F=3, S=1, padding=same) and each pool halves it; channel count doubles at every block, so the network trades <i>where</i> for <i>what</i>.</div>
+    </div>
+
+    <div class="formula">
+      &ycirc; = softmax(W<sub>head</sub> &middot; pooled features + b<sub>head</sub>)
+      <div class="note">In transfer learning we only train this head: the frozen VGG16 produces a 512-number feature vector, and our new dense layer turns it into class probabilities (log loss / cross-entropy as in Core Concepts).</div>
+    </div>
+
+    <div class="term"><b>Pre-trained weights</b> — the parameter values (all the filter numbers) a network learned on a big dataset, saved to disk. <code>weights="imagenet"</code> downloads the values Oxford's VGG16 learned on ImageNet; without it the filters start as random numbers.</div>
+    <div class="term"><b>Transfer learning</b> — reusing a model trained on task A as the starting point for task B. It works because early conv layers learn generic features (edges, textures, shapes) that transfer across image datasets, so only task-specific layers need training.</div>
+    <div class="term"><b>Feature extraction vs fine-tuning</b> — two transfer-learning modes. Feature extraction: freeze the whole base, train only the new head (what we do below &mdash; safest for small datasets). Fine-tuning: after the head works, unfreeze the last few conv layers and re-train them with a very small learning rate so they specialise to your data.</div>
+    <div class="term"><b>Fully-connected head</b> — the classifier stacked on top of the convolutional base: flatten (or pool) the final feature maps into one vector, then dense layers ending in a softmax. The original VGG16 head has 1000 ImageNet outputs; we throw it away (<code>include_top=False</code>) and grow our own with however many classes our task needs.</div>
+
+    <h2>Diagram</h2>
+    <figure>
+      <img src="https://upload.wikimedia.org/wikipedia/en/8/83/VGG_neural_network.png" alt="VGG neural network architecture: alternating convolutional and max-pooling layers followed by fully-connected layers">
+      <figcaption>Source: Wikipedia/Wikimedia Commons</figcaption>
+    </figure>
+    <p>Notice the rhythm: convolution blocks (in red) with more and more channels, each cut by a max-pooling layer (blue) that halves height and width, ending in the fully-connected head &mdash; exactly the conv/pool mechanics from <a href="/topics/cnn.html">Topic 02</a>, just deeper and more regular.</p>
+
+    <h2>Dataset (Kaggle)</h2>
+    <p><b>CIFAR-10</b> &mdash; same dataset as <a href="/topics/cnn.html">Topic 02</a>. Kaggle version: <code>pankrzysiu/cifar10-python</code> (kagglehub slug). 60,000 32&times;32 colour images in 10 classes (airplane, automobile, bird, cat, deer, dog, frog, horse, ship, truck) &mdash; 50,000 train / 10,000 test, 6,000 images per class. Each image is a 32&times;32&times;3 pixel tensor and the target is one of 10 labels. In Colab we skip the download entirely: <code>keras.datasets.cifar10.load_data()</code> fetches the identical dataset in one line.</p>
+
+    <h2>Practice code — run in Google Colab, top to bottom</h2>
+    <div class="callout">Blocks must run in order. Copy each block into a Colab cell (Runtime &rarr; Change runtime type &rarr; T4 GPU makes blocks 6&ndash;7 much faster) and run them one by one. We use a 5000-image subset so the whole notebook finishes in minutes on free Colab.</div>
+
+    <div class="block-label">BLOCK 1: Imports</div>
+    <p>Everything we need: Keras for building models, the pre-built VGG16, and sklearn metrics for evaluation.</p>
+<pre><code># TensorFlow's Keras API: model building, layers, and the VGG16 model itself
+from tensorflow.keras.applications import VGG16
+from tensorflow.keras.applications.vgg16 import preprocess_input
+from tensorflow.keras import layers, models
+# Pre-trained VGG16 weights are downloaded from a public Keras mirror (no login needed)
+import tensorflow as tf
+import numpy as np
+import matplotlib.pyplot as plt
+from sklearn.metrics import confusion_matrix, ConfusionMatrixDisplay, classification_report</code></pre>
+
+    <div class="block-label">BLOCK 2: Load a CIFAR-10 subset</div>
+    <p>CIFAR-10 is built into Keras, so loading it is one call. We keep the first 5000 train / 1000 test images so free Colab finishes quickly &mdash; classes stay because the data is pre-shuffled.</p>
+<pre><code># CIFAR-10 ships inside Keras, so one call downloads the ready-made train/test split
+# (same dataset as Topic 02: 60000 32x32 colour images, 10 classes)
+from tensorflow.keras.datasets import cifar10
+(X_train_full, y_train_full), (X_test_full, y_test_full) = cifar10.load_data()
+
+# Free Colab is slow, so keep only a subset: first 5000 train / 1000 test images
+# Classes are already shuffled, so a slice keeps all 10 labels balanced enough
+X_train_raw, y_train = X_train_full[:5000], y_train_full[:5000]
+X_test_raw,  y_test  = X_test_full[:1000],  y_test_full[:1000]
+
+# Labels come as a column vector -&gt; flatten to a 1-D array of class ids 0..9
+y_train, y_test = y_train.ravel(), y_test.ravel()
+
+# The 10 class names, in label order (airplane=0 ... truck=9)
+class_names = ["airplane","automobile","bird","cat","deer",
+               "dog","frog","horse","ship","truck"]
+print("Train subset:", X_train_raw.shape, "Test subset:", X_test_raw.shape)</code></pre>
+
+    <div class="block-label">BLOCK 3: Resize + ImageNet preprocessing</div>
+    <p>VGG16 needs its input preprocessed exactly the way ImageNet images were when the weights were learned &mdash; otherwise the transferred features see numbers they don't recognise. We also upscale 32&times;32 &rarr; 48&times;48 so the deep pooling stack doesn't shrink the image to nothing.</p>
+<pre><code># VGG16 refuses inputs smaller than 32x32; we upscale 32-&gt;48 so early pooling
+# still leaves enough pixels for the deep stack of convolutions
+X_train = tf.image.resize(X_train_raw, (48, 48)).numpy()
+X_test  = tf.image.resize(X_test_raw,  (48, 48)).numpy()
+
+# VGG16-specific preprocessing: RGB-&gt;BGR then zero-centre each channel
+# using the ImageNet means the pre-trained weights were trained with
+X_train = preprocess_input(X_train)
+X_test  = preprocess_input(X_test)
+print("After resize + preprocess:", X_train.shape, X_test.shape)</code></pre>
+
+    <div class="block-label">BLOCK 4: Load VGG16 with ImageNet weights and freeze it</div>
+    <p>This is the transfer-learning moment: <code>weights="imagenet"</code> loads the features Oxford learned from 1.4M images, <code>include_top=False</code> throws away their 1000-class head, and freezing protects those features from our small dataset's noisy gradients.</p>
+<pre><code># Load VGG16 WITHOUT its 1000-class ImageNet head but WITH learned ImageNet weights
+# weights="imagenet" is the transfer-learning switch: it loads the filters the
+# Oxford group learned from 1.4M images instead of starting from random numbers
+base = VGG16(weights="imagenet", include_top=False, input_shape=(48, 48, 3))
+
+# Freeze the base: set every weight to non-trainable
+# Why: with only 5000 images we would overwrite (destroy) the general ImageNet
+# features if our small dataset pushed big gradient updates into the base
+base.trainable = False
+base.summary()</code></pre>
+
+    <div class="block-label">BLOCK 5: Add our own classifier head</div>
+    <p>The frozen base ends with 3&times;3&times;512 feature maps; we pool them to a 512-number vector and learn a small dense classifier on top &mdash; the only part that trains.</p>
+<pre><code># Build a small "head": our own classifier that sits on top of the frozen base
+model = models.Sequential([
+    base,                                        # frozen VGG16 feature extractor
+    layers.GlobalAveragePooling2D(),             # average each 3x3x512 feature map -&gt; 512 numbers
+    layers.Dense(128, activation="relu"),        # small fully-connected layer to recombine features
+    layers.Dropout(0.3),                         # randomly zero 30% of activations to fight overfitting
+    layers.Dense(10, activation="softmax")       # 10 outputs = CIFAR-10 class probabilities
+])
+model.summary()</code></pre>
+
+    <div class="block-label">BLOCK 6: Compile and train (head only)</div>
+    <p>Only ~170k head parameters train &mdash; the 14.7M base weights sit still. Three epochs on 5000 images is enough to see transfer learning work.</p>
+<pre><code># Compile: adam optimizer, sparse categorical cross-entropy (labels are ints, not one-hot)
+model.compile(optimizer="adam",
+              loss="sparse_categorical_crossentropy",
+              metrics=["accuracy"])
+
+# Train only the ~170k head weights (the 14.7M base weights stay frozen)
+# 3 epochs x 125 steps keeps the run under ~10 minutes on a free Colab GPU
+history = model.fit(X_train, y_train,
+                    epochs=3,
+                    batch_size=40,
+                    validation_split=0.15,
+                    verbose=1)</code></pre>
+
+    <div class="block-label">BLOCK 7: Evaluate + confusion matrix</div>
+    <p>Accuracy on the held-out 1000 images, then the <a href="/topics/confusion-matrix.html">confusion matrix (Topic 01)</a> to see which classes the transferred features still confuse &mdash; usually cats vs dogs.</p>
+<pre><code># Evaluate on the held-out 1000 test images
+test_loss, test_acc = model.evaluate(X_test, y_test, verbose=0)
+print(f"Test accuracy: {test_acc:.3f}")
+
+# Confusion matrix (Topic 01): which classes get confused with which
+y_pred = model.predict(X_test, verbose=0).argmax(axis=1)   # argmax picks the top class
+cm = confusion_matrix(y_test, y_pred)
+disp = ConfusionMatrixDisplay(cm, display_labels=class_names)
+fig, ax = plt.subplots(figsize=(9, 9))
+disp.plot(ax=ax, xticks_rotation=45, cmap="Blues", colorbar=False)
+plt.title("VGG16 transfer learning - CIFAR-10 (subset)")
+plt.tight_layout()
+plt.show()
+
+# Per-class precision / recall / F1 to spot weak classes
+print(classification_report(y_test, y_pred, target_names=class_names))</code></pre>
+
+    <div class="block-label">BLOCK 8: Predict one image</div>
+    <p>Use the finished model like a product: show one test image and print the model's ranked class probabilities.</p>
+<pre><code># Pick one test image and predict it, showing the model's confidence
+i = 12
+prob = model.predict(X_test[i:i+1], verbose=0)[0]     # softmax over 10 classes
+rank = prob.argsort()[::-1]                           # class ids sorted best to worst
+
+plt.imshow(X_test_raw[i])
+plt.title(f"True: {class_names[y_test[i]]}")
+plt.axis("off")
+plt.show()
+
+for c in rank[:3]:
+    print(f"{class_names[c]:12s} {prob[c]*100:5.1f}%")</code></pre>
+
+    <div class="block-label">BLOCK 9: Export VGG16 embeddings for other algorithms</div>
+    <p>The frozen base is also a feature extractor: any image becomes a 512-dim vector. These embeddings are the raw material for the combos below &mdash; SVM classification, K-Means grouping, PCA compression.</p>
+<pre><code># Feature extraction mode: throw away the head, keep the 512-dim VGG16 embedding
+# These vectors are reusable input for OTHER algorithms (SVM, K-Means, PCA)
+features = base.predict(X_test[:500], verbose=0)
+print("Embedding shape:", features.shape)   # (500, 3, 3, 512) before pooling
+flat = features.reshape(features.shape[0], -1)
+print("Flattened for SVM / K-Means:", flat.shape)   # (500, 4608)</code></pre>
+
+    <h2>Real-world use cases &amp; companies</h2>
+    <table>
+      <tr><th>Use case</th><th>Who / example</th></tr>
+      <tr><td>Image search &amp; visual similarity</td><td>Reverse image search engines use pre-trained CNN embeddings (the VGG family pioneered this) to find visually similar images &mdash; e.g. Pinterest visual search and eBay image-based listing search.</td></tr>
+      <tr><td>Medical imaging with small datasets</td><td>Hospital research teams routinely fine-tune ImageNet CNNs like VGG16 on hundreds (not millions) of X-ray / MRI scans, because transfer learning is the only way small clinical datasets reach usable accuracy.</td></tr>
+      <tr><td>Agriculture disease detection</td><td>Agri-tech startups (e.g. Plantix) classify crop-disease photos from farmers' phones using transfer-learned CNNs &mdash; VGG16 remains a standard baseline in plant-disease literature.</td></tr>
+      <tr><td>Face recognition pipelines</td><td>DeepFace (Facebook's face-verification system) used a VGG-style deep CNN to map faces to vectors and decide if two photos show the same person.</td></tr>
+      <tr><td>Pre-built vision features as a service</td><td>Google Cloud Vision and AWS Rekognition embody the same idea: one giant pre-trained model, everyone else transfers its features to their own task.</td></tr>
+    </table>
+
+    <h2>Combining with other algorithms (project ideas)</h2>
+    <p><b>VGG16 + SVM (with Logistic Regression &amp; Confusion Matrix).</b> Run Block 9 to get 512-dim embeddings, then train an SVM (or the <a href="/topics/logistic-regression.html">Logistic Regression</a> from Topic 05) on those vectors instead of training a neural head at all. Classic transfer-learning pipeline; score it with the <a href="/topics/confusion-matrix.html">Confusion Matrix</a> from Topic 01 and compare against Block 7.</p>
+    <p><b>VGG16 + K-Means: unsupervised image grouping.</b> Forget the labels entirely: embed 1000 images with the frozen base, reduce with <a href="/topics/pca.html">PCA (Topic 07)</a> to ~50 dims, then cluster with <a href="/topics/kmeans.html">K-Means (Topic 08)</a> (k=10). Check whether clusters match the true CIFAR-10 classes &mdash; a great "did the features really learn structure?" experiment. For comparison, <a href="/topics/dbscan.html">DBSCAN (Topic 03)</a> on the same embeddings finds dense groups without pre-selecting k.</p>
+    <p><b>VGG16 + RNN: image captioning.</b> Keep the frozen base as the "eye", feed its 512-dim feature vector into the <a href="/topics/rnn.html">RNN (Topic 10)</a> as the "mouth" that generates a word-by-word caption. This encoder-decoder pattern is exactly how classic captioning systems like Show and Tell worked.</p>
+    <p><b>VGG16 head-to-head with your own CNN.</b> Re-run your <a href="/topics/cnn.html">Topic 02</a> hand-built CNN on the same 5000-image subset and plot both confusion matrices side by side. The accuracy gap is the measurable value of transfer learning &mdash; a nice one-slide project result.</p>
+
+    <h2>Interview Q&amp;A</h2>
+    <div class="qa"><div class="q">What is transfer learning and why does it work?</div><div class="a">Transfer learning reuses a model trained on one task (source) as the starting point for another (target). It works because early convolutional layers learn generic visual features &mdash; edges, corners, textures &mdash; that are useful for nearly any image dataset, so only the task-specific top layers need retraining. It turns a weeks-long, million-image training job into minutes on a small dataset.</div></div>
+    <div class="qa"><div class="q">Why does VGG16 use only 3&times;3 filters?</div><div class="a">Stacking three 3&times;3 convolutions covers the same receptive field as one 7&times;7 filter but with fewer parameters (2&middot;3&sup2;C&sup2; &lt; 7&sup2;C&sup2; per layer comparison) and &mdash; crucially &mdash; two extra ReLU non-linearities in between, letting the network learn more complex functions. It also made the architecture uniform and simple to reason about, which was itself the paper's point.</div></div>
+    <div class="qa"><div class="q">What do weights="imagenet" and include_top=False each do?</div><div class="a">weights="imagenet" loads the parameters trained on ImageNet instead of random initialisation &mdash; the transfer-learning switch. include_top=False drops the final dense layers that output 1000 ImageNet classes, so we can attach our own head with however many outputs our task needs (10 for CIFAR-10).</div></div>
+    <div class="qa"><div class="q">Why do we set base.trainable = False instead of training everything?</div><div class="a">With a small dataset, gradients from a few thousand images are noisy and would overwrite the general features the base learned from 1.4M images &mdash; catastrophic forgetting on a budget. Freezing the base means only our small head trains: fewer parameters, faster epochs, and much less overfitting. Once the head converges, fine-tuning can cautiously unfreeze the last blocks with a tiny learning rate.</div></div>
+    <div class="qa"><div class="q">What is the difference between feature extraction and fine-tuning?</div><div class="a">Both start from frozen pre-trained weights plus a new head. Feature extraction keeps the base permanently frozen and only trains the head (or skips the head and feeds the embeddings to a classic model like an SVM). Fine-tuning unfreezes some or all base layers after initial training and continues with a very small learning rate so the base specialises to the new data without destroying what it knew.</div></div>
+    <div class="qa"><div class="q">Why did we resize CIFAR-10 images and run preprocess_input on them?</div><div class="a">The pre-trained weights expect inputs in the same numeric regime as ImageNet training: VGG16's preprocess_input converts RGB to BGR and zero-centres channels with ImageNet means. Feeding raw 0&ndash;255 RGB pixels would make the transferred filters see out-of-distribution values and the features would degrade. The resize to 48&times;48 (from 32&times;32) keeps enough spatial resolution for the five 2&times;2 pooling layers.</div></div>
+    <div class="qa"><div class="q">VGG16 is ~138M parameters &mdash; why is it considered "simple"?</div><div class="a">Simple refers to architecture, not size. VGG16 is one repeated pattern &mdash; 3&times;3 convolutions, same padding, 2&times;2 max-pool, doubling channels &mdash; with no branches, no exotic layers, no special tricks. That uniformity is why it became the default teaching and transfer-learning backbone, even though later nets (ResNet etc.) beat it with far fewer parameters.</div></div>
+    <div class="qa"><div class="q">How does VGG16 relate to the CNN you built in Topic 02?</div><div class="a">Same machinery, different scale and origin. Your Topic 02 CNN is a small network you trained from scratch: random filters slowly learning edges for CIFAR-10. VGG16 is that same conv/pool/softmax pattern repeated 13 convolutions deep, with filters already trained on ImageNet &mdash; comparing the two on the same data quantifies exactly what transfer learning adds.</div></div>
+
+    <div class="prevnext">
+      <a href="/topics/dbscan.html">← DBSCAN (Topic 03)</a>
+      <a href="/topics/logistic-regression.html">Logistic Regression (Topic 05) →</a>
+    </div>
+    <p class="footer-note">HasnainAI &mdash; HCCDA-AI prep &amp; practice. VGG16 architecture: Simonyan &amp; Zisserman, Oxford Visual Geometry Group, 2014. Run the Colab blocks in order; subset sizes are tuned for free Colab.</p>
+  </main>
+</div>
+<script>
+document.querySelectorAll('pre').forEach(p => {
+  const b = document.createElement('button');
+  b.className = 'copy-btn'; b.textContent = 'Copy';
+  b.onclick = () => { navigator.clipboard.writeText(p.innerText); b.textContent = 'Copied!'; setTimeout(()=>b.textContent='Copy',1200); };
+  p.appendChild(b);
+});
+</script>
+</body>
+</html>
