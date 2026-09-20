@@ -43,6 +43,7 @@ a:hover { text-decoration: underline; text-decoration-color: #0E6E5C55; text-und
 }
 .sidebar.open { transform: translateX(0); }
 .sidebar .brand { font-family: var(--serif); font-weight: 700; font-size: 1.45rem; color: var(--text); letter-spacing: -0.01em; }
+.sidebar a.brand { text-decoration: none; }
 .sidebar .brand span { color: var(--accent); }
 .sidebar .tagline { color: var(--muted); font-size: .82rem; margin: 2px 0 20px; }
 .sidebar nav a {
@@ -155,6 +156,8 @@ html[data-theme="dark"] tbody tr:nth-child(even) { background: #26241F; }
   padding: 10px 14px; align-items: center; gap: 10px;
 }
 .topbar .tb-brand { font-family: var(--serif); font-weight: 700; font-size: 1.05rem; flex: 1; }
+a.tb-brand, .topbar a.tb-brand { color: var(--text); text-decoration: none; }
+a.tb-brand:active { opacity: .7; }
 .tb-btn {
   background: var(--bg); border: 1px solid var(--border); color: var(--text);
   border-radius: 8px; padding: 6px 12px; font-size: .88rem; cursor: pointer; font-family: var(--sans);
