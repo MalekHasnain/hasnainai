@@ -55,64 +55,94 @@
   <main>
     <h1>PCA (Principal Component Analysis)</h1>
     <div class="meta">
-      <span class="chip">Dimensionality reduction (unsupervised)</span>
+      <span class="chip en">Dimensionality reduction (unsupervised)</span>
+      <span class="chip ru">Features kam karna (unsupervised)</span>
       <span class="chip">Dataset: Kaggle uciml/iris</span>
       <span class="chip">Library: sklearn (StandardScaler, PCA, LogisticRegression)</span>
     </div>
 
-    <h2>What it is</h2>
-    <p>PCA takes a dataset with many features (columns) and squeezes it down to fewer new features while keeping as much of the original information (variance) as possible. As your teacher put it: <b>"PCA converts high features to low features."</b> If you have 4 measurements per flower, PCA can find 2 new "super-features" that carry almost all of the 4 original measurements' story.</p>
-    <p>The trick is that the new features are not picked from the old ones — they are <b>new directions</b> built as combinations of the old ones. Each direction (a <i>principal component</i>) is chosen to point where the data is most spread out. Direction 1 (PC1) captures the most variance, PC2 the next most, and so on, and every component is perpendicular (uncorrelated) to the others.</p>
-    <p>PCA is <b>unsupervised</b>: it never looks at the target column (Species). It only looks at how the inputs spread. That is why, when we plot Iris flowers using just PC1 and PC2, the three species form visible clusters <i>even though PCA was never told the labels</i> — a nice bridge to K-Means and DBSCAN.</p>
-    <p>One warning your teacher's comparison makes clear: <b>"SVM is totally opposite to PCA."</b> SVM is a <i>classifier</i> (it draws decision boundaries to predict labels), while PCA is a <i>reducer</i> (it compresses features and predicts nothing). They are not rivals — they work at different jobs, and we'll even chain them (PCA → SVM) in the pipelines section.</p>
+    <h2 class="en">What it is</h2>
+    <h2 class="ru">Yeh kya hai</h2>
+    <p class="en">PCA takes a dataset with many features (columns) and squeezes it down to fewer new features while keeping as much of the original information (variance) as possible. As your teacher put it: <b>"PCA converts high features to low features."</b> If you have 4 measurements per flower, PCA can find 2 new "super-features" that carry almost all of the 4 original measurements' story.</p>
+    <p class="ru">PCA aik aise dataset — jis mein bohat saari features (columns) hon — ko chhoti si tayyada nayi features tak le aata hai, lekin original information (variance) jitni ho sake bachata rehta hai. Jaise aapke teacher ne kaha: <b>"PCA converts high features to low features."</b> Agar aapke paas har phool ke 4 measurements hon, to PCA 2 nayi "super-features" dhoond sakta hai jo 4 original measurements ki taqreeban poori kahani apne andar rakhte hain.</p>
+    <p class="en">The trick is that the new features are not picked from the old ones — they are <b>new directions</b> built as combinations of the old ones. Each direction (a <i>principal component</i>) is chosen to point where the data is most spread out. Direction 1 (PC1) captures the most variance, PC2 the next most, and so on, and every component is perpendicular (uncorrelated) to the others.</p>
+    <p class="ru">Kamaal yeh hai ke nayi features purani mein se nikaali nahi jaatin — woh purani features ke combinations se banaye gaye <b>naye directions</b> hain. Har direction (aik <i>principal component</i>) aisa chuna jaata hai ke data jahan sab se zyada phaila hua ho wahin ishara kare. Direction 1 (PC1) sab se zyada variance pakadta hai, PC2 us se thora kam, aur aise hi aage — aur har component baqi sab ke perpendicular (uncorrelated) hota hai.</p>
+    <p class="en">PCA is <b>unsupervised</b>: it never looks at the target column (Species). It only looks at how the inputs spread. That is why, when we plot Iris flowers using just PC1 and PC2, the three species form visible clusters <i>even though PCA was never told the labels</i> — a nice bridge to K-Means and DBSCAN.</p>
+    <p class="ru">PCA <b>unsupervised</b> hai: yeh kabhi target column (Species) ko nahi dekhta. Yeh sirf dekhta hai ke inputs kaise phaile hue hain. Isi liye jab hum Iris ke phool sirf PC1 aur PC2 se plot karte hain to teen species khud-ba-khud nazar aane wale clusters banati hain — <i>halanke PCA ko labels ka bataya hi nahi gaya tha</i>. Yeh K-Means aur DBSCAN tak pohanchne ka aik acha pul hai.</p>
+    <p class="en">One warning your teacher's comparison makes clear: <b>"SVM is totally opposite to PCA."</b> SVM is a <i>classifier</i> (it draws decision boundaries to predict labels), while PCA is a <i>reducer</i> (it compresses features and predicts nothing). They are not rivals — they work at different jobs, and we'll even chain them (PCA → SVM) in the pipelines section.</p>
+    <p class="ru">Aik warning jo aapke teacher ke comparison se saaf hota hai: <b>"SVM is totally opposite to PCA."</b> SVM aik <i>classifier</i> hai (yeh labels predict karne ke liye decision boundaries khinchta hai), jabke PCA aik <i>reducer</i> hai (yeh features ko compress karta hai aur kuch predict nahi karta). Yeh dosre ke rivaled nahi hain — dono ke alag kaam hain, aur hum inhein aage pipelines section mein jor kar bhi dekhein ge (PCA → SVM).</p>
 
-    <h2>The math inside</h2>
-    <p>This is exactly the route from your class notes: <b>mean → covariance matrix → characteristic equation → eigenvalues → eigenvectors → projection</b>. sklearn's <code>PCA</code> does this same math under the hood (via a faster matrix factorization called SVD, which finds the same directions).</p>
+    <h2 class="en">The math inside</h2>
+    <h2 class="ru">Iske andar ka math</h2>
+    <p class="en">This is exactly the route from your class notes: <b>mean → covariance matrix → characteristic equation → eigenvalues → eigenvectors → projection</b>. sklearn's <code>PCA</code> does this same math under the hood (via a faster matrix factorization called SVD, which finds the same directions).</p>
+    <p class="ru">Yeh bilkul wohi raasta hai jo aapke class notes mein hai: <b>mean → covariance matrix → characteristic equation → eigenvalues → eigenvectors → projection</b>. sklearn ka <code>PCA</code> andar hi andar yehi math karta hai (aik tez matrix factorization ke zariye jise SVD kehte hain, jo wohi directions dhoondta hai).</p>
 
-    <p><b>Step 1 — subtract the mean.</b> For each feature, take its mean and subtract it from every value, so each column is centered at 0:</p>
+    <p class="en"><b>Step 1 — subtract the mean.</b> For each feature, take its mean and subtract it from every value, so each column is centered at 0:</p>
+    <p class="ru"><b>Step 1 — mean minus karein.</b> Har feature ka mean nikaal kar har value mein se minus kar dein, taake har column ka markaz 0 ho jaye:</p>
     <div class="formula">x<sub>centered</sub> = x − mean(x), &nbsp; y<sub>centered</sub> = y − mean(y)</div>
-    <p>This centers the data cloud on the origin so "spread" is measured from the middle. The mean itself is <a href="../concepts.html">already explained in Core Concepts</a>.</p>
+    <p class="en">This centers the data cloud on the origin so "spread" is measured from the middle. The mean itself is <a href="../concepts.html">already explained in Core Concepts</a>.</p>
+    <p class="ru">Is se data ka cloud origin par aa jata hai taake "spread" beech se naapa ja sake. Mean khud <a href="../concepts.html">Core Concepts mein already samjhaya gaya hai</a>.</p>
 
-    <p><b>Step 2 — build the covariance matrix.</b> From the centered columns, compute the four entries your notes list as XX, XY, YX, YY:</p>
+    <p class="en"><b>Step 2 — build the covariance matrix.</b> From the centered columns, compute the four entries your notes list as XX, XY, YX, YY:</p>
+    <p class="ru"><b>Step 2 — covariance matrix banayein.</b> Centered columns se woh chaar entries nikaalein jo aapke notes XX, XY, YX, YY likhte hain:</p>
     <div class="formula">C = [ cov(X,X) &nbsp; cov(X,Y) ]<br>&nbsp;&nbsp;&nbsp;[ cov(Y,X) &nbsp; cov(Y,Y) ]</div>
     <div class="formula">cov(X,Y) = &Sigma; (x<sub>i</sub> − mean(x)) · (y<sub>i</sub> − mean(y)) / (n − 1)</div>
-    <p>The diagonal entries (XX, YY) are the variances of each feature; the off-diagonals (XY and YX, always equal) say how the features move together. Covariance is <a href="../concepts.html">already explained in Core Concepts</a>. With 4 features you get a 4×4 version of this same matrix.</p>
+    <p class="en">The diagonal entries (XX, YY) are the variances of each feature; the off-diagonals (XY and YX, always equal) say how the features move together. Covariance is <a href="../concepts.html">already explained in Core Concepts</a>. With 4 features you get a 4×4 version of this same matrix.</p>
+    <p class="ru">Diagonal wali entries (XX, YY) har feature ki variance hoti hain; off-diagonal entries (XY aur YX, hamesha barabar) batati hain ke features saath saath kaise hilti hain. Covariance <a href="../concepts.html">Core Concepts mein already samjhaya gaya hai</a>. 4 features par aapko isi matrix ka 4×4 version milta hai.</p>
 
-    <p><b>Step 3 — solve the characteristic equation.</b> Eigenvalues λ are the numbers for which the matrix C stretched a direction without rotating it. They are found by setting the <b>determinant</b> of (C − λI) to zero — exactly the "characteristic equation (quadratic), determinant" step in your notes:</p>
+    <p class="en"><b>Step 3 — solve the characteristic equation.</b> Eigenvalues λ are the numbers for which the matrix C stretched a direction without rotating it. They are found by setting the <b>determinant</b> of (C − λI) to zero — exactly the "characteristic equation (quadratic), determinant" step in your notes:</p>
+    <p class="ru"><b>Step 3 — characteristic equation solve karein.</b> Eigenvalues λ woh numbers hain jin ke liye matrix C kisi direction ko ghumaaye bagair usay khinch deta hai. Yeh (C − λI) ke <b>determinant</b> ko zero rakh kar nikaale jaate hain — bilkul woh "characteristic equation (quadratic), determinant" step jo aapke notes mein hai:</p>
     <div class="formula">|C − λI| = 0</div>
-    <p>Here I is the identity matrix (1s on the diagonal, 0s elsewhere) and the bars mean determinant (<a href="../concepts.html">already explained in Core Concepts</a>). For a 2×2 covariance matrix, expanding the determinant gives a quadratic equation in λ:</p>
+    <p class="en">Here I is the identity matrix (1s on the diagonal, 0s elsewhere) and the bars mean determinant (<a href="../concepts.html">already explained in Core Concepts</a>). For a 2×2 covariance matrix, expanding the determinant gives a quadratic equation in λ:</p>
+    <p class="ru">Yahan I identity matrix hai (diagonal par 1, baqi sab 0) aur bars ka matlab determinant hai (<a href="../concepts.html">Core Concepts mein already samjhaya gaya</a>). 2×2 covariance matrix ke liye determinant expand karne se λ mein quadratic equation banti hai:</p>
     <div class="formula">|C − λI| = (xx − λ)(yy − λ) − (xy)² = &lambda;<sup>2</sup> − A&lambda; + B = 0</div>
-    <p>Matching your notes: the <b>square value = A</b> (the coefficient that sits on &lambda;<sup>2</sup> after expanding — here it is 1, and A works out to the sum of the diagonal variances) and <b>&lambda; = B's equation</b> — B is the constant term (it equals the determinant of C). Solving this quadratic with the familiar formula gives the two eigenvalues:</p>
+    <p class="en">Matching your notes: the <b>square value = A</b> (the coefficient that sits on &lambda;<sup>2</sup> after expanding — here it is 1, and A works out to the sum of the diagonal variances) and <b>&lambda; = B's equation</b> — B is the constant term (it equals the determinant of C). Solving this quadratic with the familiar formula gives the two eigenvalues:</p>
+    <p class="ru">Aapke notes se match karte hue: <b>square value = A</b> (expand karne ke baad &lambda;<sup>2</sup> ke saath baithne wala coefficient — yahan yeh 1 hai, aur A diagonal variances ke jame ke barabar nikalta hai) aur <b>&lambda; = B ki equation</b> — B constant term hai (yeh C ke determinant ke barabar hota hai). Is quadratic ko mashhoor formula se solve karne par do eigenvalues milte hain:</p>
     <div class="formula">&lambda; = (A &plusmn; &radic;(A² − 4B)) / 2</div>
-    <p>Each solution λ is an eigenvalue: the amount of variance along one hidden direction of the data. For a 4-feature dataset like Iris, the same idea gives a degree-4 polynomial with 4 eigenvalues — but sklearn solves it numerically so you never write that by hand.</p>
+    <p class="en">Each solution λ is an eigenvalue: the amount of variance along one hidden direction of the data. For a 4-feature dataset like Iris, the same idea gives a degree-4 polynomial with 4 eigenvalues — but sklearn solves it numerically so you never write that by hand.</p>
+    <p class="ru">Har solution λ aik eigenvalue hai: data ki kisi chhupi hui direction ke saath variance ki miqdaar. Iris jaise 4-feature dataset par isi idea se degree-4 polynomial banta hai jiske 4 eigenvalues hote hain — lekin sklearn ise numerically solve karta hai, to aapko kabhi haath se likhna nahi padta.</p>
 
-    <p><b>Step 4 — find the eigenvectors (principal axes).</b> For each eigenvalue λ, plug it back and solve:</p>
+    <p class="en"><b>Step 4 — find the eigenvectors (principal axes).</b> For each eigenvalue λ, plug it back and solve:</p>
+    <p class="ru"><b>Step 4 — eigenvectors dhoondein (principal axes).</b> Har eigenvalue λ wapis rakh kar solve karein:</p>
     <div class="formula">(C − λI) · v = 0 &nbsp; → &nbsp; v = the eigenvector for that λ</div>
-    <p>The eigenvector v is a direction the covariance matrix does not rotate — one principal axis. Eigenvectors and eigenvalues are <a href="../concepts.html">already explained in Core Concepts</a>.</p>
+    <p class="en">The eigenvector v is a direction the covariance matrix does not rotate — one principal axis. Eigenvectors and eigenvalues are <a href="../concepts.html">already explained in Core Concepts</a>.</p>
+    <p class="ru">Eigenvector v woh direction hai jise covariance matrix ghumaata nahi — aik principal axis. Eigenvectors aur eigenvalues <a href="../concepts.html">Core Concepts mein already samjhaaye gaye hain</a>.</p>
 
-    <p><b>Step 5 — sort by λ, keep top k, project.</b> Sort the eigenvectors by their eigenvalues (biggest variance first), keep the top k (e.g. 2), stack them as rows of a matrix W, and rotate the data onto the new axes:</p>
+    <p class="en"><b>Step 5 — sort by λ, keep top k, project.</b> Sort the eigenvectors by their eigenvalues (biggest variance first), keep the top k (e.g. 2), stack them as rows of a matrix W, and rotate the data onto the new axes:</p>
+    <p class="ru"><b>Step 5 — λ se sort karein, top k rakhein, project karein.</b> Eigenvectors ko unke eigenvalues ke hisaab se sort karein (sab se bari variance pehle), top k rakhein (misal ke tor par 2), unhein matrix W ki rows ki tarah lagayein, aur data ko naye axes par ghumayein:</p>
     <div class="formula">Z = X<sub>centered</sub> · W<sup>T</sup></div>
-    <p>Z is your reduced dataset: same rows, now only k columns (PC1, PC2, …), with PC1 holding the largest share of variance.</p>
+    <p class="en">Z is your reduced dataset: same rows, now only k columns (PC1, PC2, …), with PC1 holding the largest share of variance.</p>
+    <p class="ru">Z aapka reduced dataset hai: wohi rows, ab sirf k columns (PC1, PC2, …), aur PC1 ke paas variance ka sab se bara hissa hota hai.</p>
 
-    <div class="term"><b>Projection:</b> dropping data onto a line or plane by a perpendicular "shadow" — geometrically, z = x · w is the length of x's shadow on direction w. PCA projects every point onto the top eigenvector directions, so each point's many numbers collapse into a few shadow-coordinates (its PC scores).</div>
-    <div class="term"><b>Explained variance ratio:</b> for each component, its eigenvalue divided by the total of all eigenvalues — the fraction of the dataset's total variance (information) that this one component carries. In sklearn it is <code>pca.explained_variance_ratio_</code>; e.g. [0.92, 0.05] means PC1 holds 92% of the information and PC2 another 5%. You decide how many components to keep by adding these up (e.g. keep enough to pass 95%).</div>
-    <p class="callout">Standardizing first (<code>StandardScaler</code>, which makes every feature mean 0 and std 1 — <a href="../concepts.html">already explained in Core Concepts</a>) is not optional decoration: PCA chases <i>variance</i>, so any feature measured in bigger units (petal length in cm vs a pixel 0–255) would dominate the components just because its numbers are bigger, not because it matters more.</p>
+    <div class="term en"><b>Projection:</b> dropping data onto a line or plane by a perpendicular "shadow" — geometrically, z = x · w is the length of x's shadow on direction w. PCA projects every point onto the top eigenvector directions, so each point's many numbers collapse into a few shadow-coordinates (its PC scores).</div>
+    <div class="term ru"><b>Projection:</b> data ko kisi line ya plane par perpendicular "saaya" girana — geometrically, z = x · w woh lambai hai jo x ke saaye ki direction w par hoti hai. PCA har point ko top eigenvector directions par project karta hai, is liye har point ke bohat se numbers chand saaya-coordinates mein simat jaate hain (uske PC scores).</div>
+    <div class="term en"><b>Explained variance ratio:</b> for each component, its eigenvalue divided by the total of all eigenvalues — the fraction of the dataset's total variance (information) that this one component carries. In sklearn it is <code>pca.explained_variance_ratio_</code>; e.g. [0.92, 0.05] means PC1 holds 92% of the information and PC2 another 5%. You decide how many components to keep by adding these up (e.g. keep enough to pass 95%).</div>
+    <div class="term ru"><b>Explained variance ratio:</b> har component ka apna eigenvalue tamam eigenvalues ke jame par divide hua — dataset ki total variance (information) ka woh hissa jo yeh aik component apne paas rakhta hai. sklearn mein yeh <code>pca.explained_variance_ratio_</code> hai; misal ke tor par [0.92, 0.05] ka matlab PC1 ke paas 92% information hai aur PC2 ke paas aura 5%. Aap inhein jama kar ke tay karte hain ke kitne components rakhne hain (misal ke tor par itne rakhein ke 95% cross ho jaye).</div>
+    <p class="callout en">Standardizing first (<code>StandardScaler</code>, which makes every feature mean 0 and std 1 — <a href="../concepts.html">already explained in Core Concepts</a>) is not optional decoration: PCA chases <i>variance</i>, so any feature measured in bigger units (petal length in cm vs a pixel 0–255) would dominate the components just because its numbers are bigger, not because it matters more.</p>
+    <p class="callout ru">Pehle standardize karna (<code>StandardScaler</code>, jo har feature ko mean 0 aur std 1 bana deta hai — <a href="../concepts.html">Core Concepts mein already samjhaya gaya</a>) koi ikhtiyari sajawat nahi: PCA <i>variance</i> ka peechha karta hai, to jo feature baray units mein napa gaya ho (petal length cm mein vs pixel 0–255) woh components par chhaa jayega — sirf is liye ke uske numbers bare hain, ye ke woh zyada ahem ho.</p>
 
-    <h2>Diagram</h2>
+    <h2 class="en">Diagram</h2>
+    <h2 class="ru">Diagram</h2>
     <figure>
       <img src="https://upload.wikimedia.org/wikipedia/commons/f/f5/GaussianScatterPCA.svg" alt="Scatter plot of a 2D Gaussian point cloud with PC1 and PC2 axes drawn over it">
       <figcaption>Source: Wikipedia/Wikimedia Commons</figcaption>
     </figure>
-    <p>Notice that the cloud is tilted: the crowd stretches most along the long arrow — that direction is PC1, the eigenvector with the biggest eigenvalue — and the short perpendicular arrow is PC2. If you kept only PC1 you'd lose just the thin spread of the shadow.</p>
+    <p class="en">Notice that the cloud is tilted: the crowd stretches most along the long arrow — that direction is PC1, the eigenvector with the biggest eigenvalue — and the short perpendicular arrow is PC2. If you kept only PC1 you'd lose just the thin spread of the shadow.</p>
+    <p class="ru">Dhyan dein ke cloud tircha hai: bheed sab se zyada lambi arrow ke saath phaili hui hai — wohi direction PC1 hai, sab se bare eigenvalue wala eigenvector — aur chhoti perpendicular arrow PC2 hai. Agar aap sirf PC1 rakhein to aapko sirf saaye ka patla phail khona parega.</p>
 
-    <h2>Dataset (Kaggle)</h2>
-    <p><b>uciml/iris</b> via kagglehub → file <code>Iris.csv</code>. The classic Iris dataset, collected by Edgar Anderson and made famous by R.A. Fisher (1936): 150 iris flowers, each measured on 4 numeric features — sepal length, sepal width, petal length, petal width (all in cm) — plus a <code>Species</code> column with three balanced classes (50 each of <i>Iris-setosa</i>, <i>Iris-versicolor</i>, <i>Iris-virginica</i>) and an <code>Id</code> row-number column we drop. It's the perfect PCA demo: 4 features is too many to plot, but 2 PCs are enough to see the species separate.</p>
+    <h2 class="en">Dataset (Kaggle)</h2>
+    <h2 class="ru">Dataset (Kaggle)</h2>
+    <p class="en"><b>uciml/iris</b> via kagglehub → file <code>Iris.csv</code>. The classic Iris dataset, collected by Edgar Anderson and made famous by R.A. Fisher (1936): 150 iris flowers, each measured on 4 numeric features — sepal length, sepal width, petal length, petal width (all in cm) — plus a <code>Species</code> column with three balanced classes (50 each of <i>Iris-setosa</i>, <i>Iris-versicolor</i>, <i>Iris-virginica</i>) and an <code>Id</code> row-number column we drop. It's the perfect PCA demo: 4 features is too many to plot, but 2 PCs are enough to see the species separate.</p>
+    <p class="ru"><b>uciml/iris</b> kagglehub ke zariye → file <code>Iris.csv</code>. Classic Iris dataset, jise Edgar Anderson ne jama kiya aur R.A. Fisher (1936) ne mashhoor kiya: 150 iris ke phool, har phool par 4 numeric features — sepal length, sepal width, petal length, petal width (sab cm mein) — plus aik <code>Species</code> column jis mein teen balanced classes hain (<i>Iris-setosa</i>, <i>Iris-versicolor</i>, <i>Iris-virginica</i> — har aik 50) aur aik <code>Id</code> column jo sirf row number hota hai, hum usay drop kar dete hain. Yeh PCA ke liye behtareen demo hai: 4 features plot karne ke liye bohat zyada hain, lekin 2 PCs kaafi hain dekhne ke liye ke species alag ho rahe hain.</p>
 
-    <h2>Practice code — run in Google Colab, top to bottom</h2>
-    <div class="callout">Blocks must run in order. Copy each block into a Colab cell and run with Shift+Enter. kagglehub needs no API key for public datasets.</div>
+    <h2 class="en">Practice code — run in Google Colab, top to bottom</h2>
+    <h2 class="ru">Practice code — Google Colab mein, upar se neeche tak chalayein</h2>
+    <div class="callout en">Blocks must run in order. Copy each block into a Colab cell and run with Shift+Enter. kagglehub needs no API key for public datasets.</div>
+    <div class="callout ru">Blocks tarteeb se chalane hain. Har block ko Colab cell mein copy karein aur Shift+Enter se chalayein. Public datasets ke liye kagglehub ko kisi API key ki zaroorat nahi.</div>
 
     <div class="block-label">BLOCK 1: imports</div>
-    <p>Everything we need: pandas/numpy for data, kagglehub for the dataset, sklearn for scaling, PCA and Logistic Regression, matplotlib/seaborn for plots.</p>
+    <p class="en">Everything we need: pandas/numpy for data, kagglehub for the dataset, sklearn for scaling, PCA and Logistic Regression, matplotlib/seaborn for plots.</p>
+    <p class="ru">Jo kuch chahiye woh sab: pandas/numpy data ke liye, kagglehub dataset ke liye, sklearn scaling, PCA aur Logistic Regression ke liye, matplotlib/seaborn plots ke liye.</p>
     <pre><code>import glob                       # to find the downloaded CSV file path
 import kagglehub                  # one-line Kaggle dataset download
 import numpy as np                # matrix math (covariance, eigenvalues)
@@ -127,7 +157,8 @@ from sklearn.metrics import accuracy_score         # score the classifier
 print("imports ok")</code></pre>
 
     <div class="block-label">BLOCK 2: download the dataset with kagglehub</div>
-    <p>kagglehub pulls the public Iris dataset straight into Colab — no account, no manual upload.</p>
+    <p class="en">kagglehub pulls the public Iris dataset straight into Colab — no account, no manual upload.</p>
+    <p class="ru">kagglehub public Iris dataset seedha Colab mein le aata hai — na account chahiye, na manually upload karna parega.</p>
     <pre><code># download uciml/iris and get the local folder path where it lives
 path = kagglehub.dataset_download("uciml/iris")
 print("dataset folder:", path)
@@ -137,35 +168,40 @@ csv_file = glob.glob(path + "/Iris.csv")[0]
 print("csv file:", csv_file)</code></pre>
 
     <div class="block-label">BLOCK 3: load and look at the data</div>
-    <p>Load the table, check its shape, and eyeball the first rows so we know the columns before touching them.</p>
+    <p class="en">Load the table, check its shape, and eyeball the first rows so we know the columns before touching them.</p>
+    <p class="ru">Table load karein, shape check karein, aur pehli rows nazar se dekh lein taake columns ko haath lagane se pehle hum unhein jaan lein.</p>
     <pre><code>df = pd.read_csv(csv_file)          # read the CSV into a DataFrame
 print(df.shape)                     # (150, 5): 150 flowers, 5 columns
 print(df["Species"].value_counts()) # 50 flowers per species — balanced classes
 df.head()                           # first 5 rows: Id, 4 measurements, Species</code></pre>
 
     <div class="block-label">BLOCK 4: clean — drop Id, split features from labels</div>
-    <p><code>Id</code> is just a row number: it carries no information, and PCA would happily build a component out of it if we left it in. We keep X (4 measurements) and y (labels) apart because PCA may only ever see X.</p>
+    <p class="en"><code>Id</code> is just a row number: it carries no information, and PCA would happily build a component out of it if we left it in. We keep X (4 measurements) and y (labels) apart because PCA may only ever see X.</p>
+    <p class="ru"><code>Id</code> sirf aik row number hai: is mein koi information nahi, aur agar hum ise chor dein to PCA khushi khushi is se bhi component bana leta. Hum X (4 measurements) aur y (labels) alag rakhte hain kyunke PCA ko sirf X dekhne ki ijazat hai.</p>
     <pre><code>df = df.drop(columns=["Id"])        # Id is a row index, not a real feature
 X = df[["SepalLengthCm", "SepalWidthCm", "PetalLengthCm", "PetalWidthCm"]]
 y = df["Species"]                   # labels kept OUT of PCA (it is unsupervised)
 print(X.describe().round(2))        # means/stds differ per feature → must scale</code></pre>
 
     <div class="block-label">BLOCK 5: standardize with StandardScaler</div>
-    <p>PCA hunts for variance, so we first force all 4 features to mean 0 and std 1 — otherwise the feature with the biggest raw numbers would hijack PC1. This is Step 1 of the math section, plus unit scaling.</p>
+    <p class="en">PCA hunts for variance, so we first force all 4 features to mean 0 and std 1 — otherwise the feature with the biggest raw numbers would hijack PC1. This is Step 1 of the math section, plus unit scaling.</p>
+    <p class="ru">PCA variance ka shikaar karta hai, is liye hum pehle 4 features ko mean 0 aur std 1 par la dete hain — warna jis feature ke raw numbers sab se bare hoten woh PC1 ko hijack kar leta. Yeh math section ka Step 1 hai, unit scaling ke saath.</p>
     <pre><code>scaler = StandardScaler()           # learns each column's mean and std
 X_scaled = scaler.fit_transform(X)  # subtract mean, divide by std → centered data
 print("column means after scaling:", np.round(X_scaled.mean(axis=0), 3))  # all ~0
 print("column stds  after scaling:", np.round(X_scaled.std(axis=0), 3))   # all ~1</code></pre>
 
     <div class="block-label">BLOCK 6: run PCA down to 2 components</div>
-    <p><code>fit_transform</code> does the whole eigen-math pipeline on the scaled data — covariance matrix, eigenvalues/eigenvectors, sort, keep the top 2, project — and hands back 150 rows × 2 columns of PC scores.</p>
+    <p class="en"><code>fit_transform</code> does the whole eigen-math pipeline on the scaled data — covariance matrix, eigenvalues/eigenvectors, sort, keep the top 2, project — and hands back 150 rows × 2 columns of PC scores.</p>
+    <p class="ru"><code>fit_transform</code> scaled data par poora eigen-math pipeline chala deta hai — covariance matrix, eigenvalues/eigenvectors, sort, top 2 rakhna, project — aur wapas 150 rows × 2 columns ke PC scores deta hai.</p>
     <pre><code>pca = PCA(n_components=2)           # keep only the top 2 directions (k = 2)
 X_pca = pca.fit_transform(X_scaled) # fit finds the axes, transform projects points
 print("before PCA:", X_scaled.shape)  # (150, 4)
 print("after  PCA:", X_pca.shape)     # (150, 2) — 4 features compressed to 2</code></pre>
 
     <div class="block-label">BLOCK 7: how much information did the 2 axes keep?</div>
-    <p><code>explained_variance_ratio_</code> is each eigenvalue's share of the total — the honest receipt for the compression. 0.92 + 0.05 = 0.97 would mean 97% of the variance survived.</p>
+    <p class="en"><code>explained_variance_ratio_</code> is each eigenvalue's share of the total — the honest receipt for the compression. 0.92 + 0.05 = 0.97 would mean 97% of the variance survived.</p>
+    <p class="ru"><code>explained_variance_ratio_</code> har eigenvalue ka total mein hissa hai — compression ka imaandar receipt. 0.92 + 0.05 = 0.97 ka matlab 97% variance bach gaya.</p>
     <pre><code>print("explained variance ratio:", pca.explained_variance_ratio_.round(4))
 # PC1 keeps ~92.5%, PC2 ~5.3% → together ~97.8% of the original information
 print("total kept:", pca.explained_variance_ratio_.sum().round(4))
@@ -177,7 +213,8 @@ plt.title("How much info each principal component keeps")
 plt.show()</code></pre>
 
     <div class="block-label">BLOCK 8: scatter PC1 vs PC2 colored by Species</div>
-    <p>The payoff plot: PCA never saw the labels, yet coloring the 2-D points by Species shows three clean groups — setosa fully separate, virginica/versicolor touching. This is exactly the picture K-Means and DBSCAN would cluster on.</p>
+    <p class="en">The payoff plot: PCA never saw the labels, yet coloring the 2-D points by Species shows three clean groups — setosa fully separate, virginica/versicolor touching. This is exactly the picture K-Means and DBSCAN would cluster on.</p>
+    <p class="ru">Asal inaam wala plot: PCA ne labels kabhi nahi dekhe, phir bhi 2-D points ko Species ke rang se rangne par teen saaf groups nazar aate hain — setosa bilkul alag, virginica/versicolor aapas mein lagte hue. Yeh wohi manzar hai jis par K-Means aur DBSCAN cluster karte.</p>
     <pre><code>plt.figure(figsize=(7, 5))
 for species, color in [("Iris-setosa", "#4C72B0"),
                        ("Iris-versicolor", "#DD8452"),
@@ -193,7 +230,8 @@ plt.show()
 # K-Means or DBSCAN could now cluster these 2 columns directly</code></pre>
 
     <div class="block-label">BLOCK 9: inspect components_ — what is each PC made of?</div>
-    <p><code>components_</code> holds the eigenvectors (one per row). Its entries are the weights of each original feature, so you can read what PC1 "means".</p>
+    <p class="en"><code>components_</code> holds the eigenvectors (one per row). Its entries are the weights of each original feature, so you can read what PC1 "means".</p>
+    <p class="ru"><code>components_</code> mein eigenvectors hote hain (har row mein aik). Is ki entries har original feature ke weights hain, is liye aap parh sakte hain ke PC1 ka "matlab" kya hai.</p>
     <pre><code>components_df = pd.DataFrame(
     pca.components_,                                    # 2 eigenvectors as rows
     columns=X.columns,                                  # weight per original feature
@@ -203,7 +241,8 @@ print(components_df.round(3))
 # PC2 ≈ sepal width vs petal length in opposite signs (a "shape contrast" axis)</code></pre>
 
     <div class="block-label">BLOCK 10: heatmap of the components</div>
-    <p>A heatmap makes the weights readable at a glance: strong color = that original feature matters a lot for that component; sign tells direction.</p>
+    <p class="en">A heatmap makes the weights readable at a glance: strong color = that original feature matters a lot for that component; sign tells direction.</p>
+    <p class="ru">Heatmap weights ko aik nazar mein parhne layak bana deta hai: gehra rang = woh original feature us component ke liye bohat ahem hai; sign direction batata hai.</p>
     <pre><code>sns.heatmap(components_df, annot=True, cmap="coolwarm", center=0)
 plt.title("Which original features each principal component uses")
 plt.ylabel("principal component")
@@ -211,7 +250,8 @@ plt.xlabel("original feature")
 plt.show()</code></pre>
 
     <div class="block-label">BLOCK 11: the compression payoff — 2 PCs vs 4 originals</div>
-    <p>Train the same Logistic Regression twice: once on all 4 original (scaled) features, once on the 2 PCs. Nearly the same accuracy with half the features — that is the whole point of PCA.</p>
+    <p class="en">Train the same Logistic Regression twice: once on all 4 original (scaled) features, once on the 2 PCs. Nearly the same accuracy with half the features — that is the whole point of PCA.</p>
+    <p class="ru">Wohi Logistic Regression do dafa train karein: aik baar tamam 4 original (scaled) features par, aik baar 2 PCs par. Aadhe features ke bawajood taqreeban wohi accuracy — yahi PCA ka asal matlab hai.</p>
     <pre><code># same split for both runs so the comparison is fair
 X_train, X_test, y_train, y_test = train_test_split(
     X_scaled, y, test_size=0.3, random_state=42, stratify=y)
@@ -233,36 +273,61 @@ print(f"accuracy with 4 original features: {acc_full:.3f}")
 print(f"accuracy with 2 PCA components:    {acc_pca:.3f}")
 # expect ~0.95-0.98 vs ~0.93-0.98 → same ballpark, half the features stored</code></pre>
 
-    <h2>Real-world use cases &amp; companies</h2>
+    <h2 class="en">Real-world use cases &amp; companies</h2>
+    <h2 class="ru">Asli duniya ke use cases aur companies</h2>
     <table>
-      <tr><th>Use case</th><th>Who uses it / example</th></tr>
-      <tr><td>Image compression</td><td>Reducing pixel-heavy images to a few components and storing only those — the idea behind classic eigenfaces face recognition (MIT's Turk &amp; Pentland eigenfaces approach), still taught in every vision course before CNNs and VGG16 took over.</td></tr>
-      <tr><td>Visualizing high-dimensional data</td><td>Standard first step in genomics: single-cell RNA-seq labs (e.g. 10x Genomics pipelines, the Scanpy tool used by research groups worldwide) plot millions of cells in 2 PCA dimensions to reveal cell types.</td></tr>
-      <tr><td>Noise reduction</td><td>Keeping only the top-variance components and discarding the rest filters out noise — used in EEG/brain-signal analysis and in astronomy (e.g. cleaning stellar light-curve data in exoplanet searches).</td></tr>
-      <tr><td>Finance risk factors</td><td>Quant funds model yield curves with 3 PCA factors (level, slope, curvature); documented in ECB and Federal Reserve working papers on interest-rate risk.</td></tr>
-      <tr><td>Speeding up ML pipelines</td><td>Any distance-based learner — KNN, SVM, K-Means — gets faster and less noisy when PCA cuts hundreds of features to dozens first; a standard preprocessing trick in sklearn production pipelines.</td></tr>
+      <tr class="en"><th>Use case</th><th>Who uses it / example</th></tr>
+      <tr class="ru"><th>Use case</th><th>Kaun use karta hai / misaal</th></tr>
+      <tr class="en"><td>Image compression</td><td>Reducing pixel-heavy images to a few components and storing only those — the idea behind classic eigenfaces face recognition (MIT's Turk &amp; Pentland eigenfaces approach), still taught in every vision course before CNNs and VGG16 took over.</td></tr>
+      <tr class="ru"><td>Image compression</td><td>Pixels se bharpoor tasveeron ko chand components tak kam kar ke sirf wahi store karna — classic eigenfaces face recognition (MIT ke Turk &amp; Pentland ka eigenfaces approach) ki bunyad yehi hai, jo aaj bhi har vision course mein CNNs aur VGG16 se pehle parhaya jaata hai.</td></tr>
+      <tr class="en"><td>Visualizing high-dimensional data</td><td>Standard first step in genomics: single-cell RNA-seq labs (e.g. 10x Genomics pipelines, the Scanpy tool used by research groups worldwide) plot millions of cells in 2 PCA dimensions to reveal cell types.</td></tr>
+      <tr class="ru"><td>High-dimensional data ko dekhna</td><td>Genomics ka standard pehla qadam: single-cell RNA-seq labs (misal ke tor par 10x Genomics pipelines, duniya bhar ke research groups ka istemal karne wala Scanpy tool) lakhon cells ko 2 PCA dimensions mein plot kar ke cell types samajhte hain.</td></tr>
+      <tr class="en"><td>Noise reduction</td><td>Keeping only the top-variance components and discarding the rest filters out noise — used in EEG/brain-signal analysis and in astronomy (e.g. cleaning stellar light-curve data in exoplanet searches).</td></tr>
+      <tr class="ru"><td>Noise kam karna</td><td>Sirf top-variance components rakh kar baqi phenk dena noise ko filter kar deta hai — EEG/brain-signal analysis mein aur astronomy mein use hota hai (misal ke tor par exoplanet talash mein sitaron ke light-curve data saaf karna).</td></tr>
+      <tr class="en"><td>Finance risk factors</td><td>Quant funds model yield curves with 3 PCA factors (level, slope, curvature); documented in ECB and Federal Reserve working papers on interest-rate risk.</td></tr>
+      <tr class="ru"><td>Finance risk factors</td><td>Quant funds yield curves ko 3 PCA factors (level, slope, curvature) se model karte hain; ECB aur Federal Reserve ke working papers mein interest-rate risk par yeh likha gaya hai.</td></tr>
+      <tr class="en"><td>Speeding up ML pipelines</td><td>Any distance-based learner — KNN, SVM, K-Means — gets faster and less noisy when PCA cuts hundreds of features to dozens first; a standard preprocessing trick in sklearn production pipelines.</td></tr>
+      <tr class="ru"><td>ML pipelines tez karna</td><td>Har distance-based learner — KNN, SVM, K-Means — tab tez aur kam noisy chalta hai jab PCA pehle saikron features ko darchon tak kaat de; sklearn production pipelines ka aik standard preprocessing trick.</td></tr>
     </table>
-    <div class="callout">From your class notes: <b>"PCA converts high features to low features"</b> — every row of the table above is that one sentence applied to pixels, genes, signals, or yields. And <b>"SVM is totally opposite to PCA"</b>: SVM is a supervised classifier drawing decision boundaries; PCA is an unsupervised reducer compressing columns. One predicts, one compresses — they solve different problems, which is why chaining them (PCA → SVM) works so well.</div>
+    <div class="callout en">From your class notes: <b>"PCA converts high features to low features"</b> — every row of the table above is that one sentence applied to pixels, genes, signals, or yields. And <b>"SVM is totally opposite to PCA"</b>: SVM is a supervised classifier drawing decision boundaries; PCA is an unsupervised reducer compressing columns. One predicts, one compresses — they solve different problems, which is why chaining them (PCA → SVM) works so well.</div>
+    <div class="callout ru">Aapke class notes se: <b>"PCA converts high features to low features"</b> — upar wali table ki har row wohi aik jumla hai, pixels, genes, signals ya yields par lagaya hua. Aur <b>"SVM is totally opposite to PCA"</b>: SVM supervised classifier hai jo decision boundaries khinchta hai; PCA unsupervised reducer hai jo columns ko compress karta hai. Aik predict karta hai, aik compress karta hai — dono alag maslon ke hal hain, isi liye dono ko jorna (PCA → SVM) itna acha kaam karta hai.</div>
 
-    <h2>Combining with other algorithms (project ideas)</h2>
-    <p><b>PCA → K-Means.</b> Run PCA to get PC1/PC2, then cluster the 2-D scores with K-Means (topic 08). Compare the clusters found to the true Species labels with a Confusion Matrix (topic 01) — you'll see unsupervised K-Means largely rediscovers the classes PCA revealed.</p>
-    <p><b>PCA → Logistic Regression / SVM pipeline.</b> Compress with PCA, classify with Logistic Regression (topic 05) or SVM, and compare accuracy and training time against the raw features. This is Block 11 generalized, and the classic "reduce then classify" pattern for high-dimensional data.</p>
-    <p><b>PCA before any distance algorithm.</b> K-Means and DBSCAN (topic 03) both rely on Euclidean distance, which gets unreliable in many dimensions (distances all blur together). Projecting to a few PCs first makes their distances meaningful — try DBSCAN on the 2 Iris PCs and watch it isolate setosa.</p>
-    <p><b>PCA as a window into other models.</b> After training Multiple Regression (topic 09), use PCA on the predictors to check for redundant features; and when comparing CNN/VGG16 (topics 02, 04) embeddings, PCA is how you plot those high-dimensional feature vectors in 2-D to see class separation.</p>
+    <h2 class="en">Combining with other algorithms (project ideas)</h2>
+    <h2 class="ru">Dusre algorithms ke saath mila kar use karna (project ideas)</h2>
+    <p class="en"><b>PCA → K-Means.</b> Run PCA to get PC1/PC2, then cluster the 2-D scores with K-Means (topic 08). Compare the clusters found to the true Species labels with a Confusion Matrix (topic 01) — you'll see unsupervised K-Means largely rediscovers the classes PCA revealed.</p>
+    <p class="ru"><b>PCA → K-Means.</b> PCA chala kar PC1/PC2 lein, phir 2-D scores par K-Means (topic 08) se cluster karein. Mile hue clusters ko asli Species labels se Confusion Matrix (topic 01) par compare karein — aap dekhenge ke unsupervised K-Means wohi classes dobara dhoond leta hai jo PCA ne samne laye the.</p>
+    <p class="en"><b>PCA → Logistic Regression / SVM pipeline.</b> Compress with PCA, classify with Logistic Regression (topic 05) or SVM, and compare accuracy and training time against the raw features. This is Block 11 generalized, and the classic "reduce then classify" pattern for high-dimensional data.</p>
+    <p class="ru"><b>PCA → Logistic Regression / SVM pipeline.</b> PCA se compress karein, Logistic Regression (topic 05) ya SVM se classify karein, aur accuracy aur training time raw features se compare karein. Yeh Block 11 ki aam shakal hai, aur high-dimensional data ke liye classic "pehle reduce, phir classify" pattern.</p>
+    <p class="en"><b>PCA before any distance algorithm.</b> K-Means and DBSCAN (topic 03) both rely on Euclidean distance, which gets unreliable in many dimensions (distances all blur together). Projecting to a few PCs first makes their distances meaningful — try DBSCAN on the 2 Iris PCs and watch it isolate setosa.</p>
+    <p class="ru"><b>Har distance algorithm se pehle PCA.</b> K-Means aur DBSCAN (topic 03) dono Euclidean distance par bharosa karte hain, jo bohat saari dimensions par bharosa nahi rehti (saari distances aapas mein mil jaati hain). Pehle chand PCs par project karna unki distances ko maani banata hai — Iris ke 2 PCs par DBSCAN chala kar dekhein aur use setosa ko alag karte dekhein.</p>
+    <p class="en"><b>PCA as a window into other models.</b> After training Multiple Regression (topic 09), use PCA on the predictors to check for redundant features; and when comparing CNN/VGG16 (topics 02, 04) embeddings, PCA is how you plot those high-dimensional feature vectors in 2-D to see class separation.</p>
+    <p class="ru"><b>Dusre models ko jhaankne ke liye PCA.</b> Multiple Regression (topic 09) train karne ke baad predictors par PCA chala kar redundant features check karein; aur jab CNN/VGG16 (topics 02, 04) ke embeddings compare karein to un high-dimensional feature vectors ko 2-D mein plot karne ka tareeqa PCA hi hai taake class separation nazar aaye.</p>
 
-    <h2>Interview Q&amp;A</h2>
-    <div class="qa"><div class="q">Q: What are the steps of PCA?</div><div class="a">A: (1) Standardize/center each feature (mean 0, std 1). (2) Compute the covariance matrix of the features. (3) Solve the characteristic equation det(C − λI) = 0 to get the eigenvalues. (4) Find the eigenvectors — these are the principal axes. (5) Sort by eigenvalue descending and keep the top k. (6) Project the data onto those k axes: Z = X·W<sup>T</sup>. sklearn's PCA does all of this (via SVD) inside fit_transform.</div></div>
-    <div class="qa"><div class="q">Q: Why standardize before PCA?</div><div class="a">A: PCA maximizes variance, and variance is scale-dependent. A feature measured in larger units (salary in rupees vs age in years) has bigger variance and would dominate PC1 for no reason other than its units. StandardScaler puts every feature at mean 0, std 1 so each contributes fairly.</div></div>
-    <div class="qa"><div class="q">Q: PCA vs K-Means — both unsupervised, what's the difference?</div><div class="a">A: PCA reduces dimensions: it builds new features (principal components) that summarize the data, but groups nothing. K-Means groups samples into k clusters using labels it invents. They answer different questions — "compress the columns" vs "group the rows" — and pair beautifully: PCA to 2-D, then K-Means on the PC scores.</div></div>
-    <div class="qa"><div class="q">Q: What do the eigenvalues of the covariance matrix tell you in PCA?</div><div class="a">A: Each eigenvalue is the amount of variance along its eigenvector's direction. Sorting eigenvalues descending ranks the directions; the ratio λ<sub>i</sub> / Σλ (explained_variance_ratio_) is the share of total information component i carries.</div></div>
-    <div class="qa"><div class="q">Q: What is explained_variance_ratio_ and how do you use it to pick k?</div><div class="a">A: It's each component's eigenvalue divided by the sum of all eigenvalues — the fraction of total variance it keeps. You pick k by cumulative sum: keep the smallest k whose ratios add up to a target like 95%. For Iris, 2 components already sum to ~97.8%.</div></div>
-    <div class="qa"><div class="q">Q: Is PCA supervised or unsupervised? Does it use the target column?</div><div class="a">A: Unsupervised — it never reads the labels. It only looks at how the input features spread (covariance). That's why species clusters "appearing" in the PC1/PC2 plot is meaningful: the labels were added for coloring only, after the fact.</div></div>
-    <div class="qa"><div class="q">Q: Why is your teacher's point "SVM is totally opposite to PCA" right — and where do they still work together?</div><div class="a">A: They're opposite in job: SVM is a supervised classifier that draws decision boundaries; PCA is an unsupervised reducer that compresses features and predicts nothing. But they chain well: PCA → SVM is a classic pipeline — compress to a few components so the SVM trains faster and its distance-based margin is less distorted by many noisy dimensions.</div></div>
-    <div class="qa"><div class="q">Q: What information does PCA lose, and when is that dangerous?</div><div class="a">A: It keeps only the top-variance directions and discards the rest — low-variance features carrying the real signal get thrown away. If class separation lives in a small-variance direction (common in fraud or rare-detection tasks), PCA can hurt accuracy. Always validate downstream performance before/after, like our Block 11.</div></div>
-    <div class="qa"><div class="q">Q: How would you use PCA with Logistic Regression on Iris, and what result do you expect?</div><div class="a">A: Standardize, fit PCA(n_components=2), project, then train Logistic Regression on the 2 PCs and compare with the 4-feature model. On Iris both land around 93–98% accuracy — near-identical performance with half the features stored, which is exactly the compression payoff PCA promises.</div></div>
+    <h2 class="en">Interview Q&amp;A</h2>
+    <h2 class="ru">Interview ke sawal-o-jawab</h2>
+    <div class="qa en"><div class="q">Q: What are the steps of PCA?</div><div class="a">A: (1) Standardize/center each feature (mean 0, std 1). (2) Compute the covariance matrix of the features. (3) Solve the characteristic equation det(C − λI) = 0 to get the eigenvalues. (4) Find the eigenvectors — these are the principal axes. (5) Sort by eigenvalue descending and keep the top k. (6) Project the data onto those k axes: Z = X·W<sup>T</sup>. sklearn's PCA does all of this (via SVD) inside fit_transform.</div></div>
+    <div class="qa ru"><div class="q">Q: PCA ke steps kya hain?</div><div class="a">A: (1) Har feature ko standardize/center karein (mean 0, std 1). (2) Features ka covariance matrix banayein. (3) Characteristic equation det(C − λI) = 0 solve kar ke eigenvalues nikaalein. (4) Eigenvectors dhoondein — yehi principal axes hain. (5) Eigenvalues ke hisaab se descending sort karein aur top k rakhein. (6) Data ko un k axes par project karein: Z = X·W<sup>T</sup>. sklearn ka PCA yeh sab fit_transform ke andar (SVD ke zariye) karta hai.</div></div>
+    <div class="qa en"><div class="q">Q: Why standardize before PCA?</div><div class="a">A: PCA maximizes variance, and variance is scale-dependent. A feature measured in larger units (salary in rupees vs age in years) has bigger variance and would dominate PC1 for no reason other than its units. StandardScaler puts every feature at mean 0, std 1 so each contributes fairly.</div></div>
+    <div class="qa ru"><div class="q">Q: PCA se pehle standardize kyun karte hain?</div><div class="a">A: PCA variance ko maximize karta hai, aur variance scale par depend karti hai. Baray units mein napa gaya feature (salary rupees mein vs age saal mein) badi variance rakhta hai aur kisi wajah ke bagair — sirf apne units ki wajah se — PC1 par chhaa jata hai. StandardScaler har feature ko mean 0, std 1 par le aata hai taake har aik ka adal se hissa ho.</div></div>
+    <div class="qa en"><div class="q">Q: PCA vs K-Means — both unsupervised, what's the difference?</div><div class="a">A: PCA reduces dimensions: it builds new features (principal components) that summarize the data, but groups nothing. K-Means groups samples into k clusters using labels it invents. They answer different questions — "compress the columns" vs "group the rows" — and pair beautifully: PCA to 2-D, then K-Means on the PC scores.</div></div>
+    <div class="qa ru"><div class="q">Q: PCA vs K-Means — dono unsupervised hain, farq kya hai?</div><div class="a">A: PCA dimensions kam karta hai: yeh nayi features (principal components) banata hai jo data ka khulasa rakhti hain, lekin kuch group nahi karta. K-Means samples ko k clusters mein baantta hai apne banaye hue labels se. Dono alag sawalon ke jawab hain — "columns ko compress karo" vs "rows ko group karo" — aur dono ki jori behtareen chalti hai: pehle 2-D tak PCA, phir PC scores par K-Means.</div></div>
+    <div class="qa en"><div class="q">Q: What do the eigenvalues of the covariance matrix tell you in PCA?</div><div class="a">A: Each eigenvalue is the amount of variance along its eigenvector's direction. Sorting eigenvalues descending ranks the directions; the ratio λ<sub>i</sub> / Σλ (explained_variance_ratio_) is the share of total information component i carries.</div></div>
+    <div class="qa ru"><div class="q">Q: PCA mein covariance matrix ke eigenvalues aap ko kya batate hain?</div><div class="a">A: Har eigenvalue apne eigenvector ki direction ke saath variance ki miqdaar hai. Eigenvalues ko descending sort karne se directions ka rank ban jaata hai; ratio λ<sub>i</sub> / Σλ (explained_variance_ratio_) total information ka woh hissa hai jo component i apne paas rakhta hai.</div></div>
+    <div class="qa en"><div class="q">Q: What is explained_variance_ratio_ and how do you use it to pick k?</div><div class="a">A: It's each component's eigenvalue divided by the sum of all eigenvalues — the fraction of total variance it keeps. You pick k by cumulative sum: keep the smallest k whose ratios add up to a target like 95%. For Iris, 2 components already sum to ~97.8%.</div></div>
+    <div class="qa ru"><div class="q">Q: explained_variance_ratio_ kya hai aur k chunne ke liye kaise use hota hai?</div><div class="a">A: Yeh har component ka apna eigenvalue tamam eigenvalues ke jame par divide hua hai — total variance ka woh hissa jo yeh rakhta hai. k cumulative sum se chuna jaata hai: sab se chhota k rakhein jis ke ratios kisi target jaise 95% tak pohanch jayein. Iris ke liye 2 components hi ~97.8% tak pohanch jaate hain.</div></div>
+    <div class="qa en"><div class="q">Q: Is PCA supervised or unsupervised? Does it use the target column?</div><div class="a">A: Unsupervised — it never reads the labels. It only looks at how the input features spread (covariance). That's why species clusters "appearing" in the PC1/PC2 plot is meaningful: the labels were added for coloring only, after the fact.</div></div>
+    <div class="qa ru"><div class="q">Q: PCA supervised hai ya unsupervised? Kya yeh target column use karta hai?</div><div class="a">A: Unsupervised — yeh labels kabhi nahi parhta. Yeh sirf dekhta hai ke input features kaise phaili hain (covariance). Isi liye PC1/PC2 plot mein species clusters ka "khud nazar aana" maani hai: labels sirf rang ke liye baad mein lagaye gaye the.</div></div>
+    <div class="qa en"><div class="q">Q: Why is your teacher's point "SVM is totally opposite to PCA" right — and where do they still work together?</div><div class="a">A: They're opposite in job: SVM is a supervised classifier that draws decision boundaries; PCA is an unsupervised reducer that compresses features and predicts nothing. But they chain well: PCA → SVM is a classic pipeline — compress to a few components so the SVM trains faster and its distance-based margin is less distorted by many noisy dimensions.</div></div>
+    <div class="qa ru"><div class="q">Q: Aapke teacher ka point "SVM is totally opposite to PCA" kyun sahi hai — aur yeh phir bhi saath kahan kaam karte hain?</div><div class="a">A: Kaam ke lihaz se dono opposite hain: SVM supervised classifier hai jo decision boundaries khinchta hai; PCA unsupervised reducer hai jo features compress karta hai aur kuch predict nahi karta. Lekin dono ki zanjeer achi chalti hai: PCA → SVM classic pipeline hai — chand components tak compress karein taake SVM tez train ho aur uska distance-based margin bohat saare noisy dimensions se kharab na ho.</div></div>
+    <div class="qa en"><div class="q">Q: What information does PCA lose, and when is that dangerous?</div><div class="a">A: It keeps only the top-variance directions and discards the rest — low-variance features carrying the real signal get thrown away. If class separation lives in a small-variance direction (common in fraud or rare-detection tasks), PCA can hurt accuracy. Always validate downstream performance before/after, like our Block 11.</div></div>
+    <div class="qa ru"><div class="q">Q: PCA kya information kho deta hai, aur kab yeh khatarnak hota hai?</div><div class="a">A: Yeh sirf top-variance directions rakhta hai aur baqi phenk deta hai — kam variance wali features jo asli signal rakhti hon woh bhi chali jaati hain. Agar class separation kisi chhoti-variance direction mein ho (fraud ya rare-detection kaamon mein aisa aam hai) to PCA accuracy gir sakta hai. Isi liye hamesha pehle/baad ka performance check karein, jaise hum ne Block 11 mein kiya.</div></div>
+    <div class="qa en"><div class="q">Q: How would you use PCA with Logistic Regression on Iris, and what result do you expect?</div><div class="a">A: Standardize, fit PCA(n_components=2), project, then train Logistic Regression on the 2 PCs and compare with the 4-feature model. On Iris both land around 93–98% accuracy — near-identical performance with half the features stored, which is exactly the compression payoff PCA promises.</div></div>
+    <div class="qa ru"><div class="q">Q: Iris par aap PCA ko Logistic Regression ke saath kaise use karein ge, aur kya result expect karte hain?</div><div class="a">A: Standardize karein, PCA(n_components=2) fit karein, project karein, phir 2 PCs par Logistic Regression train karein aur 4-feature model se compare karein. Iris par dono 93–98% accuracy ke aas paas aate hain — taqreeban same performance, aadhe features — yehi PCA ka wada kiya hua compression inaam hai.</div></div>
 
-    <div class="prevnext"><a href="simple-linear-regression.html">← Simple Linear Regression</a> | <a href="kmeans.html">K-Means →</a></div>
-    <p class="footer-note">HasnainAI — HCCDA-AI exam prep. PCA: mean → covariance → det(C − λI) = 0 → λ, v → sort → project.</p>
+    <div class="prevnext en"><a href="simple-linear-regression.html">← Simple Linear Regression</a> | <a href="kmeans.html">K-Means →</a></div>
+    <div class="prevnext ru"><a href="simple-linear-regression.html">← Pichla: Simple Linear Regression</a> | <a href="kmeans.html">Agla: K-Means →</a></div>
+    <p class="footer-note en">HasnainAI — HCCDA-AI exam prep. PCA: mean → covariance → det(C − λI) = 0 → λ, v → sort → project.</p>
+    <p class="footer-note ru">HasnainAI — HCCDA-AI exam ki tayyari. PCA: mean → covariance → det(C − λI) = 0 → λ, v → sort → project.</p>
   </main>
 </div>
 <script>

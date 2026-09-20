@@ -60,38 +60,54 @@
       <span class="chip">pandas</span>
     </div>
 
-    <h2>What it is</h2>
-    <p>Logistic regression answers a yes/no question with a probability. Instead of predicting a number like simple linear regression does, it predicts the <b>chance</b> that a sample belongs to class 1: the chance a passenger survives, an email is spam, a card transaction is fraud.</p>
-    <p>The trick: take the exact same linear equation regression uses (b<sub>0</sub> + b<sub>1</sub>x<sub>1</sub> + … + b<sub>n</sub>x<sub>n</sub>), then push that score through the <b>sigmoid function</b>, which squashes any number into the range (0, 1). Now the output can be read as a probability. If the probability is 0.5 or higher, predict class 1; otherwise class 0. That 0.5 cut-off is the <b>decision boundary</b>.</p>
-    <p>Training works like every supervised model: it has labeled examples (each Titanic passenger is marked Survived 0 or 1), it makes predictions, measures how wrong it was with <b>log loss</b>, and nudges its coefficients to reduce that error. Unlike linear regression's squared-error loss, log loss punishes confident wrong predictions brutally — predicting 0.99 probability of survival for a passenger who died is heavily penalized.</p>
-    <p>Despite the name, logistic regression is a <b>classifier</b> — one of the first you should learn, because it is fast, interpretable (you can read each coefficient as an effect on the odds), and it is literally the last layer of many neural networks. Here we train it on the Titanic dataset: predict which passengers survived, and finally read precision/recall from the confusion matrix — the payoff of Topic 01.</p>
+    <h2 class="en">What it is</h2>
+    <h2 class="ru">Yeh kya hai</h2>
+    <p class="en">Logistic regression answers a yes/no question with a probability. Instead of predicting a number like simple linear regression does, it predicts the <b>chance</b> that a sample belongs to class 1: the chance a passenger survives, an email is spam, a card transaction is fraud.</p>
+    <p class="ru">Logistic regression kisi yes/no sawal ka jawab probability ke saath deti hai. Koi number (jaise price) predict karne ke bajaye yeh kisi waqea ke hone ka chance batati hai.</p>
+    <p class="en">The trick: take the exact same linear equation regression uses (b<sub>0</sub> + b<sub>1</sub>x<sub>1</sub> + … + b<sub>n</sub>x<sub>n</sub>), then push that score through the <b>sigmoid function</b>, which squashes any number into the range (0, 1). Now the output can be read as a probability. If the probability is 0.5 or higher, predict class 1; otherwise class 0. That 0.5 cut-off is the <b>decision boundary</b>.</p>
+    <p class="ru">Trick yeh hai: regression wali bilkul wohi linear equation lo.</p>
+    <p class="en">Training works like every supervised model: it has labeled examples (each Titanic passenger is marked Survived 0 or 1), it makes predictions, measures how wrong it was with <b>log loss</b>, and nudges its coefficients to reduce that error. Unlike linear regression's squared-error loss, log loss punishes confident wrong predictions brutally — predicting 0.99 probability of survival for a passenger who died is heavily penalized.</p>
+    <p class="ru">Training har supervised model ki tarah chalti hai.</p>
+    <p class="en">Despite the name, logistic regression is a <b>classifier</b> — one of the first you should learn, because it is fast, interpretable (you can read each coefficient as an effect on the odds), and it is literally the last layer of many neural networks. Here we train it on the Titanic dataset: predict which passengers survived, and finally read precision/recall from the confusion matrix — the payoff of Topic 01.</p>
+    <p class="ru">Naam ke bawajood (regression likha hai) yeh ek classifier hai.</p>
 
-    <h2>The math inside</h2>
-    <p>Logistic regression takes a linear combination of the features and passes it through the sigmoid to get a probability:</p>
+    <h2 class="en">The math inside</h2>
+    <h2 class="ru">Andar ka math</h2>
+    <p class="en">Logistic regression takes a linear combination of the features and passes it through the sigmoid to get a probability:</p>
+    <p class="ru">Logistic regression features ka linear combination banati hai aur sigmoid se guzaarti hai.</p>
     <div class="formula">y = &sigma;(b<sub>0</sub> + b<sub>1</sub>x<sub>1</sub> + b<sub>2</sub>x<sub>2</sub> + … + b<sub>n</sub>x<sub>n</sub>)</div>
-    <p>The model computes the probability that the sample belongs to class 1, given its feature values.</p>
+    <p class="en">The model computes the probability that the sample belongs to class 1, given its feature values.</p>
+    <p class="ru">Model nikalta hai probability ke namoona class 1 ka hai ya nahi.</p>
     <div class="formula">&sigma;(z) = 1 / (1 + e<sup>&minus;z</sup>)</div>
-    <p>The sigmoid function — the S-curve that squashes any score z into (0, 1) — is <a href="../concepts.html">already explained in Core Concepts</a>.</p>
+    <p class="en">The sigmoid function — the S-curve that squashes any score z into (0, 1) — is <a href="../concepts.html">already explained in Core Concepts</a>.</p>
+    <p class="ru">Sigmoid function — woh S-curve jo kisi bhi score z ko (0, 1) mein daba deti hai — Core Concepts.</p>
     <div class="formula">prediction = 1 if y &ge; 0.5, else 0</div>
-    <p>The decision rule: probability at or above 0.5 → class 1, below → class 0. At exactly 0.5 the sigmoid input z equals 0, which is the decision boundary.</p>
+    <p class="en">The decision rule: probability at or above 0.5 → class 1, below → class 0. At exactly 0.5 the sigmoid input z equals 0, which is the decision boundary.</p>
+    <p class="ru">Decision rule: probability 0.5 ya us se upar → class 1, neeche → class 0.</p>
     <div class="formula">loss = log loss = &minus;(1/n) &Sigma; [ y<sub>i</sub>&middot;log(p<sub>i</sub>) + (1&minus;y<sub>i</sub>)&middot;log(1&minus;p<sub>i</sub>) ]</div>
-    <p>The training error being minimized — log loss (cross-entropy), which <a href="../concepts.html">already lives in Core Concepts</a>. Training finds the coefficients b that minimize it (via gradient descent at scale).</p>
+    <p class="en">The training error being minimized — log loss (cross-entropy), which <a href="../concepts.html">already lives in Core Concepts</a>. Training finds the coefficients b that minimize it (via gradient descent at scale).</p>
+    <p class="ru">Jo training error minimize hota hai — log loss.</p>
 
     <div class="term"><b>Odds:</b> probability expressed as a ratio — odds = p/(1&minus;p). If p = 0.8, the odds are 0.8/0.2 = 4, i.e. "4 to 1 in favor". Odds can run from 0 to infinity, unlike probability which is stuck in 0–1.</div>
     <div class="term"><b>Odds ratio (how to read a logistic coefficient):</b> for a coefficient b<sub>j</sub>, e<sup>b<sub>j</sub></sup> is the multiplicative change in the odds when feature x<sub>j</sub> increases by 1 unit (other features fixed). b<sub>j</sub> = 0.47 → odds ratio e<sup>0.47</sup> &asymp; 1.6, meaning each extra unit of x<sub>j</sub> multiplies the odds of class 1 by ~1.6 (a 60% increase). A negative coefficient shrinks the odds. This is exactly why logistic regression is called interpretable.</div>
 
-    <h2>Diagram</h2>
+    <h2 class="en">Diagram</h2>
+    <h2 class="ru">Diagram</h2>
     <figure><img src="https://upload.wikimedia.org/wikipedia/commons/8/88/Logistic-curve.svg" alt="The sigmoid (logistic) curve: an S-shaped curve going from 0 to 1, crossing 0.5 at z = 0"><figcaption>Source: Wikipedia/Wikimedia Commons</figcaption></figure>
-    <p>Notice the S-shape: hugely negative scores get squeezed toward 0, hugely positive ones toward 1, and the crossing point sits exactly at probability 0.5 where z = 0 — that is the decision boundary in action.</p>
+    <p class="en">Notice the S-shape: hugely negative scores get squeezed toward 0, hugely positive ones toward 1, and the crossing point sits exactly at probability 0.5 where z = 0 — that is the decision boundary in action.</p>
+    <p class="ru">Dhyan do S-shape par: bara manfi score 0 ki taraf daba jata hai.</p>
 
-    <h2>Dataset (Kaggle)</h2>
+    <h2 class="en">Dataset (Kaggle)</h2>
+    <h2 class="ru">Dataset (Kaggle)</h2>
     <p><b>yasserh/titanic-dataset</b> via kagglehub — file <code>Titanic-Dataset.csv</code>. The classic ML starter dataset: 891 passengers from the 1912 Titanic sinking, one row per passenger. Target column <code>Survived</code> (0 = died, 1 = survived). Features include <code>Pclass</code> (ticket class 1/2/3), <code>Sex</code>, <code>Age</code>, <code>SibSp</code> (siblings/spouses aboard), <code>Parch</code> (parents/children aboard), <code>Fare</code>, and <code>Embarked</code> (port C/Q/S). The <code>Age</code> column has missing values — which is perfect here, because this topic is where the <b>SimpleImputer</b> gets its moment (your notes: "imputer used to fill none value").</p>
 
-    <h2>Practice code — run in Google Colab, top to bottom</h2>
+    <h2 class="en">Practice code — run in Google Colab, top to bottom</h2>
+    <h2 class="ru">Practice code — Google Colab mein upar se neeche chalayein</h2>
     <div class="callout">Blocks must run in order. Copy each block into Colab exactly as shown; later blocks depend on earlier ones.</div>
 
     <div class="block-label">BLOCK 1: Imports</div>
-    <p>Everything the notebook needs, including <code>SimpleImputer</code> — the tool that fills missing Age values.</p>
+    <p class="en">Everything the notebook needs, including <code>SimpleImputer</code> — the tool that fills missing Age values.</p>
+    <p class="ru">Notebook ko jo kuch chahiye, SimpleImputer samet.</p>
 <pre><code># Import pandas for tables, numpy for math
 import pandas as pd
 import numpy as np
@@ -109,7 +125,8 @@ from sklearn.linear_model import LogisticRegression
 from sklearn.metrics import accuracy_score, confusion_matrix, classification_report</code></pre>
 
     <div class="block-label">BLOCK 2: Download the dataset with kagglehub</div>
-    <p>Downloads the Titanic dataset into Colab and locates the CSV file inside the downloaded folder.</p>
+    <p class="en">Downloads the Titanic dataset into Colab and locates the CSV file inside the downloaded folder.</p>
+    <p class="ru">Titanic dataset Colab mein download.</p>
 <pre><code># Download dataset 'yasserh/titanic-dataset' from Kaggle (needs no manual upload)
 path = kagglehub.dataset_download("yasserh/titanic-dataset")
 
@@ -118,7 +135,8 @@ csv_file = glob.glob(path + "/Titanic-Dataset.csv")[0]
 print("Dataset file:", csv_file)</code></pre>
 
     <div class="block-label">BLOCK 3: Load and look at the data</div>
-    <p>Read the CSV into a DataFrame and take a first look at rows and columns before any modeling.</p>
+    <p class="en">Read the CSV into a DataFrame and take a first look at rows and columns before any modeling.</p>
+    <p class="ru">CSV ko DataFrame mein parho aur pehli nazar daalo.</p>
 <pre><code># Load the CSV into a pandas DataFrame
 df = pd.read_csv(csv_file)
 
@@ -129,7 +147,8 @@ print(df.head())
 print("Shape:", df.shape)</code></pre>
 
     <div class="block-label">BLOCK 4: Explore missing values</div>
-    <p>Count the empty cells per column — Age has gaps, which is exactly why we need the imputer.</p>
+    <p class="en">Count the empty cells per column — Age has gaps, which is exactly why we need the imputer.</p>
+    <p class="ru">Har column ki khali cells ginno.</p>
 <pre><code># Count missing (None/NaN) values in every column
 print(df.isnull().sum())
 
@@ -138,7 +157,8 @@ print(df.isnull().sum())
 # Cabin is mostly empty, so we simply drop that column</code></pre>
 
     <div class="block-label">BLOCK 5: Encode categorical features</div>
-    <p>Math needs numbers, so Sex becomes 0/1 and Embarked becomes 0/1/2 codes; we also drop columns we won't use.</p>
+    <p class="en">Math needs numbers, so Sex becomes 0/1 and Embarked becomes 0/1/2 codes; we also drop columns we won't use.</p>
+    <p class="ru">Math ko numbers chahiye, is liye Sex 0/1 ban jata hai.</p>
 <pre><code># Sex is text ('male'/'female') — map it to numbers the model can use
 df['Sex'] = df['Sex'].map({'male': 0, 'female': 1})
 
@@ -153,7 +173,8 @@ y = df['Survived']  # target: 0 = did not survive, 1 = survived
 print(X.head())</code></pre>
 
     <div class="block-label">BLOCK 6: Build the pipeline with SimpleImputer (THE imputer block)</div>
-    <p>The imputer fills missing Age values (median) before the data reaches the model — "imputer used to fill none value". A ColumnTransformer applies the imputer only where needed and keeps everything in one pipeline.</p>
+    <p class="en">The imputer fills missing Age values (median) before the data reaches the model — "imputer used to fill none value". A ColumnTransformer applies the imputer only where needed and keeps everything in one pipeline.</p>
+    <p class="ru">Imputer missing Age values (median se) bhar deta hai data model tak puhanchne se pehle.</p>
 <pre><code># Imputer used to fill none value: missing Age cells will be replaced by the column MEDIAN
 # (median is safer than mean when Age is skewed by a few very old passengers)
 imputer = SimpleImputer(strategy='median')
@@ -171,7 +192,8 @@ model = Pipeline(steps=[
 print(model)</code></pre>
 
     <div class="block-label">BLOCK 7: Train/test split (stratified)</div>
-    <p>Hide 20% of passengers as a test set; stratify keeps the survived/died ratio identical in both parts.</p>
+    <p class="en">Hide 20% of passengers as a test set; stratify keeps the survived/died ratio identical in both parts.</p>
+    <p class="ru">20% passengers test set ke tor par chhupa do.</p>
 <pre><code># Split: 80% train, 20% test; stratify=y keeps the 0/1 class balance in both sets
 # random_state fixes the shuffle so results are reproducible
 X_train, X_test, y_train, y_test = train_test_split(
@@ -180,13 +202,15 @@ X_train, X_test, y_train, y_test = train_test_split(
 print("Train:", X_train.shape, " Test:", X_test.shape)</code></pre>
 
     <div class="block-label">BLOCK 8: Train the model</div>
-    <p>Fit the pipeline: the imputer learns medians from training data, then logistic regression learns its coefficients.</p>
+    <p class="en">Fit the pipeline: the imputer learns medians from training data, then logistic regression learns its coefficients.</p>
+    <p class="ru">Pipeline fit karo: imputer training data se median seekhta hai.</p>
 <pre><code># fit: imputer fills missing Age with the train-set median,
 # then LogisticRegression finds coefficients b0..b7 that minimize log loss
 model.fit(X_train, y_train)</code></pre>
 
     <div class="block-label">BLOCK 9: Predict — including the probability</div>
-    <p>predict gives the class 0/1; predict_proba shows the actual sigmoid probability behind each decision.</p>
+    <p class="en">predict gives the class 0/1; predict_proba shows the actual sigmoid probability behind each decision.</p>
+    <p class="ru">predict class 0/1 deta hai; predict_proba asli sigmoid probability dikhata hai.</p>
 <pre><code># predict: applies the 0.5 decision boundary to each test passenger
 y_pred = model.predict(X_test)
 
@@ -203,7 +227,8 @@ compare = pd.DataFrame({
 print(compare.head())</code></pre>
 
     <div class="block-label">BLOCK 10: Evaluate — accuracy, confusion matrix, classification report</div>
-    <p>Topic 01 payoff: precision and recall per class from the confusion matrix tell a much better story than accuracy alone.</p>
+    <p class="en">Topic 01 payoff: precision and recall per class from the confusion matrix tell a much better story than accuracy alone.</p>
+    <p class="ru">Topic 01 ka phal: confusion matrix se har class ka precision aur recall.</p>
 <pre><code># Accuracy = share of correct predictions on the test set
 print("Accuracy:", accuracy_score(y_test, y_pred))
 
@@ -217,7 +242,8 @@ print(confusion_matrix(y_test, y_pred))
 print(classification_report(y_test, y_pred, target_names=['Died (0)', 'Survived (1)']))</code></pre>
 
     <div class="block-label">BLOCK 11: Predict one new passenger + read the coefficients as odds</div>
-    <p>Use the trained model on a made-up passenger, then interpret one coefficient as an odds ratio.</p>
+    <p class="en">Use the trained model on a made-up passenger, then interpret one coefficient as an odds ratio.</p>
+    <p class="ru">Trained model ko ek soch-samajh kar banaye passenger par chalao.</p>
 <pre><code># A new passenger: 3rd class, male, 25, no family, cheap ticket, boarded at Southampton
 new_passenger = pd.DataFrame(
     [[3, 0, 25.0, 0, 0, 7.25, 2]],
@@ -237,7 +263,8 @@ print(f"Odds ratio e^b = {np.exp(b_sex):.2f}: being female multiplies the surviv
 new_passenger2 = pd.DataFrame([[1, 1, 30.0, 0, 0, 80.0, 2]], columns=features)
 print(f"Female 1st-class P(survive) = {model.predict_proba(new_passenger2)[0, 1]:.3f}")</code></pre>
 
-    <h2>Real-world use cases &amp; companies</h2>
+    <h2 class="en">Real-world use cases &amp; companies</h2>
+    <h2 class="ru">Asli duniya ke use cases aur companies</h2>
     <table>
       <tr><th>Use case</th><th>Who uses it / example</th></tr>
       <tr><td>Fraud detection</td><td>PayPal and Stripe use logistic-style classifiers to score transactions as fraud probability in real time</td></tr>
@@ -247,15 +274,22 @@ print(f"Female 1st-class P(survive) = {model.predict_proba(new_passenger2)[0, 1]
       <tr><td>Ad click-through prediction</td><td>Meta/Facebook's early news-feed ad CTR models were large-scale logistic regression (paper: "Practical Lessons from Predicting Clicks on Ads at Facebook")</td></tr>
     </table>
 
-    <h2>Combining with other algorithms (project ideas)</h2>
-    <p><b>PCA → Logistic Regression.</b> On wide data (hundreds of features), run PCA first to compress to the top components that carry most variance, then fit logistic regression on those scores. You fight overfitting and speed up training, at the cost of losing the clean odds interpretation.</p>
-    <p><b>K-Means segments + logistic per segment.</b> Cluster customers with K-Means, then train a separate logistic churn model inside each segment — passengers in segment A and segment B can have different coefficients. Compare against DBSCAN: it also flags noise customers no cluster wants.</p>
-    <p><b>Logistic regression as the last layer of a neural network.</b> A CNN like VGG16 ends with a softmax layer, which is exactly the multi-class generalization of sigmoid + log loss. Conceptually, VGG16 = feature extractor + logistic-style classifier bolted on top; an RNN classifier ends the same way.</p>
-    <p><b>Full evaluation wrap.</b> Whatever the pipeline, grade it with the confusion matrix, precision/recall and cross-validation from Topic 01 and Core Concepts — accuracy alone hides class imbalance (as the Titanic data already shows: ~62% died).</p>
+    <h2 class="en">Combining with other algorithms (project ideas)</h2>
+    <h2 class="ru">Dusre algorithms ke saath milana (project ideas)</h2>
+    <p class="en"><b>PCA → Logistic Regression.</b> On wide data (hundreds of features), run PCA first to compress to the top components that carry most variance, then fit logistic regression on those scores. You fight overfitting and speed up training, at the cost of losing the clean odds interpretation.</p>
+    <p class="ru">PCA → Logistic Regression. Chauri data par.</p>
+    <p class="en"><b>K-Means segments + logistic per segment.</b> Cluster customers with K-Means, then train a separate logistic churn model inside each segment — passengers in segment A and segment B can have different coefficients. Compare against DBSCAN: it also flags noise customers no cluster wants.</p>
+    <p class="ru">K-Means segments + har segment ka apna logistic. K-Means se customers cluster karo.</p>
+    <p class="en"><b>Logistic regression as the last layer of a neural network.</b> A CNN like VGG16 ends with a softmax layer, which is exactly the multi-class generalization of sigmoid + log loss. Conceptually, VGG16 = feature extractor + logistic-style classifier bolted on top; an RNN classifier ends the same way.</p>
+    <p class="ru">Neural network ke aakhri layer ke tor par logistic regression.</p>
+    <p class="en"><b>Full evaluation wrap.</b> Whatever the pipeline, grade it with the confusion matrix, precision/recall and cross-validation from Topic 01 and Core Concepts — accuracy alone hides class imbalance (as the Titanic data already shows: ~62% died).</p>
+    <p class="ru">Poora evaluation wrap. Pipeline kuch bhi ho.</p>
 
-    <h2>Interview Q&amp;A</h2>
+    <h2 class="en">Interview Q&amp;A</h2>
+    <h2 class="ru">Interview ke sawal-jawab</h2>
     <div class="qa"><div class="q">Why is it called "regression" if it classifies?</div><div class="a">Because under the hood it IS a regression: it fits the linear equation b<sub>0</sub> + b<sub>1</sub>x<sub>1</sub> + … + b<sub>n</sub>x<sub>n</sub> (it "regresses" the log-odds of the class onto the features). The sigmoid on top just maps that regression output into a probability, and the 0.5 threshold turns it into a classifier. The name predates the usage.</div></div>
-    <div class="qa"><div class="q">What does a coefficient mean in odds terms?</div><div class="a">For coefficient b<sub>j</sub>, e<sup>b<sub>j</sub></sup> is the odds ratio: multiply the odds of class 1 by this factor for each one-unit increase in x<sub>j</sub>. b<sub>j</sub> &gt; 0 pushes toward class 1, b<sub>j</sub> &lt; 0 toward class 0. On Titanic, the Sex coefficient is large and positive — being female multiplies survival odds by several times.</div></div>
+    <div class="qa"><div class="q en">What does a coefficient mean in odds terms?</div>
+    <div class="q ru">Coefficient ka matlab odds ki hasti mein kya hai?</div><div class="a">For coefficient b<sub>j</sub>, e<sup>b<sub>j</sub></sup> is the odds ratio: multiply the odds of class 1 by this factor for each one-unit increase in x<sub>j</sub>. b<sub>j</sub> &gt; 0 pushes toward class 1, b<sub>j</sub> &lt; 0 toward class 0. On Titanic, the Sex coefficient is large and positive — being female multiplies survival odds by several times.</div></div>
     <div class="qa"><div class="q">Why is the sigmoid function needed at all?</div><div class="a">The raw linear score can be any number from &minus;&infin; to +&infin;, but a probability must lie in (0, 1). The sigmoid squashes the score into that range while keeping order (bigger score → bigger probability), so the output can be read as P(class 1).</div></div>
     <div class="qa"><div class="q">Why does logistic regression use log loss instead of mean squared error?</div><div class="a">Two reasons: (1) squared error on a sigmoid output is non-convex — gradient descent can get stuck in local minima; log loss is convex, so there is one clean minimum. (2) Log loss punishes confident wrong predictions hard (predicting 0.99 for a passenger who died), which pushes calibrated probabilities.</div></div>
     <div class="qa"><div class="q">Does the 0.5 threshold always have to be 0.5?</div><div class="a">No — 0.5 is just the default. For fraud detection you might predict "fraud" already at 0.2 because a missed fraud (recall) costs far more than a false alarm (precision). Move the threshold by using predict_proba and comparing against your own cut-off; the confusion matrix changes accordingly.</div></div>
