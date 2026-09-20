@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url><loc>https://hasnainai.vercel.app/</loc></url>
+  <url><loc>https://hasnainai.vercel.app/concepts.html</loc></url>
+  <url><loc>https://hasnainai.vercel.app/topics/confusion-matrix.html</loc></url>
+  <url><loc>https://hasnainai.vercel.app/topics/cnn.html</loc></url>
+  <url><loc>https://hasnainai.vercel.app/topics/dbscan.html</loc></url>
+  <url><loc>https://hasnainai.vercel.app/topics/vgg16.html</loc></url>
+  <url><loc>https://hasnainai.vercel.app/topics/logistic-regression.html</loc></url>
+  <url><loc>https://hasnainai.vercel.app/topics/simple-linear-regression.html</loc></url>
+  <url><loc>https://hasnainai.vercel.app/topics/pca.html</loc></url>
+  <url><loc>https://hasnainai.vercel.app/topics/kmeans.html</loc></url>
+  <url><loc>https://hasnainai.vercel.app/topics/multiple-regression.html</loc></url>
+  <url><loc>https://hasnainai.vercel.app/topics/rnn.html</loc></url>
+</urlset>

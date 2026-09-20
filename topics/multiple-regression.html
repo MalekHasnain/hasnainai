@@ -6,71 +6,104 @@
 <title>Multiple Linear Regression — HasnainAI | Predict with Many Features</title>
 <meta name="description" content="Multiple Linear Regression explained: OLS, coefficients, R², multicollinearity, overfitting check — with Colab code blocks on the house price dataset and interview Q&A.">
 <meta name="author" content="Malik Hasnain">
-<link rel="stylesheet" href="/assets/style.css">
+<link rel="stylesheet" href="../assets/style.css">
 </head>
 <body>
+  <div class="topbar">
+    <button class="tb-btn tb-menu" aria-label="Menu">☰</button>
+    <div class="tb-brand">Hasnain<span style="color:var(--accent)">AI</span></div>
+    <button class="tb-btn" data-lang-btn="ru">اردو/UR</button>
+    <button class="tb-btn" data-lang-btn="en">EN</button>
+    <button class="tb-btn" data-theme-btn="light" aria-label="Light mode">☀</button>
+    <button class="tb-btn" data-theme-btn="dark" aria-label="Dark mode">🌙</button>
+  </div>
+  <div class="backdrop"></div>
+
 <div class="layout">
   <aside class="sidebar">
     <div class="brand">Hasnain<span>AI</span></div>
     <div class="tagline">HCCDA-AI prep &amp; practice</div>
     <nav>
-      <a href="/index.html">🏠 Home</a>
-      <a href="/concepts.html">📚 Core Concepts</a>
+      <a href="../index.html">🏠 Home</a>
+      <a href="../concepts.html">📚 Core Concepts</a>
       <div style="color:var(--muted);font-size:.75rem;margin:14px 0 4px 10px;">TOPICS (class sequence)</div>
-      <a href="/topics/confusion-matrix.html"><span class="num">01</span>Confusion Matrix</a>
-      <a href="/topics/cnn.html"><span class="num">02</span>CNN</a>
-      <a href="/topics/dbscan.html"><span class="num">03</span>DBSCAN</a>
-      <a href="/topics/vgg16.html"><span class="num">04</span>VGG16</a>
-      <a href="/topics/logistic-regression.html"><span class="num">05</span>Logistic Regression</a>
-      <a href="/topics/simple-linear-regression.html"><span class="num">06</span>Simple Linear Regression</a>
-      <a href="/topics/pca.html"><span class="num">07</span>PCA</a>
-      <a href="/topics/kmeans.html"><span class="num">08</span>K-Means</a>
-      <a href="/topics/multiple-regression.html" class="active"><span class="num">09</span>Multiple Regression</a>
-      <a href="/topics/rnn.html"><span class="num">10</span>RNN</a>
+      <a href="confusion-matrix.html"><span class="num">01</span>Confusion Matrix</a>
+      <a href="cnn.html"><span class="num">02</span>CNN</a>
+      <a href="dbscan.html"><span class="num">03</span>DBSCAN</a>
+      <a href="vgg16.html"><span class="num">04</span>VGG16</a>
+      <a href="logistic-regression.html"><span class="num">05</span>Logistic Regression</a>
+      <a href="simple-linear-regression.html"><span class="num">06</span>Simple Linear Regression</a>
+      <a href="pca.html"><span class="num">07</span>PCA</a>
+      <a href="kmeans.html"><span class="num">08</span>K-Means</a>
+      <a href="multiple-regression.html" class="active"><span class="num">09</span>Multiple Regression</a>
+      <a href="rnn.html"><span class="num">10</span>RNN</a>
       <div style="margin-top:18px;padding:10px;border:1px solid var(--border);border-radius:8px;background:#1f2630;">
         <div style="font-size:.78rem;color:var(--muted);">🤝 Collaborate on projects</div>
         <a href="https://wa.me/923446466664" target="_blank" rel="noopener" style="display:block;margin-top:4px;font-size:.85rem;">💬 WhatsApp: +92 344 646 6664</a>
+      </div>
+      <div class="side-box">
+        <div class="box-title">Practice here</div>
+        <a href="https://colab.research.google.com" target="_blank" rel="noopener">▶ Open Google Colab</a>
+      </div>
+      <div class="toggle-row">
+        <button class="tb-btn" data-lang-btn="ru">اردو / Roman Urdu</button>
+        <button class="tb-btn" data-lang-btn="en">English</button>
+        <button class="tb-btn" data-theme-btn="light">☀ Light</button>
+        <button class="tb-btn" data-theme-btn="dark">🌙 Dark</button>
       </div>
     </nav>
   </aside>
   <main>
     <h1>Multiple Linear Regression</h1>
     <div class="meta">
-      <span class="chip">Regression (supervised)</span>
+      <span class="chip en">Regression (supervised)</span>
+      <span class="chip ru">Regression (supervised learning)</span>
       <span class="chip">Kaggle: House Price Regression</span>
       <span class="chip">scikit-learn</span>
     </div>
 
     <h2>What it is (short intro)</h2>
-    <p>Simple Linear Regression (Topic 06) predicts a number from <b>one</b> feature using a straight line. Real problems rarely have one cause: a house's price depends on size AND bedrooms AND age AND neighborhood together. Multiple Linear Regression extends the line to a <b>plane (or hyperplane)</b> that weighs many features at once.</p>
-    <p>It is the most interpretable predictive model in ML: after training you can literally read the equation and say "each extra bedroom adds $X to the price." That transparency is why banks, real-estate sites and economists still lean on it despite fancier models existing.</p>
+    <p class="en">Simple Linear Regression (Topic 06) predicts a number from <b>one</b> feature using a straight line. Real problems rarely have one cause: a house's price depends on size AND bedrooms AND age AND neighborhood together. Multiple Linear Regression extends the line to a <b>plane (or hyperplane)</b> that weighs many features at once.</p>
+    <p class="ru">Simple Linear Regression (Topic 06) ek straight line se sirf <b>ek</b> feature se number predict karta hai. Asli problems mein aksar ek hi wajah nahi hoti: kisi ghar ki price size AUR bedrooms AUR age AUR neighborhood — sab mil kar tay karti hai. Multiple Linear Regression wohi line ko aik <b>plane (ya hyperplane)</b> tak extend karta hai jo kai features ko aik saath weigh karta hai.</p>
+    <p class="en">It is the most interpretable predictive model in ML: after training you can literally read the equation and say "each extra bedroom adds $X to the price." That transparency is why banks, real-estate sites and economists still lean on it despite fancier models existing.</p>
+    <p class="ru">Yeh ML ka sab se interpretable predictive model hai: training ke baad aap literally equation parh sakte hain aur keh sakte hain ke "har extra bedroom price mein $X add karta hai." Yehi transparency wajah hai ke banks, real-estate websites aur economists is par ab bhi bharosa karte hain, chahe fancier models mojood hon.</p>
 
     <h2>The math inside</h2>
     <div class="formula">y = b<sub>0</sub> + b<sub>1</sub>x<sub>1</sub> + b<sub>2</sub>x<sub>2</sub> + … + b<sub>7</sub>x<sub>7</sub>
-      <div class="note">one weight per feature; the prediction is a weighted sum — in 3D this is a plane, in higher dimensions a hyperplane</div>
+      <div class="note en">one weight per feature; the prediction is a weighted sum — in 3D this is a plane, in higher dimensions a hyperplane</div>
+      <div class="note ru">har feature ka apna ek weight; prediction aik weighted sum hai — 3D mein yeh plane hota hai, zyada dimensions mein hyperplane</div>
     </div>
     <div class="formula">Minimize &Sigma; (actual − predicted)²
-      <div class="note">Ordinary Least Squares (OLS): the coefficients are chosen so the sum of squared residuals is as small as possible — solved by linear algebra in one shot. Residuals and OLS are explained in <a href="/concepts.html">Core Concepts</a>.</div>
+      <div class="note en">Ordinary Least Squares (OLS): the coefficients are chosen so the sum of squared residuals is as small as possible — solved by linear algebra in one shot. Residuals and OLS are explained in <a href="../concepts.html">Core Concepts</a>.</div>
+      <div class="note ru">Ordinary Least Squares (OLS): coefficients aise choose kiye jate hain ke squared residuals ka sum jitna ho sake chota ho — linear algebra se aik hi shot mein solve hota hai. Residuals aur OLS <a href="../concepts.html">Core Concepts</a> mein samjhaye gaye hain.</div>
     </div>
-    <div class="term"><b>Multicollinearity:</b> when two features are strongly correlated with each other (e.g. area and bedroom count), their coefficients become unstable and hard to interpret — the model can't decide which feature deserves the credit. Check with the correlation heatmap; PCA (Topic 07) or dropping one of the pair is the fix.</div>
-    <div class="term"><b>Adjusted R²:</b> plain R² never goes down when you add features, even useless ones. Adjusted R² penalizes extra features, so it only rises when a new feature genuinely helps — the honest version for comparing models with different feature counts.</div>
-    <p>MAE, MSE, RMSE, R², train/test split and overfitting are <a href="/concepts.html">already explained in Core Concepts</a>.</p>
+    <div class="term en"><b>Multicollinearity:</b> when two features are strongly correlated with each other (e.g. area and bedroom count), their coefficients become unstable and hard to interpret — the model can't decide which feature deserves the credit. Check with the correlation heatmap; PCA (Topic 07) or dropping one of the pair is the fix.</div>
+    <div class="term ru"><b>Multicollinearity:</b> jab do features aapas mein strongly correlated hon (misal: area aur bedrooms ki tadaad), to unke coefficients unstable ho jate hain aur interpret karna mushkil ho jata hai — model faisla nahi kar pata ke credit kis feature ko dena hai. Correlation heatmap se check karein; fix yeh hai ke PCA (Topic 07) lagaayein ya us jodi ka aik feature drop kar dein.</div>
+    <div class="term en"><b>Adjusted R²:</b> plain R² never goes down when you add features, even useless ones. Adjusted R² penalizes extra features, so it only rises when a new feature genuinely helps — the honest version for comparing models with different feature counts.</div>
+    <div class="term ru"><b>Adjusted R²:</b> simple R² features add karne par kabhi nahi girta, chahe useless hon. Adjusted R² extra features par penalty lagata hai, is liye sirf tab barhta hai jab naya feature waqai kaam aaye — alag alag feature counts wale models compare karne ka honest version.</div>
+    <p class="en">MAE, MSE, RMSE, R², train/test split and overfitting are <a href="../concepts.html">already explained in Core Concepts</a>.</p>
+    <p class="ru">MAE, MSE, RMSE, R², train/test split aur overfitting <a href="../concepts.html">Core Concepts mein pehle se samjhaye gaye hain</a>.</p>
 
     <h2>Diagram</h2>
     <figure>
       <img src="https://upload.wikimedia.org/wikipedia/commons/6/68/Overfitted_Data.png" alt="Overfitting: a green curve memorizing training points vs a black straight line generalizing">
-      <figcaption>Source: Wikipedia/Wikimedia Commons — used in the overfitting check below</figcaption>
+      <figcaption class="en">Source: Wikipedia/Wikimedia Commons — used in the overfitting check below</figcaption>
+      <figcaption class="ru">Source: Wikipedia/Wikimedia Commons — neeche diye gaye overfitting check mein istemaal hua hai</figcaption>
     </figure>
-    <p>Notice: the green line passes through every training point (memorized) but will miss new points badly; the black line captures the general trend. We use this exact idea in Block 8 to catch overfitting via the train-vs-test R² gap.</p>
+    <p class="en">Notice: the green line passes through every training point (memorized) but will miss new points badly; the black line captures the general trend. We use this exact idea in Block 8 to catch overfitting via the train-vs-test R² gap.</p>
+    <p class="ru">Ghor karein: green line har training point se guzarti hai (ratta laga kar memorize kar liya) magar naye points par bohat ghalat hogi; black line general trend pakarti hai. Yehi idea hum Block 8 mein train-vs-test R² gap se overfitting pakarne ke liye use karte hain.</p>
 
     <h2>Dataset (Kaggle)</h2>
-    <p><b>House Price Regression (Home Value Insights)</b> — 1,000 houses, each with 7 features (Square_Footage, Num_Bedrooms, Num_Bathrooms, Year_Built, Lot_Size, Garage_Size, Neighborhood_Quality 1-10) and one target: <b>House_Price</b> (continuous number → regression). All-numeric and clean, so you focus on the algorithm. Topic 06 used only Square_Footage from this same dataset — same data, one feature vs seven.</p>
+    <p class="en"><b>House Price Regression (Home Value Insights)</b> — 1,000 houses, each with 7 features (Square_Footage, Num_Bedrooms, Num_Bathrooms, Year_Built, Lot_Size, Garage_Size, Neighborhood_Quality 1-10) and one target: <b>House_Price</b> (continuous number → regression). All-numeric and clean, so you focus on the algorithm. Topic 06 used only Square_Footage from this same dataset — same data, one feature vs seven.</p>
+    <p class="ru"><b>House Price Regression (Home Value Insights)</b> — 1,000 gharon ka data, har ghar ke 7 features (Square_Footage, Num_Bedrooms, Num_Bathrooms, Year_Built, Lot_Size, Garage_Size, Neighborhood_Quality 1-10) aur aik target: <b>House_Price</b> (continuous number → regression). Sab numeric aur clean, taake aap algorithm par focus kar sakein. Topic 06 ne isi dataset ka sirf Square_Footage use kiya tha — same data, aik feature vs saat features.</p>
 
     <h2>Practice code — run in Google Colab, top to bottom</h2>
-    <div class="callout">Blocks must run in order — each block remembers the ones before it (same kernel session). Copy each block into Colab and run.</div>
+    <div class="callout en">Blocks must run in order — each block remembers the ones before it (same kernel session). Copy each block into Colab and run.</div>
+    <div class="callout ru">Blocks tarteeb se chalayein — har block apne se pehle walon ko yaad rakhta hai (same kernel session). Har block ko Colab mein copy kar ke run karein.</div>
 
     <div class="block-label">BLOCK 1: Imports</div>
-    <p>Load the libraries: tables, math, charts, the algorithm and the grading formulas.</p>
+    <p class="en">Load the libraries: tables, math, charts, the algorithm and the grading formulas.</p>
+    <p class="ru">Libraries load karein: tables, math, charts, algorithm aur grading formulas.</p>
 <pre><code>import pandas as pd                    # tables (DataFrames)
 import numpy as np                     # numerical math
 import matplotlib.pyplot as plt        # charts
@@ -81,7 +114,8 @@ from sklearn.metrics import mean_absolute_error, mean_squared_error, r2_score  #
 print("imports OK")</code></pre>
 
     <div class="block-label">BLOCK 2: Download the dataset from Kaggle</div>
-    <p>kagglehub pulls the dataset straight into the notebook and prints the file path.</p>
+    <p class="en">kagglehub pulls the dataset straight into the notebook and prints the file path.</p>
+    <p class="ru">kagglehub dataset ko seedha notebook mein le aata hai aur file ka path print karta hai.</p>
 <pre><code>import kagglehub
 path = kagglehub.dataset_download("prokshitha/home-value-insights")  # download + extract, returns folder path
 print("dataset path:", path)                 # the file path where the data lives
@@ -91,13 +125,15 @@ csv_file = glob.glob(path + "/*.csv")[0]     # find the .csv inside the folder (
 print("csv file:", csv_file)</code></pre>
 
     <div class="block-label">BLOCK 3: Load and look</div>
-    <p>Read the CSV, check the shape, glance at the first rows.</p>
+    <p class="en">Read the CSV, check the shape, glance at the first rows.</p>
+    <p class="ru">CSV parhein, shape check karein, pehli rows par nazar daalein.</p>
 <pre><code>df = pd.read_csv(csv_file)                   # CSV -> DataFrame
 print("shape:", df.shape)                    # (1000 rows, 8 columns)
 df.head()                                    # first 5 rows</code></pre>
 
     <div class="block-label">BLOCK 4: Correlation heatmap</div>
-    <p>Which features move with the price — and do any features move with each other (multicollinearity)?</p>
+    <p class="en">Which features move with the price — and do any features move with each other (multicollinearity)?</p>
+    <p class="ru">Kaun se features price ke saath move karte hain — aur kya koi features aapas mein bhi saath move karte hain (multicollinearity)?</p>
 <pre><code>plt.figure(figsize=(8, 6))                   # chart size
 sns.heatmap(df.corr(numeric_only=True),      # Pearson r for every column pair (r = covariance / (std_x * std_y))
             annot=True, cmap="coolwarm", fmt=".2f")  # write numbers, red=+ blue=-
@@ -106,21 +142,24 @@ plt.show()                                   # strong |r| with the target = usef
                                              # strong |r| BETWEEN features = multicollinearity warning</code></pre>
 
     <div class="block-label">BLOCK 5: Separate X and y</div>
-    <p>Seven feature columns vs the single target column.</p>
+    <p class="en">Seven feature columns vs the single target column.</p>
+    <p class="ru">Saat feature columns vs aik akela target column.</p>
 <pre><code>X = df[["Square_Footage", "Num_Bedrooms", "Num_Bathrooms", "Year_Built",
         "Lot_Size", "Garage_Size", "Neighborhood_Quality"]]  # double brackets = 7-column feature table
 y = df["House_Price"]                        # single brackets = the one target column
 print("X shape:", X.shape, "| y shape:", y.shape)   # (1000, 7) and (1000,)</code></pre>
 
     <div class="block-label">BLOCK 6: Train/test split</div>
-    <p>Hide 20% for an honest grade — the anti-memorization move.</p>
+    <p class="en">Hide 20% for an honest grade — the anti-memorization move.</p>
+    <p class="ru">Honest grade ke liye 20% data chhupa lein — anti-memorization move.</p>
 <pre><code>X_train, X_test, y_train, y_test = train_test_split(
     X, y, test_size=0.2,          # 20% held out
     random_state=42)              # frozen shuffle -> same split every run
 print("train rows:", len(X_train), "| test rows:", len(X_test))   # 800 / 200</code></pre>
 
     <div class="block-label">BLOCK 7: Train + read the equation</div>
-    <p>.fit() runs OLS; then print the learned equation — the model's actual "brain".</p>
+    <p class="en">.fit() runs OLS; then print the learned equation — the model's actual "brain".</p>
+    <p class="ru">.fit() OLS chalata hai; phir seekhi hui equation print karein — model ka asli "brain".</p>
 <pre><code>model = LinearRegression()        # empty model
 model.fit(X_train, y_train)       # OLS: finds b0..b7 minimizing sum of (actual - predicted)^2
 
@@ -130,7 +169,8 @@ for feature, coef in zip(X.columns, model.coef_):        # walk feature name + i
 # interview line: "linear regression is interpretable — each coefficient is a dollar effect, sign included"</code></pre>
 
     <div class="block-label">BLOCK 8: Predict + grade + overfitting check</div>
-    <p>Predict unseen houses, compute the four metrics, then the train-vs-test gap (the diagram above).</p>
+    <p class="en">Predict unseen houses, compute the four metrics, then the train-vs-test gap (the diagram above).</p>
+    <p class="ru">Unseen gharon ki prediction karein, chaar metrics nikalein, phir train-vs-test gap dekhein (upar wala diagram).</p>
 <pre><code>y_pred = model.predict(X_test)     # plug each test house's 7 features into the learned equation
 
 mae  = mean_absolute_error(y_test, y_pred)   # average |error| in dollars
@@ -147,7 +187,8 @@ print(f"train R2: {train_r2:.4f} | test R2: {test_r2:.4f}")
 print("gap:", round(train_r2 - test_r2, 4), "- small gap = healthy; big gap = overfitting")</code></pre>
 
     <div class="block-label">BLOCK 9: Predict one new house</div>
-    <p>The production move: describe a house, get an instant price — exactly how Zillow-style estimates work.</p>
+    <p class="en">The production move: describe a house, get an instant price — exactly how Zillow-style estimates work.</p>
+    <p class="ru">Production wala move: ghar describe karein, foran price mil jaye — bilkul aise hi jaise Zillow-style estimates kaam karte hain.</p>
 <pre><code>new_house = pd.DataFrame({         # a 1-row table describing a new house
     "Square_Footage": [2500], "Num_Bedrooms": [4], "Num_Bathrooms": [3],
     "Year_Built": [2015], "Lot_Size": [0.5], "Garage_Size": [2],
@@ -156,7 +197,8 @@ price = model.predict(new_house)   # weighted sum: b0 + b1*size + ... + b7*quali
 print(f"Predicted price: ${price[0]:,.2f}")</code></pre>
 
     <div class="block-label">BLOCK 10: Residual plot (bonus diagnosis)</div>
-    <p>Errors should look like random noise around zero — a pattern means the linear form is wrong.</p>
+    <p class="en">Errors should look like random noise around zero — a pattern means the linear form is wrong.</p>
+    <p class="ru">Errors zero ke ird-gird random noise jaise dikhne chahiyein — koi pattern nazar aaye to iska matlab linear form ghalat hai.</p>
 <pre><code>residuals = y_test - y_pred        # each unseen house's error (actual - predicted)
 plt.figure(figsize=(7, 4))
 plt.scatter(y_pred, residuals, alpha=0.5)            # x = predicted price, y = error; semi-transparent dots
@@ -167,34 +209,85 @@ plt.show()                                           # curved/funnel shape = lin
 
     <h2>Real-world use cases &amp; companies</h2>
     <table>
-      <tr><th>Use case</th><th>Who</th></tr>
-      <tr><td>"Zestimate" home valuation</td><td>Zillow</td></tr>
-      <tr><td>Used-car price prediction</td><td>Cars24, Carvana</td></tr>
-      <tr><td>Demand / sales forecasting</td><td>Walmart, Uber surge planning</td></tr>
-      <tr><td>Credit risk scoring (interpretable by law)</td><td>Banks, FICO-style scores</td></tr>
+      <tr><th class="en">Use case</th><th class="ru">Kahan use hota hai</th><th class="en">Who</th><th class="ru">Kaun use karta hai</th></tr>
+      <tr><td class="en">"Zestimate" home valuation</td><td class="ru">"Zestimate" ghar ki qeemat ka andaza</td><td>Zillow</td></tr>
+      <tr><td class="en">Used-car price prediction</td><td class="ru">Purani gaari ki price ka prediction</td><td>Cars24, Carvana</td></tr>
+      <tr><td class="en">Demand / sales forecasting</td><td class="ru">Demand / sales ka forecast</td><td>Walmart, Uber surge planning</td></tr>
+      <tr><td class="en">Credit risk scoring (interpretable by law)</td><td class="ru">Credit risk scoring (qanooni tor par interpretable)</td><td>Banks, FICO-style scores</td></tr>
     </table>
 
     <h2>Combining with other algorithms (project ideas)</h2>
-    <p><b>1. Segment-then-predict.</b> K-Means (Topic 08) splits customers/houses into segments, then you train one Multiple Linear Regression per segment — each segment gets its own equation, and total accuracy rises.</p>
-    <p><b>2. Beat multicollinearity with PCA.</b> Topic 07 compresses correlated features into independent components; regress on the components instead of the raw features.</p>
-    <p><b>3. Regression + classification sandwich.</b> Predict a house's price with this model, then Logistic Regression (Topic 05) predicts the yes/no question "will this listing sell within 30 days?" — number and event together.</p>
+    <p class="en"><b>1. Segment-then-predict.</b> K-Means (Topic 08) splits customers/houses into segments, then you train one Multiple Linear Regression per segment — each segment gets its own equation, and total accuracy rises.</p>
+    <p class="ru"><b>1. Segment-then-predict.</b> K-Means (Topic 08) customers/gharon ko segments mein taqseem karta hai, phir aap har segment ke liye aik Multiple Linear Regression train karte hain — har segment ki apni equation banti hai, aur total accuracy barh jati hai.</p>
+    <p class="en"><b>2. Beat multicollinearity with PCA.</b> Topic 07 compresses correlated features into independent components; regress on the components instead of the raw features.</p>
+    <p class="ru"><b>2. Multicollinearity ko PCA se harein.</b> Topic 07 correlated features ko independent components mein compress karta hai; raw features ki jagah un components par regression chalayein.</p>
+    <p class="en"><b>3. Regression + classification sandwich.</b> Predict a house's price with this model, then Logistic Regression (Topic 05) predicts the yes/no question "will this listing sell within 30 days?" — number and event together.</p>
+    <p class="ru"><b>3. Regression + classification sandwich.</b> Is model se ghar ki price predict karein, phir Logistic Regression (Topic 05) yes/no sawal ka jawab deta hai — "kya yeh listing 30 din ke andar bik jayegi?" — number aur event dono saath.</p>
 
     <h2>Interview Q&amp;A</h2>
-    <div class="qa"><div class="q">Q1. Simple vs multiple linear regression?</div><div class="a">Simple: one feature, a line (y = b0 + b1x). Multiple: two or more features, a plane/hyperplane (y = b0 + b1x1 + … + bnxn).</div></div>
-    <div class="qa"><div class="q">Q2. What does a coefficient mean?</div><div class="a">The change in the target when that feature increases by exactly 1 unit, all other features held fixed. The sign gives the direction.</div></div>
-    <div class="qa"><div class="q">Q3. What does .fit() actually compute?</div><div class="a">Ordinary Least Squares: the coefficients that minimize the sum of squared residuals — solved with linear algebra, not trial and error.</div></div>
-    <div class="qa"><div class="q">Q4. How do you detect overfitting here?</div><div class="a">Compare train R² vs test R². A large gap means the model memorized. Fixes: more data, fewer features, regularization (Ridge/Lasso), cross-validation.</div></div>
-    <div class="qa"><div class="q">Q5. What is multicollinearity and why does it matter?</div><div class="a">Strong correlation between features. It makes coefficients unstable and uninterpretable — detect with a correlation heatmap, fix by dropping a feature or applying PCA.</div></div>
-    <div class="qa"><div class="q">Q6. R² vs adjusted R²?</div><div class="a">R² always rises when you add features, even junk ones; adjusted R² penalizes the feature count, so it only rises for genuinely useful features.</div></div>
-    <div class="qa"><div class="q">Q7. Why square the errors in OLS?</div><div class="a">So positive and negative errors don't cancel, and so large errors are punished more than small ones.</div></div>
-    <div class="qa"><div class="q">Q8. Your residuals show a U-shaped curve — what does that mean?</div><div class="a">The relationship isn't linear in the current features; add polynomial terms or use a non-linear model.</div></div>
-    <div class="qa"><div class="q">Q9. When would you switch from MLR to something else?</div><div class="a">When relationships are non-linear, interactions dominate, or I need max accuracy over interpretability — e.g. gradient boosted trees; but I'd keep MLR as the baseline every model must beat.</div></div>
+    <div class="qa">
+      <div class="q en">Q1. Simple vs multiple linear regression?</div>
+      <div class="q ru">Q1. Simple aur multiple linear regression mein kya farq hai?</div>
+      <div class="a en">Simple: one feature, a line (y = b0 + b1x). Multiple: two or more features, a plane/hyperplane (y = b0 + b1x1 + … + bnxn).</div>
+      <div class="a ru">Simple: aik feature, line (y = b0 + b1x). Multiple: do ya zyada features, plane/hyperplane (y = b0 + b1x1 + … + bnxn).</div>
+    </div>
+    <div class="qa">
+      <div class="q en">Q2. What does a coefficient mean?</div>
+      <div class="q ru">Q2. Coefficient ka kya matlab hai?</div>
+      <div class="a en">The change in the target when that feature increases by exactly 1 unit, all other features held fixed. The sign gives the direction.</div>
+      <div class="a ru">Jab woh feature theek 1 unit barhaye jaye aur baqi features fixed rahen, to target mein jo tabdeeli aati hai wohi coefficient hai. Sign direction batata hai.</div>
+    </div>
+    <div class="qa">
+      <div class="q en">Q3. What does .fit() actually compute?</div>
+      <div class="q ru">Q3. .fit() asal mein kya compute karta hai?</div>
+      <div class="a en">Ordinary Least Squares: the coefficients that minimize the sum of squared residuals — solved with linear algebra, not trial and error.</div>
+      <div class="a ru">Ordinary Least Squares: woh coefficients jo squared residuals ke sum ko minimum karte hain — linear algebra se solve hote hain, trial and error se nahi.</div>
+    </div>
+    <div class="qa">
+      <div class="q en">Q4. How do you detect overfitting here?</div>
+      <div class="q ru">Q4. Yahan overfitting kaise detect karte hain?</div>
+      <div class="a en">Compare train R² vs test R². A large gap means the model memorized. Fixes: more data, fewer features, regularization (Ridge/Lasso), cross-validation.</div>
+      <div class="a ru">Train R² vs test R² compare karein. Bara gap ka matlab model ne ratta laga liya. Fixes: zyada data, kam features, regularization (Ridge/Lasso), cross-validation.</div>
+    </div>
+    <div class="qa">
+      <div class="q en">Q5. What is multicollinearity and why does it matter?</div>
+      <div class="q ru">Q5. Multicollinearity kya hai aur matter kyun karta hai?</div>
+      <div class="a en">Strong correlation between features. It makes coefficients unstable and uninterpretable — detect with a correlation heatmap, fix by dropping a feature or applying PCA.</div>
+      <div class="a ru">Features ke darmiyan strong correlation. Is se coefficients unstable aur uninterpretable ho jate hain — correlation heatmap se detect karein, feature drop kar ke ya PCA laga kar fix karein.</div>
+    </div>
+    <div class="qa">
+      <div class="q en">Q6. R² vs adjusted R²?</div>
+      <div class="q ru">Q6. R² vs adjusted R²?</div>
+      <div class="a en">R² always rises when you add features, even junk ones; adjusted R² penalizes the feature count, so it only rises for genuinely useful features.</div>
+      <div class="a ru">R² features add karne par hamesha barhta hai, chahe junk hon; adjusted R² feature count par penalty lagata hai, is liye sirf waqai useful features par barhta hai.</div>
+    </div>
+    <div class="qa">
+      <div class="q en">Q7. Why square the errors in OLS?</div>
+      <div class="q ru">Q7. OLS mein errors ko square kyun karte hain?</div>
+      <div class="a en">So positive and negative errors don't cancel, and so large errors are punished more than small ones.</div>
+      <div class="a ru">Taake positive aur negative errors cancel na ho jayein, aur bare errors ko chote errors se zyada saza mile.</div>
+    </div>
+    <div class="qa">
+      <div class="q en">Q8. Your residuals show a U-shaped curve — what does that mean?</div>
+      <div class="q ru">Q8. Agar residuals U-shape curve dikhayein — to iska kya matlab hai?</div>
+      <div class="a en">The relationship isn't linear in the current features; add polynomial terms or use a non-linear model.</div>
+      <div class="a ru">Maujooda features mein relationship linear nahi hai; polynomial terms add karein ya koi non-linear model use karein.</div>
+    </div>
+    <div class="qa">
+      <div class="q en">Q9. When would you switch from MLR to something else?</div>
+      <div class="q ru">Q9. Kab aap MLR chhor kar kisi aur model par jayenge?</div>
+      <div class="a en">When relationships are non-linear, interactions dominate, or I need max accuracy over interpretability — e.g. gradient boosted trees; but I'd keep MLR as the baseline every model must beat.</div>
+      <div class="a ru">Jab relationships non-linear hon, interactions dominate karte hon, ya mujhe interpretability se zyada max accuracy chahiye — misal: gradient boosted trees; magar main MLR ko baseline ke tor par rakhoon ga jis se har model ko behtar karna parega.</div>
+    </div>
 
     <div class="prevnext">
-      <a href="/topics/kmeans.html">← Topic 08: K-Means</a>
-      <a href="/topics/rnn.html">Topic 10: RNN →</a>
+      <a class="en" href="kmeans.html">← Topic 08: K-Means</a>
+      <a class="ru" href="kmeans.html">← Pichla: Topic 08 K-Means</a>
+      <a class="en" href="rnn.html">Topic 10: RNN →</a>
+      <a class="ru" href="rnn.html">Agla: Topic 10 RNN →</a>
     </div>
-    <p class="footer-note">Built by <b>Malik Hasnain</b> — Huawei HCCDA-AI prep. Diagram: Wikipedia/Wikimedia Commons. Dataset: Kaggle (House Price Regression).</p>
+    <p class="footer-note en">Built by <b>Malik Hasnain</b> — Huawei HCCDA-AI prep. Diagram: Wikipedia/Wikimedia Commons. Dataset: Kaggle (House Price Regression).</p>
+    <p class="footer-note ru">Banaya <b>Malik Hasnain</b> ne — Huawei HCCDA-AI prep ke liye. Diagram: Wikipedia/Wikimedia Commons. Dataset: Kaggle (House Price Regression).</p>
   </main>
 </div>
 <script>
@@ -205,5 +298,6 @@ document.querySelectorAll('pre').forEach(p => {
   p.appendChild(b);
 });
 </script>
+<script src="../assets/app.js"></script>
 </body>
 </html>

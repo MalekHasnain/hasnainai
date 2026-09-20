@@ -4,30 +4,50 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Logistic Regression — HasnainAI</title>
-<link rel="stylesheet" href="/assets/style.css">
+<link rel="stylesheet" href="../assets/style.css">
 </head>
 <body>
+  <div class="topbar">
+    <button class="tb-btn tb-menu" aria-label="Menu">☰</button>
+    <div class="tb-brand">Hasnain<span style="color:var(--accent)">AI</span></div>
+    <button class="tb-btn" data-lang-btn="ru">اردو/UR</button>
+    <button class="tb-btn" data-lang-btn="en">EN</button>
+    <button class="tb-btn" data-theme-btn="light" aria-label="Light mode">☀</button>
+    <button class="tb-btn" data-theme-btn="dark" aria-label="Dark mode">🌙</button>
+  </div>
+  <div class="backdrop"></div>
+
 <div class="layout">
   <aside class="sidebar">
     <div class="brand">Hasnain<span>AI</span></div>
     <div class="tagline">HCCDA-AI prep &amp; practice</div>
     <nav>
-      <a href="/index.html">🏠 Home</a>
-      <a href="/concepts.html">📚 Core Concepts</a>
+      <a href="../index.html">🏠 Home</a>
+      <a href="../concepts.html">📚 Core Concepts</a>
       <div style="color:var(--muted);font-size:.75rem;margin:14px 0 4px 10px;">TOPICS (class sequence)</div>
-      <a href="/topics/confusion-matrix.html"><span class="num">01</span>Confusion Matrix</a>
-      <a href="/topics/cnn.html"><span class="num">02</span>CNN</a>
-      <a href="/topics/dbscan.html"><span class="num">03</span>DBSCAN</a>
-      <a href="/topics/vgg16.html"><span class="num">04</span>VGG16</a>
-      <a href="/topics/logistic-regression.html" class="active"><span class="num">05</span>Logistic Regression</a>
-      <a href="/topics/simple-linear-regression.html"><span class="num">06</span>Simple Linear Regression</a>
-      <a href="/topics/pca.html"><span class="num">07</span>PCA</a>
-      <a href="/topics/kmeans.html"><span class="num">08</span>K-Means</a>
-      <a href="/topics/multiple-regression.html"><span class="num">09</span>Multiple Regression</a>
-      <a href="/topics/rnn.html"><span class="num">10</span>RNN</a>
+      <a href="confusion-matrix.html"><span class="num">01</span>Confusion Matrix</a>
+      <a href="cnn.html"><span class="num">02</span>CNN</a>
+      <a href="dbscan.html"><span class="num">03</span>DBSCAN</a>
+      <a href="vgg16.html"><span class="num">04</span>VGG16</a>
+      <a href="logistic-regression.html" class="active"><span class="num">05</span>Logistic Regression</a>
+      <a href="simple-linear-regression.html"><span class="num">06</span>Simple Linear Regression</a>
+      <a href="pca.html"><span class="num">07</span>PCA</a>
+      <a href="kmeans.html"><span class="num">08</span>K-Means</a>
+      <a href="multiple-regression.html"><span class="num">09</span>Multiple Regression</a>
+      <a href="rnn.html"><span class="num">10</span>RNN</a>
       <div style="margin-top:18px;padding:10px;border:1px solid var(--border);border-radius:8px;background:#1f2630;">
         <div style="font-size:.78rem;color:var(--muted);">🤝 Collaborate on projects</div>
         <a href="https://wa.me/923446466664" target="_blank" rel="noopener" style="display:block;margin-top:4px;font-size:.85rem;">💬 WhatsApp: +92 344 646 6664</a>
+      </div>
+      <div class="side-box">
+        <div class="box-title">Practice here</div>
+        <a href="https://colab.research.google.com" target="_blank" rel="noopener">▶ Open Google Colab</a>
+      </div>
+      <div class="toggle-row">
+        <button class="tb-btn" data-lang-btn="ru">اردو / Roman Urdu</button>
+        <button class="tb-btn" data-lang-btn="en">English</button>
+        <button class="tb-btn" data-theme-btn="light">☀ Light</button>
+        <button class="tb-btn" data-theme-btn="dark">🌙 Dark</button>
       </div>
     </nav>
   </aside>
@@ -51,11 +71,11 @@
     <div class="formula">y = &sigma;(b<sub>0</sub> + b<sub>1</sub>x<sub>1</sub> + b<sub>2</sub>x<sub>2</sub> + … + b<sub>n</sub>x<sub>n</sub>)</div>
     <p>The model computes the probability that the sample belongs to class 1, given its feature values.</p>
     <div class="formula">&sigma;(z) = 1 / (1 + e<sup>&minus;z</sup>)</div>
-    <p>The sigmoid function — the S-curve that squashes any score z into (0, 1) — is <a href="/concepts.html">already explained in Core Concepts</a>.</p>
+    <p>The sigmoid function — the S-curve that squashes any score z into (0, 1) — is <a href="../concepts.html">already explained in Core Concepts</a>.</p>
     <div class="formula">prediction = 1 if y &ge; 0.5, else 0</div>
     <p>The decision rule: probability at or above 0.5 → class 1, below → class 0. At exactly 0.5 the sigmoid input z equals 0, which is the decision boundary.</p>
     <div class="formula">loss = log loss = &minus;(1/n) &Sigma; [ y<sub>i</sub>&middot;log(p<sub>i</sub>) + (1&minus;y<sub>i</sub>)&middot;log(1&minus;p<sub>i</sub>) ]</div>
-    <p>The training error being minimized — log loss (cross-entropy), which <a href="/concepts.html">already lives in Core Concepts</a>. Training finds the coefficients b that minimize it (via gradient descent at scale).</p>
+    <p>The training error being minimized — log loss (cross-entropy), which <a href="../concepts.html">already lives in Core Concepts</a>. Training finds the coefficients b that minimize it (via gradient descent at scale).</p>
 
     <div class="term"><b>Odds:</b> probability expressed as a ratio — odds = p/(1&minus;p). If p = 0.8, the odds are 0.8/0.2 = 4, i.e. "4 to 1 in favor". Odds can run from 0 to infinity, unlike probability which is stuck in 0–1.</div>
     <div class="term"><b>Odds ratio (how to read a logistic coefficient):</b> for a coefficient b<sub>j</sub>, e<sup>b<sub>j</sub></sup> is the multiplicative change in the odds when feature x<sub>j</sub> increases by 1 unit (other features fixed). b<sub>j</sub> = 0.47 → odds ratio e<sup>0.47</sup> &asymp; 1.6, meaning each extra unit of x<sub>j</sub> multiplies the odds of class 1 by ~1.6 (a 60% increase). A negative coefficient shrinks the odds. This is exactly why logistic regression is called interpretable.</div>
@@ -245,8 +265,8 @@ print(f"Female 1st-class P(survive) = {model.predict_proba(new_passenger2)[0, 1]
     <div class="qa"><div class="q">When would you pick logistic regression over a neural network?</div><div class="a">When you need interpretability (regulators demand readable coefficients in credit scoring), have tabular data with few features, need a fast baseline, or have limited data/compute. Neural networks (CNN for images, RNN for sequences) win when the pattern is not linear in the raw features — but note even they typically end in a sigmoid/softmax + log loss layer, which IS logistic regression.</div></div>
 
     <div class="prevnext">
-      <a href="/topics/vgg16.html">← 04 VGG16</a>
-      <a href="/topics/simple-linear-regression.html">06 Simple Linear Regression →</a>
+      <a href="vgg16.html">← 04 VGG16</a>
+      <a href="simple-linear-regression.html">06 Simple Linear Regression →</a>
     </div>
     <p class="footer-note">Topic 05 of 10 · Dataset: Kaggle yasserh/titanic-dataset · Diagram: Wikimedia Commons · Part of the HCCDA-AI prep series.</p>
   </main>
@@ -259,5 +279,6 @@ document.querySelectorAll('pre').forEach(p => {
   p.appendChild(b);
 });
 </script>
+<script src="../assets/app.js"></script>
 </body>
 </html>

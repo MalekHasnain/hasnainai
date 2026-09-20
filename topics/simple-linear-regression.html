@@ -4,30 +4,50 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Simple Linear Regression — HasnainAI</title>
-  <link rel="stylesheet" href="/assets/style.css">
+  <link rel="stylesheet" href="../assets/style.css">
 </head>
 <body>
+  <div class="topbar">
+    <button class="tb-btn tb-menu" aria-label="Menu">☰</button>
+    <div class="tb-brand">Hasnain<span style="color:var(--accent)">AI</span></div>
+    <button class="tb-btn" data-lang-btn="ru">اردو/UR</button>
+    <button class="tb-btn" data-lang-btn="en">EN</button>
+    <button class="tb-btn" data-theme-btn="light" aria-label="Light mode">☀</button>
+    <button class="tb-btn" data-theme-btn="dark" aria-label="Dark mode">🌙</button>
+  </div>
+  <div class="backdrop"></div>
+
 <div class="layout">
   <aside class="sidebar">
     <div class="brand">Hasnain<span>AI</span></div>
     <div class="tagline">HCCDA-AI prep &amp; practice</div>
     <nav>
-      <a href="/index.html">🏠 Home</a>
-      <a href="/concepts.html">📚 Core Concepts</a>
+      <a href="../index.html">🏠 Home</a>
+      <a href="../concepts.html">📚 Core Concepts</a>
       <div style="color:var(--muted);font-size:.75rem;margin:14px 0 4px 10px;">TOPICS (class sequence)</div>
-      <a href="/topics/confusion-matrix.html"><span class="num">01</span>Confusion Matrix</a>
-      <a href="/topics/cnn.html"><span class="num">02</span>CNN</a>
-      <a href="/topics/dbscan.html"><span class="num">03</span>DBSCAN</a>
-      <a href="/topics/vgg16.html"><span class="num">04</span>VGG16</a>
-      <a href="/topics/logistic-regression.html"><span class="num">05</span>Logistic Regression</a>
-      <a href="/topics/simple-linear-regression.html" class="active"><span class="num">06</span>Simple Linear Regression</a>
-      <a href="/topics/pca.html"><span class="num">07</span>PCA</a>
-      <a href="/topics/kmeans.html"><span class="num">08</span>K-Means</a>
-      <a href="/topics/multiple-regression.html"><span class="num">09</span>Multiple Regression</a>
-      <a href="/topics/rnn.html"><span class="num">10</span>RNN</a>
+      <a href="confusion-matrix.html"><span class="num">01</span>Confusion Matrix</a>
+      <a href="cnn.html"><span class="num">02</span>CNN</a>
+      <a href="dbscan.html"><span class="num">03</span>DBSCAN</a>
+      <a href="vgg16.html"><span class="num">04</span>VGG16</a>
+      <a href="logistic-regression.html"><span class="num">05</span>Logistic Regression</a>
+      <a href="simple-linear-regression.html" class="active"><span class="num">06</span>Simple Linear Regression</a>
+      <a href="pca.html"><span class="num">07</span>PCA</a>
+      <a href="kmeans.html"><span class="num">08</span>K-Means</a>
+      <a href="multiple-regression.html"><span class="num">09</span>Multiple Regression</a>
+      <a href="rnn.html"><span class="num">10</span>RNN</a>
       <div style="margin-top:18px;padding:10px;border:1px solid var(--border);border-radius:8px;background:#1f2630;">
         <div style="font-size:.78rem;color:var(--muted);">🤝 Collaborate on projects</div>
         <a href="https://wa.me/923446466664" target="_blank" rel="noopener" style="display:block;margin-top:4px;font-size:.85rem;">💬 WhatsApp: +92 344 646 6664</a>
+      </div>
+      <div class="side-box">
+        <div class="box-title">Practice here</div>
+        <a href="https://colab.research.google.com" target="_blank" rel="noopener">▶ Open Google Colab</a>
+      </div>
+      <div class="toggle-row">
+        <button class="tb-btn" data-lang-btn="ru">اردو / Roman Urdu</button>
+        <button class="tb-btn" data-lang-btn="en">English</button>
+        <button class="tb-btn" data-theme-btn="light">☀ Light</button>
+        <button class="tb-btn" data-theme-btn="dark">🌙 Dark</button>
       </div>
     </nav>
   </aside>
@@ -43,20 +63,20 @@
     <p>Simple linear regression is the most basic prediction machine in statistics: it draws the best straight line through a cloud of points so you can predict a number from a single number. "Simple" means exactly <b>one input feature</b> — one x, one y. Given a house's square footage, predict its price. Given years of experience, predict salary.</p>
     <p>The line it draws is not a guess. There is an exact formula (calculus, no iteration needed) that finds the one line minimizing the total squared error between the points and the line. That procedure is called <b>Ordinary Least Squares (OLS)</b>, and it is the same engine that powers multiple regression with many features later in this course.</p>
     <p>Despite being over 200 years old (Gauss and Legendre, early 1800s, for astronomy), it is still the first model any data scientist fits — because the two numbers it returns, <b>slope</b> and <b>intercept</b>, are directly readable as business insights: "each extra square foot adds $148 to the price" is a sentence a manager understands.</p>
-    <p>It is a <a href="/concepts.html">supervised</a> regression method: the target is continuous, and every training row already carries the correct answer.</p>
+    <p>It is a <a href="../concepts.html">supervised</a> regression method: the target is continuous, and every training row already carries the correct answer.</p>
 
     <h2>The math inside</h2>
     <p>The model is a straight line with two parameters — the intercept b<sub>0</sub> and the slope b<sub>1</sub>:</p>
     <div class="formula">y&#770; = b<sub>0</sub> + b<sub>1</sub>x</div>
     <p>For any input x, this computes the predicted y (written y&#770;, "y-hat") by starting at b<sub>0</sub> and walking b<sub>1</sub> units up for every unit of x.</p>
     <div class="formula">b<sub>1</sub> = &Sigma;(x<sub>i</sub> &minus; x&#772;)(y<sub>i</sub> &minus; y&#772;) / &Sigma;(x<sub>i</sub> &minus; x&#772;)&sup2;</div>
-    <p>The slope is the <b>covariance of x and y divided by the variance of x</b> — both already <a href="/concepts.html">explained in Core Concepts</a>. If x and y move together (positive covariance), the slope is positive; the more spread x has (bigger variance), the gentler the slope.</p>
+    <p>The slope is the <b>covariance of x and y divided by the variance of x</b> — both already <a href="../concepts.html">explained in Core Concepts</a>. If x and y move together (positive covariance), the slope is positive; the more spread x has (bigger variance), the gentler the slope.</p>
     <div class="formula">b<sub>0</sub> = y&#772; &minus; b<sub>1</sub>x&#772;</div>
     <p>The intercept is chosen so the line passes exactly through the point of means (x&#772;, y&#772;) — the center of mass of the data.</p>
     <div class="formula">residual e<sub>i</sub> = y<sub>i</sub> &minus; y&#770;<sub>i</sub></div>
     <p>The residual is the vertical gap between a real point and the line — how wrong the line was on that row (positive = line too low, negative = line too high).</p>
     <div class="formula">OLS minimizes &Sigma;(y<sub>i</sub> &minus; y&#770;<sub>i</sub>)&sup2;</div>
-    <p>Ordinary Least Squares picks the b<sub>0</sub> and b<sub>1</sub> that make the sum of squared residuals as small as possible — squaring kills the sign and punishes big misses. This is the <a href="/concepts.html">loss function</a> of linear regression.</p>
+    <p>Ordinary Least Squares picks the b<sub>0</sub> and b<sub>1</sub> that make the sum of squared residuals as small as possible — squaring kills the sign and punishes big misses. This is the <a href="../concepts.html">loss function</a> of linear regression.</p>
     <div class="term"><b>Residual:</b> the error of one prediction — actual minus predicted (y &minus; y&#770;). Residuals are what OLS squashes; they are also useful diagnostics (a pattern in residuals means the line is the wrong shape).</div>
     <div class="term"><b>Ordinary Least Squares (OLS):</b> the closed-form recipe for finding the best-fit line by minimizing the sum of squared residuals. No gradient descent needed — the two formulas above ARE the answer.</div>
     <div class="term"><b>R&sup2; (R-squared, coefficient of determination):</b> the share of the target's variance the model explains, from 0 to 1. R&sup2; = 1 &minus; (sum of squared residuals) / (variance of y around its mean). 0.85 means 85% of price variation is captured by square footage.</div>
@@ -245,8 +265,8 @@ print(f"Manual formula b0 + b1*x gives: ${manual:,.0f}")</code></pre>
     <div class="qa"><div class="q">Why does X need double brackets but y single brackets in sklearn?</div><div class="a">X = df[["Square_Footage"]] returns a 2D DataFrame because sklearn models accept a table of features — even a table with one column — while y = df["House_Price"] returns a 1D Series, since the target is always a single column of answers. Passing a 1D x raises a "expected 2D array" error.</div></div>
 
     <div class="prevnext">
-      <a href="/topics/logistic-regression.html">← Topic 05: Logistic Regression</a>
-      <a href="/topics/pca.html">Topic 07: PCA →</a>
+      <a href="logistic-regression.html">← Topic 05: Logistic Regression</a>
+      <a href="pca.html">Topic 07: PCA →</a>
     </div>
     <p class="footer-note">HasnainAI — HCCDA-AI course companion. One line, two numbers, endless insight.</p>
   </main>
@@ -259,5 +279,6 @@ document.querySelectorAll('pre').forEach(p => {
   p.appendChild(b);
 });
 </script>
+<script src="../assets/app.js"></script>
 </body>
 </html>

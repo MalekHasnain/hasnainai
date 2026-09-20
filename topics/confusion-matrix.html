@@ -6,83 +6,131 @@
 <title>Confusion Matrix — HasnainAI | Classification Evaluation</title>
 <meta name="description" content="Confusion Matrix explained: TP, FP, FN, TN, Accuracy, Precision, Recall, F1 — with runnable Google Colab code blocks on the breast cancer dataset and interview Q&A.">
 <meta name="author" content="Malik Hasnain">
-<link rel="stylesheet" href="/assets/style.css">
+<link rel="stylesheet" href="../assets/style.css">
 </head>
 <body>
+  <div class="topbar">
+    <button class="tb-btn tb-menu" aria-label="Menu">☰</button>
+    <div class="tb-brand">Hasnain<span style="color:var(--accent)">AI</span></div>
+    <button class="tb-btn" data-lang-btn="ru">اردو/UR</button>
+    <button class="tb-btn" data-lang-btn="en">EN</button>
+    <button class="tb-btn" data-theme-btn="light" aria-label="Light mode">☀</button>
+    <button class="tb-btn" data-theme-btn="dark" aria-label="Dark mode">🌙</button>
+  </div>
+  <div class="backdrop"></div>
+
 <div class="layout">
   <aside class="sidebar">
     <div class="brand">Hasnain<span>AI</span></div>
     <div class="tagline">HCCDA-AI prep &amp; practice</div>
     <nav>
-      <a href="/index.html">🏠 Home</a>
-      <a href="/concepts.html">📚 Core Concepts</a>
+      <a href="../index.html">🏠 Home</a>
+      <a href="../concepts.html">📚 Core Concepts</a>
       <div style="color:var(--muted);font-size:.75rem;margin:14px 0 4px 10px;">TOPICS (class sequence)</div>
-      <a href="/topics/confusion-matrix.html" class="active"><span class="num">01</span>Confusion Matrix</a>
-      <a href="/topics/cnn.html"><span class="num">02</span>CNN</a>
-      <a href="/topics/dbscan.html"><span class="num">03</span>DBSCAN</a>
-      <a href="/topics/vgg16.html"><span class="num">04</span>VGG16</a>
-      <a href="/topics/logistic-regression.html"><span class="num">05</span>Logistic Regression</a>
-      <a href="/topics/simple-linear-regression.html"><span class="num">06</span>Simple Linear Regression</a>
-      <a href="/topics/pca.html"><span class="num">07</span>PCA</a>
-      <a href="/topics/kmeans.html"><span class="num">08</span>K-Means</a>
-      <a href="/topics/multiple-regression.html"><span class="num">09</span>Multiple Regression</a>
-      <a href="/topics/rnn.html"><span class="num">10</span>RNN</a>
+      <a href="confusion-matrix.html" class="active"><span class="num">01</span>Confusion Matrix</a>
+      <a href="cnn.html"><span class="num">02</span>CNN</a>
+      <a href="dbscan.html"><span class="num">03</span>DBSCAN</a>
+      <a href="vgg16.html"><span class="num">04</span>VGG16</a>
+      <a href="logistic-regression.html"><span class="num">05</span>Logistic Regression</a>
+      <a href="simple-linear-regression.html"><span class="num">06</span>Simple Linear Regression</a>
+      <a href="pca.html"><span class="num">07</span>PCA</a>
+      <a href="kmeans.html"><span class="num">08</span>K-Means</a>
+      <a href="multiple-regression.html"><span class="num">09</span>Multiple Regression</a>
+      <a href="rnn.html"><span class="num">10</span>RNN</a>
       <div style="margin-top:18px;padding:10px;border:1px solid var(--border);border-radius:8px;background:#1f2630;">
         <div style="font-size:.78rem;color:var(--muted);">🤝 Collaborate on projects</div>
         <a href="https://wa.me/923446466664" target="_blank" rel="noopener" style="display:block;margin-top:4px;font-size:.85rem;">💬 WhatsApp: +92 344 646 6664</a>
+      </div>
+      <div class="side-box">
+        <div class="box-title">Practice here</div>
+        <a href="https://colab.research.google.com" target="_blank" rel="noopener">▶ Open Google Colab</a>
+      </div>
+      <div class="toggle-row">
+        <button class="tb-btn" data-lang-btn="ru">اردو / Roman Urdu</button>
+        <button class="tb-btn" data-lang-btn="en">English</button>
+        <button class="tb-btn" data-theme-btn="light">☀ Light</button>
+        <button class="tb-btn" data-theme-btn="dark">🌙 Dark</button>
       </div>
     </nav>
   </aside>
   <main>
     <h1>Confusion Matrix</h1>
     <div class="meta">
-      <span class="chip">Evaluation metric (classification)</span>
+      <span class="chip en">Evaluation metric (classification)</span>
+      <span class="chip ru">Classification ka evaluation metric</span>
       <span class="chip">Kaggle: Breast Cancer Wisconsin</span>
       <span class="chip">scikit-learn</span>
     </div>
 
     <h2>What it is (short intro)</h2>
-    <p>A classifier predicts categories — sick/healthy, spam/not-spam. But <b>how many of its predictions were right, and in which way were the mistakes made?</b> The confusion matrix answers exactly that: a simple 2×2 (or n×n for more classes) table comparing <b>what the model predicted</b> against <b>the truth</b>.</p>
-    <p>It is called "confusing" because the mistakes reveal where the model gets confused. Every classification algorithm you will study — Logistic Regression, CNN, VGG16, RNN — is graded with this same table. That is why your teacher asked about it first: it is the <b>report card of all classifiers</b>.</p>
-    <p>Regression models (Topic 06, 09) do NOT use it — they predict continuous numbers and are graded with MAE/MSE/R² instead (<a href="/concepts.html">Core Concepts</a>).</p>
+    <p class="en">A classifier predicts categories — sick/healthy, spam/not-spam. But <b>how many of its predictions were right, and in which way were the mistakes made?</b> The confusion matrix answers exactly that: a simple 2×2 (or n×n for more classes) table comparing <b>what the model predicted</b> against <b>the truth</b>.</p>
+    <p class="ru">Ek classifier categories predict karta hai — sick/healthy, spam/not-spam. Lekin sawal ye hai: <b>uski predictions mein se kitni sahi thi, aur galtiyan kis tarah ki gayi?</b> Confusion matrix bilkul yehi batata hai: ek simple 2×2 table (zyada classes ke liye n×n) jo <b>model ne jo predict kiya</b> usay <b>truth</b> se compare karti hai.</p>
+    <p class="en">It is called "confusing" because the mistakes reveal where the model gets confused. Every classification algorithm you will study — Logistic Regression, CNN, VGG16, RNN — is graded with this same table. That is why your teacher asked about it first: it is the <b>report card of all classifiers</b>.</p>
+    <p class="ru">Iska naam "confusion" is liye hai kyunki galtiyan batati hain ke model kahan confuse hota hai. Jo bhi classification algorithm aap parhenge — Logistic Regression, CNN, VGG16, RNN — sab ki grading isi table se hoti hai. Isi liye teacher ne sab se pehle ye poocha: ye <b>har classifier ka report card</b> hai.</p>
+    <p class="en">Regression models (Topic 06, 09) do NOT use it — they predict continuous numbers and are graded with MAE/MSE/R² instead (<a href="../concepts.html">Core Concepts</a>).</p>
+    <p class="ru">Regression models (Topic 06, 09) ye use <b>nahi</b> karte — wo continuous numbers predict karte hain aur unki grading MAE/MSE/R² se hoti hai (<a href="../concepts.html">Core Concepts</a>).</p>
 
     <h2>The math inside</h2>
-    <p>The four cells (for a yes/no problem, e.g. "malignant?"):</p>
-    <div class="term"><b>True Positive (TP):</b> model said YES, truth is YES — correct catch.</div>
-    <div class="term"><b>True Negative (TN):</b> model said NO, truth is NO — correct rejection.</div>
-    <div class="term"><b>False Positive (FP):</b> model said YES, truth is NO — <b>false alarm</b> (Type I error).</div>
-    <div class="term"><b>False Negative (FN):</b> model said NO, truth is YES — <b>missed case</b> (Type II error). In cancer detection this is the most dangerous cell.</div>
-    <p>From these four numbers, four ratios:</p>
-    <div class="formula">Accuracy = (TP + TN) / (TP + TN + FP + FN)
+    <p class="en">The four cells (for a yes/no problem, e.g. "malignant?"):</p>
+    <p class="ru">Chaar cells (kisi yes/no masle ke liye, misal ke tor par "malignant?"):</p>
+    <div class="term en"><b>True Positive (TP):</b> model said YES, truth is YES — correct catch.</div>
+    <div class="term ru"><b>True Positive (TP):</b> model ne YES kaha, truth bhi YES — sahi pakra.</div>
+    <div class="term en"><b>True Negative (TN):</b> model said NO, truth is NO — correct rejection.</div>
+    <div class="term ru"><b>True Negative (TN):</b> model ne NO kaha, truth bhi NO — sahi reject kiya.</div>
+    <div class="term en"><b>False Positive (FP):</b> model said YES, truth is NO — <b>false alarm</b> (Type I error).</div>
+    <div class="term ru"><b>False Positive (FP):</b> model ne YES kaha, truth NO — <b>false alarm</b> (Type I error).</div>
+    <div class="term en"><b>False Negative (FN):</b> model said NO, truth is YES — <b>missed case</b> (Type II error). In cancer detection this is the most dangerous cell.</div>
+    <div class="term ru"><b>False Negative (FN):</b> model ne NO kaha, truth YES — <b>missed case</b> (Type II error). Cancer detection mein yehi sab se khatarnak cell hai.</div>
+    <p class="en">From these four numbers, four ratios:</p>
+    <p class="ru">In chaar numbers se chaar ratios nikalte hain:</p>
+    <div class="formula en">Accuracy = (TP + TN) / (TP + TN + FP + FN)
       <div class="note">overall fraction of correct predictions</div>
     </div>
-    <div class="formula">Precision = TP / (TP + FP)
+    <div class="formula ru">Accuracy = (TP + TN) / (TP + TN + FP + FN)
+      <div class="note">kul predictions mein se sahi predictions ka hissa</div>
+    </div>
+    <div class="formula en">Precision = TP / (TP + FP)
       <div class="note">of everything the model flagged, how much was truly positive — trustworthiness of an alarm</div>
     </div>
-    <div class="formula">Recall (Sensitivity) = TP / (TP + FN)
+    <div class="formula ru">Precision = TP / (TP + FP)
+      <div class="note">model ne jitne flag kiye, un mein se kitna waqai positive tha — ek alarm par kitna bharosa kiya ja sakta hai</div>
+    </div>
+    <div class="formula en">Recall (Sensitivity) = TP / (TP + FN)
       <div class="note">of all true positives, how many the model caught — completeness of the sweep</div>
     </div>
-    <div class="formula">F1 = 2 × (Precision × Recall) / (Precision + Recall)
+    <div class="formula ru">Recall (Sensitivity) = TP / (TP + FN)
+      <div class="note">sare true positives mein se model ne kitne pakre — sweep kitni mukammal hui</div>
+    </div>
+    <div class="formula en">F1 = 2 × (Precision × Recall) / (Precision + Recall)
       <div class="note">one balanced number combining precision and recall (their harmonic mean)</div>
     </div>
-    <div class="callout yellow"><b>When accuracy lies:</b> if only 1% of transactions are fraud, a lazy model that always says "not fraud" scores 99% accuracy while catching ZERO fraud. With <b>imbalanced data</b>, always read precision/recall, not just accuracy. Our dataset is mildly imbalanced (357 benign vs 212 malignant) — good practice ground.</div>
-    <p>Train/test split, overfitting and other shared ideas are <a href="/concepts.html">already explained in Core Concepts</a>.</p>
+    <div class="formula ru">F1 = 2 × (Precision × Recall) / (Precision + Recall)
+      <div class="note">precision aur recall ko mila kar ek balanced number (inka harmonic mean)</div>
+    </div>
+    <div class="callout yellow en"><b>When accuracy lies:</b> if only 1% of transactions are fraud, a lazy model that always says "not fraud" scores 99% accuracy while catching ZERO fraud. With <b>imbalanced data</b>, always read precision/recall, not just accuracy. Our dataset is mildly imbalanced (357 benign vs 212 malignant) — good practice ground.</div>
+    <div class="callout yellow ru"><b>Jab accuracy jhoot bolti hai:</b> agar sirf 1% transactions fraud hon, to ek sust model jo hamesha "not fraud" kahe, 99% accuracy score kar leta hai — aur ZERO fraud pakarta hai. <b>Imbalanced data</b> ke saath hamesha precision/recall parho, sirf accuracy nahi. Hamara dataset halka sa imbalanced hai (357 benign vs 212 malignant) — practice ke liye achi jagah.</div>
+    <p class="en">Train/test split, overfitting and other shared ideas are <a href="../concepts.html">already explained in Core Concepts</a>.</p>
+    <p class="ru">Train/test split, overfitting aur baqi shared concepts <a href="../concepts.html">Core Concepts mein pehle se samjhaye gaye hain</a>.</p>
 
     <h2>Diagram</h2>
     <figure>
       <img src="https://upload.wikimedia.org/wikipedia/commons/0/08/Confusion_Matrix.png" alt="Confusion matrix layout: predicted vs actual with TP, FP, FN, TN cells">
       <figcaption>Source: Wikipedia/Wikimedia Commons</figcaption>
     </figure>
-    <p>Notice: rows = actual (truth), columns = predicted. The diagonal (TP, TN) is where the model is right; everything off-diagonal is a mistake, split into false alarms (FP) and missed cases (FN).</p>
+    <p class="en">Notice: rows = actual (truth), columns = predicted. The diagonal (TP, TN) is where the model is right; everything off-diagonal is a mistake, split into false alarms (FP) and missed cases (FN).</p>
+    <p class="ru">Dhyan do: rows = actual (truth), columns = predicted. Diagonal (TP, TN) wahi hai jahan model sahi hai; diagonal se bahar sab galti hai — do hisson mein: false alarms (FP) aur missed cases (FN).</p>
 
     <h2>Dataset (Kaggle)</h2>
-    <p><b>Breast Cancer Wisconsin Diagnostic</b> — 569 tumor samples, 30 numeric measurements each (radius, texture, smoothness…) and one target: <b>diagnosis</b> (M = malignant, B = benign). Real medical data, perfectly clean, and the question "did we miss a malignant tumor?" makes precision/recall feel real. Target here is a <b>category</b>, so this is a classification problem.</p>
+    <p class="en"><b>Breast Cancer Wisconsin Diagnostic</b> — 569 tumor samples, 30 numeric measurements each (radius, texture, smoothness…) and one target: <b>diagnosis</b> (M = malignant, B = benign). Real medical data, perfectly clean, and the question "did we miss a malignant tumor?" makes precision/recall feel real. Target here is a <b>category</b>, so this is a classification problem.</p>
+    <p class="ru"><b>Breast Cancer Wisconsin Diagnostic</b> — 569 tumor samples, har sample ki 30 numeric measurements (radius, texture, smoothness…) aur ek target: <b>diagnosis</b> (M = malignant, B = benign). Asli medical data, bilkul clean, aur sawal "kya humne koi malignant tumor miss kar diya?" precision/recall ko waqai mehsoos karwa deta hai. Target yahan ek <b>category</b> hai, is liye ye classification problem hai.</p>
 
     <h2>Practice code — run in Google Colab, top to bottom</h2>
-    <div class="callout">Blocks must run in order — each block remembers the ones before it (same kernel session). Copy each block into Colab and run.</div>
+    <div class="callout en">Blocks must run in order — each block remembers the ones before it (same kernel session). Copy each block into Colab and run.</div>
+    <div class="callout ru">Blocks order mein chalao — har block apne se pehle walon ko yaad rakhta hai (same kernel session). Har block ko Colab mein copy kar ke run karo.</div>
 
     <div class="block-label">BLOCK 1: Imports</div>
-    <p>Load the libraries: pandas for tables, sklearn for the model, metrics and the confusion matrix tools.</p>
+    <p class="en">Load the libraries: pandas for tables, sklearn for the model, metrics and the confusion matrix tools.</p>
+    <p class="ru">Libraries load karo: pandas tables ke liye, sklearn model, metrics aur confusion matrix tools ke liye.</p>
 <pre><code>import pandas as pd                          # tables (DataFrames)
 import numpy as np                           # numerical math
 from sklearn.model_selection import train_test_split   # hold out unseen test data
@@ -92,7 +140,8 @@ from sklearn.metrics import (confusion_matrix, ConfusionMatrixDisplay,  # the st
 print("imports OK")</code></pre>
 
     <div class="block-label">BLOCK 2: Download the dataset from Kaggle</div>
-    <p>kagglehub pulls the dataset straight into the notebook and prints the file path — no manual download, no API key needed.</p>
+    <p class="en">kagglehub pulls the dataset straight into the notebook and prints the file path — no manual download, no API key needed.</p>
+    <p class="ru">kagglehub dataset ko seedha notebook mein le aata hai aur file path print karta hai — na manual download, na API key.</p>
 <pre><code>import kagglehub                             # Kaggle dataset downloader
 path = kagglehub.dataset_download("uciml/breast-cancer-wisconsin-data")  # download + extract, returns folder path
 print("dataset path:", path)                 # the file path where the data lives
@@ -102,14 +151,16 @@ csv_file = glob.glob(path + "/*.csv")[0]     # find the .csv inside the folder (
 print("csv file:", csv_file)</code></pre>
 
     <div class="block-label">BLOCK 3: Load and look</div>
-    <p>Read the CSV into a DataFrame and take a first look at shape and columns.</p>
+    <p class="en">Read the CSV into a DataFrame and take a first look at shape and columns.</p>
+    <p class="ru">CSV ko DataFrame mein load karo aur pehli nazar shape aur columns par daalo.</p>
 <pre><code>df = pd.read_csv(csv_file)                   # CSV -> DataFrame
 print("shape:", df.shape)                    # (569 rows, 33 columns)
 print(df.columns.tolist()[:8], "...")        # first few column names
 df.head()                                    # first 5 rows</code></pre>
 
     <div class="block-label">BLOCK 4: Separate features (X) and target (y)</div>
-    <p>The target is the diagnosis column; the 30 measurements are the features. The id column carries no signal and an empty "Unnamed: 32" column sometimes appears — both are dropped.</p>
+    <p class="en">The target is the diagnosis column; the 30 measurements are the features. The id column carries no signal and an empty "Unnamed: 32" column sometimes appears — both are dropped.</p>
+    <p class="ru">Target diagnosis column hai; 30 measurements features hain. id column mein koi signal nahi hota aur kabhi khaali "Unnamed: 32" column aa jata hai — dono ko drop kar dete hain.</p>
 <pre><code>df = df.drop(columns=["id"], errors="ignore")          # id is just a row label, not a signal
 df = df.drop(columns=[c for c in df.columns if c.startswith("Unnamed")], errors="ignore")  # drop stray empty columns
 X = df.drop(columns=["diagnosis"])                     # all 30 numeric measurements = features
@@ -117,7 +168,8 @@ y = df["diagnosis"].map({"B": 0, "M": 1})              # target: map letters to 
 print("X shape:", X.shape, "| y positives:", y.sum())  # 569 rows, 30 features; 212 malignant</code></pre>
 
     <div class="block-label">BLOCK 5: Train/test split</div>
-    <p>Hide 20% of the data so the matrix is computed on samples the model never saw — an honest evaluation.</p>
+    <p class="en">Hide 20% of the data so the matrix is computed on samples the model never saw — an honest evaluation.</p>
+    <p class="ru">20% data chhupa do taake matrix un samples par compute ho jo model ne kabhi dekha hi na — imandar evaluation.</p>
 <pre><code>X_train, X_test, y_train, y_test = train_test_split(
     X, y, test_size=0.2,           # 20% held out for testing
     random_state=42,               # frozen shuffle -> reproducible split
@@ -125,19 +177,22 @@ print("X shape:", X.shape, "| y positives:", y.sum())  # 569 rows, 30 features; 
 print("train:", len(X_train), "test:", len(X_test))</code></pre>
 
     <div class="block-label">BLOCK 6: Train a classifier</div>
-    <p>Logistic Regression is just the engine here — full explanation in Topic 05. The job of this page is reading the matrix it produces.</p>
+    <p class="en">Logistic Regression is just the engine here — full explanation in Topic 05. The job of this page is reading the matrix it produces.</p>
+    <p class="ru">Logistic Regression yahan sirf engine hai — poori detail Topic 05 mein. Is page ka kaam hai is se bani hui matrix ko parhna.</p>
 <pre><code>model = LogisticRegression(max_iter=5000)    # create the classifier; max_iter raised so training fully converges
 model.fit(X_train, y_train)                   # learn from 80% of the data
 print("training done")</code></pre>
 
     <div class="block-label">BLOCK 7: Predict</div>
-    <p>Predict the held-out 20% — these predictions vs the truth will fill the matrix.</p>
+    <p class="en">Predict the held-out 20% — these predictions vs the truth will fill the matrix.</p>
+    <p class="ru">Held-out 20% par predict karo — yehi predictions vs truth matrix ko bhar deti hain.</p>
 <pre><code>y_pred = model.predict(X_test)               # predicted class (0/1) for each unseen sample
 comparison = pd.DataFrame({"actual": y_test.values, "predicted": y_pred})
 comparison.head(10)                           # eyeball a few rows first</code></pre>
 
     <div class="block-label">BLOCK 8: THE CONFUSION MATRIX</div>
-    <p>The whole topic in one command: sklearn counts TP, FP, FN, TN for us.</p>
+    <p class="en">The whole topic in one command: sklearn counts TP, FP, FN, TN for us.</p>
+    <p class="ru">Poora topic ek hi command mein: sklearn hamare liye TP, FP, FN, TN count kar deta hai.</p>
 <pre><code>cm = confusion_matrix(y_test, y_pred)        # counts the 4 cells: [[TN, FP], [FN, TP]]
 print("Confusion matrix (rows = actual 0/1, columns = predicted 0/1):")
 print(cm)
@@ -148,7 +203,8 @@ ConfusionMatrixDisplay.from_predictions(y_test, y_pred)  # draws the colored mat
 plt_cm = None                                # display uses its own plot</code></pre>
 
     <div class="block-label">BLOCK 9: Accuracy, precision, recall — the ratios</div>
-    <p>Turn the four counts into the four ratios, by hand AND with sklearn — see that they match.</p>
+    <p class="en">Turn the four counts into the four ratios, by hand AND with sklearn — see that they match.</p>
+    <p class="ru">Chaar counts ko chaar ratios mein badlo — haath se BHI aur sklearn se BHI — aur dekho ke dono match karte hain.</p>
 <pre><code># by hand (the math, visible):
 acc_by_hand  = (tp + tn) / (tp + tn + fp + fn)     # Accuracy formula
 prec_by_hand = tp / (tp + fp)                       # Precision formula
@@ -158,37 +214,55 @@ print(f"Accuracy  : {accuracy_score(y_test, y_pred):.4f} (hand: {acc_by_hand:.4f
 print(f"Precision : {prec_by_hand:.4f}")
 print(f"Recall    : {rec_by_hand:.4f}")
 print(classification_report(y_test, y_pred, target_names=["benign", "malignant"]))  # all ratios per class + F1</code></pre>
-    <p>Reading it like an interview answer: <i>"Recall on the malignant class tells me what fraction of real tumors we caught; precision tells me how trustworthy a malignant flag is. In medicine, missing a tumor (FN) is worse than a false alarm (FP), so recall matters more."</i></p>
+    <p class="en">Reading it like an interview answer: <i>"Recall on the malignant class tells me what fraction of real tumors we caught; precision tells me how trustworthy a malignant flag is. In medicine, missing a tumor (FN) is worse than a false alarm (FP), so recall matters more."</i></p>
+    <p class="ru">Interview answer ki tarah parho: <i>"Malignant class par recall batata hai ke asli tumors ka kitna hissa hum ne pakra; precision batata hai ke malignant flag kitna bharosay layak hai. Medicine mein tumor miss kar dena (FN) false alarm (FP) se zyada bura hota hai, is liye recall zyada matter karta hai."</i></p>
 
     <h2>Real-world use cases &amp; companies</h2>
     <table>
-      <tr><th>Use case</th><th>Who</th></tr>
-      <tr><td>Spam filtering (FP = real mail in spam folder)</td><td>Gmail, Outlook</td></tr>
-      <tr><td>Fraud detection (FN = missed fraud, FP = blocked honest customer)</td><td>PayPal, Stripe, Visa</td></tr>
-      <tr><td>Medical screening (FN = missed disease — worst cell)</td><td>Hospital AI, Google Health</td></tr>
-      <tr><td>Content moderation at scale</td><td>YouTube, Meta</td></tr>
+      <tr class="en"><th>Use case</th><th>Who</th></tr>
+      <tr class="ru"><th>Kahan use hota hai</th><th>Kaun use karta hai</th></tr>
+      <tr class="en"><td>Spam filtering (FP = real mail in spam folder)</td><td>Gmail, Outlook</td></tr>
+      <tr class="ru"><td>Spam filtering (FP = asli email spam folder mein chali jati hai)</td><td>Gmail, Outlook</td></tr>
+      <tr class="en"><td>Fraud detection (FN = missed fraud, FP = blocked honest customer)</td><td>PayPal, Stripe, Visa</td></tr>
+      <tr class="ru"><td>Fraud detection (FN = fraud miss ho gaya, FP = imandar customer block ho gaya)</td><td>PayPal, Stripe, Visa</td></tr>
+      <tr class="en"><td>Medical screening (FN = missed disease — worst cell)</td><td>Hospital AI, Google Health</td></tr>
+      <tr class="ru"><td>Medical screening (FN = bimari miss ho gayi — sab se bura cell)</td><td>Hospital AI, Google Health</td></tr>
+      <tr class="en"><td>Content moderation at scale</td><td>YouTube, Meta</td></tr>
+      <tr class="ru"><td>Bade scale par content moderation</td><td>YouTube, Meta</td></tr>
     </table>
 
     <h2>Combining with other algorithms (project ideas)</h2>
-    <p><b>1. Grade every classifier you build.</b> Topics 05 (Logistic), 02 (CNN), 04 (VGG16) and 10 (RNN) all end with this matrix — build one project where you compare all their matrices side by side.</p>
-    <p><b>2. Matrix-guided threshold tuning.</b> Shift the 0.5 decision boundary of Logistic Regression (Topic 05) to trade precision for recall until FN is minimized — a real medical-device workflow.</p>
-    <p><b>3. Error analysis with clustering.</b> Run K-Means (Topic 08) on the FN samples only — discover <i>which kind</i> of tumor the model misses, then engineer features to fix it.</p>
+    <p class="en"><b>1. Grade every classifier you build.</b> Topics 05 (Logistic), 02 (CNN), 04 (VGG16) and 10 (RNN) all end with this matrix — build one project where you compare all their matrices side by side.</p>
+    <p class="ru"><b>1. Har classifier ki grading karo jo tum banao.</b> Topics 05 (Logistic), 02 (CNN), 04 (VGG16) aur 10 (RNN) sab isi matrix par khatam hote hain — ek aisa project banao jahan in sab ki matrices side by side compare karo.</p>
+    <p class="en"><b>2. Matrix-guided threshold tuning.</b> Shift the 0.5 decision boundary of Logistic Regression (Topic 05) to trade precision for recall until FN is minimized — a real medical-device workflow.</p>
+    <p class="ru"><b>2. Matrix se threshold tuning.</b> Logistic Regression (Topic 05) ka 0.5 decision boundary shift karo taake precision ko recall ke badle de kar FN kam se kam ho jaye — asli medical-device workflow.</p>
+    <p class="en"><b>3. Error analysis with clustering.</b> Run K-Means (Topic 08) on the FN samples only — discover <i>which kind</i> of tumor the model misses, then engineer features to fix it.</p>
+    <p class="ru"><b>3. Clustering se error analysis.</b> Sirf FN samples par K-Means (Topic 08) chalao — pata karo model <i>kis qism</i> ka tumor miss karta hai, phir features engineer kar ke theek karo.</p>
 
     <h2>Interview Q&amp;A</h2>
-    <div class="qa"><div class="q">Q1. What is a confusion matrix?</div><div class="a">A table comparing predicted classes against actual classes for a classifier: TP, FP, FN, TN. From it come accuracy, precision, recall and F1.</div></div>
-    <div class="qa"><div class="q">Q2. Why is accuracy alone not enough?</div><div class="a">With imbalanced classes accuracy can be high while the model catches zero positives — a fraud model that always says "not fraud" scores 99% accuracy. Precision and reveal what accuracy hides.</div></div>
-    <div class="qa"><div class="q">Q3. Precision vs recall — one line each?</div><div class="a">Precision = of my alarms, how many were real (TP/(TP+FP)). Recall = of all real cases, how many I caught (TP/(TP+FN)).</div></div>
-    <div class="qa"><div class="q">Q4. Which is worse: FP or FN?</div><div class="a">Problem-dependent. In cancer screening FN (missed disease) is worse; in spam filtering FP (lost real email) is worse. Choose the metric you optimize accordingly.</div></div>
-    <div class="qa"><div class="q">Q5. Where does the confusion matrix fit for CNN/VGG16 (image classifiers)?</div><div class="a">Exactly the same place — after predicting test images, the matrix becomes num_classes × num_classes; for CIFAR-10 it is 10×10. The diagonal shows which image classes the net confuses.</div></div>
-    <div class="qa"><div class="q">Q6. Does linear regression use a confusion matrix?</div><div class="a">No — regression predicts continuous numbers, so it is graded with MAE, MSE, RMSE and R². The confusion matrix belongs to classification only.</div></div>
-    <div class="qa"><div class="q">Q7. What is F1 score?</div><div class="a">The harmonic mean of precision and recall — a single balanced number, useful when you need both high and classes are imbalanced.</div></div>
-    <div class="qa"><div class="q">Q8. What are Type I and Type II errors?</div><div class="a">Type I = false positive (false alarm, FP). Type II = false negative (missed case, FN).</div></div>
+    <div class="qa en"><div class="q">Q1. What is a confusion matrix?</div><div class="a">A table comparing predicted classes against actual classes for a classifier: TP, FP, FN, TN. From it come accuracy, precision, recall and F1.</div></div>
+    <div class="qa ru"><div class="q">Q1. Confusion matrix kya hai?</div><div class="a">Ek classifier ke predicted classes aur actual classes ko compare karne ki table: TP, FP, FN, TN. Isi se accuracy, precision, recall aur F1 nikalte hain.</div></div>
+    <div class="qa en"><div class="q">Q2. Why is accuracy alone not enough?</div><div class="a">With imbalanced classes accuracy can be high while the model catches zero positives — a fraud model that always says "not fraud" scores 99% accuracy. Precision and reveal what accuracy hides.</div></div>
+    <div class="qa ru"><div class="q">Q2. Sirf accuracy kaafi kyun nahi hoti?</div><div class="a">Imbalanced classes ke saath accuracy high ho sakti hai jabke model zero positives pakre — ek fraud model jo hamesha "not fraud" kahe 99% accuracy le leta hai. Precision aur recall wohi khol dete hain jo accuracy chhupati hai.</div></div>
+    <div class="qa en"><div class="q">Q3. Precision vs recall — one line each?</div><div class="a">Precision = of my alarms, how many were real (TP/(TP+FP)). Recall = of all real cases, how many I caught (TP/(TP+FN)).</div></div>
+    <div class="qa ru"><div class="q">Q3. Precision vs recall — ek ek line mein?</div><div class="a">Precision = mere alarms mein se kitne asli the (TP/(TP+FP)). Recall = sare asli cases mein se kitne main ne pakre (TP/(TP+FN)).</div></div>
+    <div class="qa en"><div class="q">Q4. Which is worse: FP or FN?</div><div class="a">Problem-dependent. In cancer screening FN (missed disease) is worse; in spam filtering FP (lost real email) is worse. Choose the metric you optimize accordingly.</div></div>
+    <div class="qa ru"><div class="q">Q4. FP aur FN mein se kaunsa zyada bura hai?</div><div class="a">Problem par depend karta hai. Cancer screening mein FN (bimari miss hona) zyada bura hai; spam filtering mein FP (asli email lost hona) zyada bura hai. Jo metric optimize karna hai wo isi hisaab se chuno.</div></div>
+    <div class="qa en"><div class="q">Q5. Where does the confusion matrix fit for CNN/VGG16 (image classifiers)?</div><div class="a">Exactly the same place — after predicting test images, the matrix becomes num_classes × num_classes; for CIFAR-10 it is 10×10. The diagonal shows which image classes the net confuses.</div></div>
+    <div class="qa ru"><div class="q">Q5. CNN/VGG16 (image classifiers) ke liye confusion matrix kahan aati hai?</div><div class="a">Bilkul wahin jagah — test images predict karne ke baad matrix num_classes × num_classes ban jati hai; CIFAR-10 ke liye 10×10. Diagonal batati hai ke net kaunsi image classes aapas mein confuse karta hai.</div></div>
+    <div class="qa en"><div class="q">Q6. Does linear regression use a confusion matrix?</div><div class="a">No — regression predicts continuous numbers, so it is graded with MAE, MSE, RMSE and R². The confusion matrix belongs to classification only.</div></div>
+    <div class="qa ru"><div class="q">Q6. Kya linear regression confusion matrix use karta hai?</div><div class="a">Nahi — regression continuous numbers predict karta hai, is liye uski grading MAE, MSE, RMSE aur R² se hoti hai. Confusion matrix sirf classification ka hai.</div></div>
+    <div class="qa en"><div class="q">Q7. What is F1 score?</div><div class="a">The harmonic mean of precision and recall — a single balanced number, useful when you need both high and classes are imbalanced.</div></div>
+    <div class="qa ru"><div class="q">Q7. F1 score kya hai?</div><div class="a">Precision aur recall ka harmonic mean — ek hi balanced number, tab kaam aata hai jab dono chahiye aur classes imbalanced hon.</div></div>
+    <div class="qa en"><div class="q">Q8. What are Type I and Type II errors?</div><div class="a">Type I = false positive (false alarm, FP). Type II = false negative (missed case, FN).</div></div>
+    <div class="qa ru"><div class="q">Q8. Type I aur Type II errors kya hain?</div><div class="a">Type I = false positive (false alarm, FP). Type II = false negative (missed case, FN).</div></div>
 
     <div class="prevnext">
-      <a href="/concepts.html">← Core Concepts</a>
-      <a href="/topics/cnn.html">Topic 02: CNN →</a>
+      <a href="../concepts.html">← Core Concepts</a>
+      <a href="cnn.html">Topic 02: CNN →</a>
     </div>
-    <p class="footer-note">Built by <b>Malik Hasnain</b> — Huawei HCCDA-AI prep. Diagram: Wikipedia/Wikimedia Commons. Dataset: Kaggle (Breast Cancer Wisconsin).</p>
+    <p class="footer-note en">Built by <b>Malik Hasnain</b> — Huawei HCCDA-AI prep. Diagram: Wikipedia/Wikimedia Commons. Dataset: Kaggle (Breast Cancer Wisconsin).</p>
+    <p class="footer-note ru">Banaya <b>Malik Hasnain</b> ne — Huawei HCCDA-AI ki tayari. Diagram: Wikipedia/Wikimedia Commons. Dataset: Kaggle (Breast Cancer Wisconsin).</p>
   </main>
 </div>
 <script>
@@ -199,5 +273,6 @@ document.querySelectorAll('pre').forEach(p => {
   p.appendChild(b);
 });
 </script>
+<script src="../assets/app.js"></script>
 </body>
 </html>

@@ -6,30 +6,50 @@
 <title>RNN (Recurrent Neural Network) — HasnainAI | Sequence Models</title>
 <meta name="description" content="Recurrent Neural Network explained: hidden state, LSTM, vanishing gradient, embeddings — with Colab code blocks building an SMS spam classifier and interview Q&A.">
 <meta name="author" content="Malik Hasnain">
-<link rel="stylesheet" href="/assets/style.css">
+<link rel="stylesheet" href="../assets/style.css">
 </head>
 <body>
+  <div class="topbar">
+    <button class="tb-btn tb-menu" aria-label="Menu">☰</button>
+    <div class="tb-brand">Hasnain<span style="color:var(--accent)">AI</span></div>
+    <button class="tb-btn" data-lang-btn="ru">اردو/UR</button>
+    <button class="tb-btn" data-lang-btn="en">EN</button>
+    <button class="tb-btn" data-theme-btn="light" aria-label="Light mode">☀</button>
+    <button class="tb-btn" data-theme-btn="dark" aria-label="Dark mode">🌙</button>
+  </div>
+  <div class="backdrop"></div>
+
 <div class="layout">
   <aside class="sidebar">
     <div class="brand">Hasnain<span>AI</span></div>
     <div class="tagline">HCCDA-AI prep &amp; practice</div>
     <nav>
-      <a href="/index.html">🏠 Home</a>
-      <a href="/concepts.html">📚 Core Concepts</a>
+      <a href="../index.html">🏠 Home</a>
+      <a href="../concepts.html">📚 Core Concepts</a>
       <div style="color:var(--muted);font-size:.75rem;margin:14px 0 4px 10px;">TOPICS (class sequence)</div>
-      <a href="/topics/confusion-matrix.html"><span class="num">01</span>Confusion Matrix</a>
-      <a href="/topics/cnn.html"><span class="num">02</span>CNN</a>
-      <a href="/topics/dbscan.html"><span class="num">03</span>DBSCAN</a>
-      <a href="/topics/vgg16.html"><span class="num">04</span>VGG16</a>
-      <a href="/topics/logistic-regression.html"><span class="num">05</span>Logistic Regression</a>
-      <a href="/topics/simple-linear-regression.html"><span class="num">06</span>Simple Linear Regression</a>
-      <a href="/topics/pca.html"><span class="num">07</span>PCA</a>
-      <a href="/topics/kmeans.html"><span class="num">08</span>K-Means</a>
-      <a href="/topics/multiple-regression.html"><span class="num">09</span>Multiple Regression</a>
-      <a href="/topics/rnn.html" class="active"><span class="num">10</span>RNN</a>
+      <a href="confusion-matrix.html"><span class="num">01</span>Confusion Matrix</a>
+      <a href="cnn.html"><span class="num">02</span>CNN</a>
+      <a href="dbscan.html"><span class="num">03</span>DBSCAN</a>
+      <a href="vgg16.html"><span class="num">04</span>VGG16</a>
+      <a href="logistic-regression.html"><span class="num">05</span>Logistic Regression</a>
+      <a href="simple-linear-regression.html"><span class="num">06</span>Simple Linear Regression</a>
+      <a href="pca.html"><span class="num">07</span>PCA</a>
+      <a href="kmeans.html"><span class="num">08</span>K-Means</a>
+      <a href="multiple-regression.html"><span class="num">09</span>Multiple Regression</a>
+      <a href="rnn.html" class="active"><span class="num">10</span>RNN</a>
       <div style="margin-top:18px;padding:10px;border:1px solid var(--border);border-radius:8px;background:#1f2630;">
         <div style="font-size:.78rem;color:var(--muted);">🤝 Collaborate on projects</div>
         <a href="https://wa.me/923446466664" target="_blank" rel="noopener" style="display:block;margin-top:4px;font-size:.85rem;">💬 WhatsApp: +92 344 646 6664</a>
+      </div>
+      <div class="side-box">
+        <div class="box-title">Practice here</div>
+        <a href="https://colab.research.google.com" target="_blank" rel="noopener">▶ Open Google Colab</a>
+      </div>
+      <div class="toggle-row">
+        <button class="tb-btn" data-lang-btn="ru">اردو / Roman Urdu</button>
+        <button class="tb-btn" data-lang-btn="en">English</button>
+        <button class="tb-btn" data-theme-btn="light">☀ Light</button>
+        <button class="tb-btn" data-theme-btn="dark">🌙 Dark</button>
       </div>
     </nav>
   </aside>
@@ -53,7 +73,7 @@
     <div class="term"><b>Sequence:</b> ordered data — words in a sentence, notes in audio, prices over days. Feed-forward nets (CNN) have no notion of order between inputs; RNNs do.</div>
     <div class="term"><b>Vanishing gradient:</b> in long sequences, learning signals shrink as they travel back through many steps, so a plain RNN forgets things it read early. LSTM and GRU fix this with <b>gates</b> — small valves that learn what to keep, what to forget, and what to expose.</div>
     <div class="term"><b>Tokenization &amp; padding:</b> text → integer tokens (one ID per word), then all sequences are padded with zeros to equal length so they form a matrix.</div>
-    <p>Embeddings turn tokens into vectors (<a href="/concepts.html">Core Concepts</a>); sigmoid and log loss (binary_crossentropy) are also <a href="/concepts.html">already explained in Core Concepts</a>.</p>
+    <p>Embeddings turn tokens into vectors (<a href="../concepts.html">Core Concepts</a>); sigmoid and log loss (binary_crossentropy) are also <a href="../concepts.html">already explained in Core Concepts</a>.</p>
 
     <h2>Diagram</h2>
     <figure>
@@ -196,8 +216,8 @@ plt.show()</code></pre>
     <div class="qa"><div class="q">Q9. Are Transformers RNNs?</div><div class="a">No — they replaced recurrence with attention and process whole sequences in parallel, but they descended from sequence-model ideas; LLMs like GPT are Transformers, not RNNs. Saying this shows you know the field's timeline.</div></div>
 
     <div class="prevnext">
-      <a href="/topics/multiple-regression.html">← Topic 09: Multiple Regression</a>
-      <a href="/index.html">Home 🏠</a>
+      <a href="multiple-regression.html">← Topic 09: Multiple Regression</a>
+      <a href="../index.html">Home 🏠</a>
     </div>
     <p class="footer-note">Built by <b>Malik Hasnain</b> — Huawei HCCDA-AI prep. Diagram: Wikipedia/Wikimedia Commons. Dataset: Kaggle (SMS Spam Collection).</p>
   </main>
@@ -210,5 +230,6 @@ document.querySelectorAll('pre').forEach(p => {
   p.appendChild(b);
 });
 </script>
+<script src="../assets/app.js"></script>
 </body>
 </html>

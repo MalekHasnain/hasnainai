@@ -4,30 +4,50 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>K-Means Clustering — HasnainAI</title>
-  <link rel="stylesheet" href="/assets/style.css">
+  <link rel="stylesheet" href="../assets/style.css">
 </head>
 <body>
+  <div class="topbar">
+    <button class="tb-btn tb-menu" aria-label="Menu">☰</button>
+    <div class="tb-brand">Hasnain<span style="color:var(--accent)">AI</span></div>
+    <button class="tb-btn" data-lang-btn="ru">اردو/UR</button>
+    <button class="tb-btn" data-lang-btn="en">EN</button>
+    <button class="tb-btn" data-theme-btn="light" aria-label="Light mode">☀</button>
+    <button class="tb-btn" data-theme-btn="dark" aria-label="Dark mode">🌙</button>
+  </div>
+  <div class="backdrop"></div>
+
 <div class="layout">
   <aside class="sidebar">
     <div class="brand">Hasnain<span>AI</span></div>
     <div class="tagline">HCCDA-AI prep &amp; practice</div>
     <nav>
-      <a href="/index.html">🏠 Home</a>
-      <a href="/concepts.html">📚 Core Concepts</a>
+      <a href="../index.html">🏠 Home</a>
+      <a href="../concepts.html">📚 Core Concepts</a>
       <div style="color:var(--muted);font-size:.75rem;margin:14px 0 4px 10px;">TOPICS (class sequence)</div>
-      <a href="/topics/confusion-matrix.html"><span class="num">01</span>Confusion Matrix</a>
-      <a href="/topics/cnn.html"><span class="num">02</span>CNN</a>
-      <a href="/topics/dbscan.html"><span class="num">03</span>DBSCAN</a>
-      <a href="/topics/vgg16.html"><span class="num">04</span>VGG16</a>
-      <a href="/topics/logistic-regression.html"><span class="num">05</span>Logistic Regression</a>
-      <a href="/topics/simple-linear-regression.html"><span class="num">06</span>Simple Linear Regression</a>
-      <a href="/topics/pca.html"><span class="num">07</span>PCA</a>
-      <a href="/topics/kmeans.html" class="active"><span class="num">08</span>K-Means</a>
-      <a href="/topics/multiple-regression.html"><span class="num">09</span>Multiple Regression</a>
-      <a href="/topics/rnn.html"><span class="num">10</span>RNN</a>
+      <a href="confusion-matrix.html"><span class="num">01</span>Confusion Matrix</a>
+      <a href="cnn.html"><span class="num">02</span>CNN</a>
+      <a href="dbscan.html"><span class="num">03</span>DBSCAN</a>
+      <a href="vgg16.html"><span class="num">04</span>VGG16</a>
+      <a href="logistic-regression.html"><span class="num">05</span>Logistic Regression</a>
+      <a href="simple-linear-regression.html"><span class="num">06</span>Simple Linear Regression</a>
+      <a href="pca.html"><span class="num">07</span>PCA</a>
+      <a href="kmeans.html" class="active"><span class="num">08</span>K-Means</a>
+      <a href="multiple-regression.html"><span class="num">09</span>Multiple Regression</a>
+      <a href="rnn.html"><span class="num">10</span>RNN</a>
       <div style="margin-top:18px;padding:10px;border:1px solid var(--border);border-radius:8px;background:#1f2630;">
         <div style="font-size:.78rem;color:var(--muted);">🤝 Collaborate on projects</div>
         <a href="https://wa.me/923446466664" target="_blank" rel="noopener" style="display:block;margin-top:4px;font-size:.85rem;">💬 WhatsApp: +92 344 646 6664</a>
+      </div>
+      <div class="side-box">
+        <div class="box-title">Practice here</div>
+        <a href="https://colab.research.google.com" target="_blank" rel="noopener">▶ Open Google Colab</a>
+      </div>
+      <div class="toggle-row">
+        <button class="tb-btn" data-lang-btn="ru">اردو / Roman Urdu</button>
+        <button class="tb-btn" data-lang-btn="en">English</button>
+        <button class="tb-btn" data-theme-btn="light">☀ Light</button>
+        <button class="tb-btn" data-theme-btn="dark">🌙 Dark</button>
       </div>
     </nav>
   </aside>
@@ -49,18 +69,18 @@
     <p>K-Means tries to minimize the <b>within-cluster sum of squares (WCSS)</b> — the total squared distance between every point and the centroid of its assigned cluster:</p>
     <div class="formula">Objective = min &Sigma;<sub>k=1..K</sub> &Sigma;<sub>x &isin; cluster k</sub> ||x &minus; centroid<sub>k</sub>||&sup2;</div>
     <p>This is the total squared Euclidean distance from every point to the centroid of its assigned cluster; smaller means tighter clusters.</p>
-    <div class="term"><b>Centroid:</b> the center of a cluster — literally the mean (average) of the coordinates of all points in that cluster. Point (x&#772;, y&#772;) where x&#772; is the average x of the members. The <a href="/concepts.html">mean is already explained in Core Concepts</a>.</div>
+    <div class="term"><b>Centroid:</b> the center of a cluster — literally the mean (average) of the coordinates of all points in that cluster. Point (x&#772;, y&#772;) where x&#772; is the average x of the members. The <a href="../concepts.html">mean is already explained in Core Concepts</a>.</div>
     <div class="term"><b>WCSS / elbow method:</b> WCSS = the total within-cluster sum of squares across all clusters (the objective above, summed over the whole dataset). The elbow method runs K-Means for k = 1, 2, 3, … and plots WCSS vs k. WCSS always drops as k grows, but at some k the drop suddenly flattens — that bend (the "elbow") is the natural number of clusters, because adding more clusters past it stops helping.</div>
     <p>The algorithm itself, step by step:</p>
     <div class="formula">1. Pick k starting centroids randomly (k random points)</div>
     <p>Initialization — where the algorithm starts.</p>
-    <div class="formula">2. Assign: each point &rarr; nearest centroid (by <a href="/concepts.html" style="text-decoration:underline">Euclidean distance</a>)</div>
+    <div class="formula">2. Assign: each point &rarr; nearest centroid (by <a href="../concepts.html" style="text-decoration:underline">Euclidean distance</a>)</div>
     <p>Every point joins the cluster of the centroid closest to it.</p>
     <div class="formula">3. Update: centroid<sub>k</sub> = mean of all points assigned to cluster k</div>
     <p>Each centroid walks to the average position of its members — the step that shrinks WCSS.</p>
     <div class="formula">4. Repeat 2–3 until assignments stop changing (converged)</div>
     <p>Assignment and update keep alternating until every point stays with its cluster — then the centroids are stable.</p>
-    <p>Note that distances are <a href="/concepts.html">Euclidean distance, already explained in Core Concepts</a>, and centroid updates use the <a href="/concepts.html">mean, also in Core Concepts</a>. Because the algorithm is built on distances, <a href="/concepts.html">feature scaling</a> (why we StandardScale below) matters — that's in Core Concepts too.</p>
+    <p>Note that distances are <a href="../concepts.html">Euclidean distance, already explained in Core Concepts</a>, and centroid updates use the <a href="../concepts.html">mean, also in Core Concepts</a>. Because the algorithm is built on distances, <a href="../concepts.html">feature scaling</a> (why we StandardScale below) matters — that's in Core Concepts too.</p>
 
     <h2>Diagram</h2>
     <figure>
@@ -239,7 +259,7 @@ print("New customer belongs to segment:", cluster[0])
     <div class="qa"><div class="q">Why would you run PCA before K-Means?</div><div class="a">Three reasons: PCA (Topic 07) removes correlation between features so Euclidean distance isn't double-counting redundant information, it cuts noise and dimensionality so clustering is faster and often cleaner, and clustering on the top 2 PCs lets you actually plot the segments.</div></div>
     <div class="qa"><div class="q">Walk me through one full iteration of K-Means.</div><div class="a">Assign: compute the Euclidean distance from every point to every centroid and attach each point to its nearest one. Update: recompute each centroid as the mean of the coordinates of the points now assigned to it. Check: if no point changed clusters, stop — otherwise repeat. Each full iteration can only decrease (or keep) WCSS, which is why the loop converges.</div></div>
 
-    <div class="prevnext"><a href="/topics/pca.html">← PCA (Topic 07)</a> | <a href="/topics/multiple-regression.html">Multiple Regression (Topic 09) →</a></div>
+    <div class="prevnext"><a href="pca.html">← PCA (Topic 07)</a> | <a href="multiple-regression.html">Multiple Regression (Topic 09) →</a></div>
     <p class="footer-note">HasnainAI — HCCDA-AI prep. K-Means clustering on the Mall Customers dataset (200 rows), k chosen by the elbow method. Practice in Colab, break the code, rebuild it.</p>
   </main>
 </div>
@@ -251,5 +271,6 @@ document.querySelectorAll('pre').forEach(p => {
   p.appendChild(b);
 });
 </script>
+<script src="../assets/app.js"></script>
 </body>
 </html>

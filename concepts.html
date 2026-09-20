@@ -4,92 +4,147 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Core Concepts — HasnainAI | ML Fundamentals for Huawei HCCDA-AI</title>
-<meta name="description" content="Core ML concepts explained once: target variable, train/test split, overfitting, bias-variance, data augmentation, anomaly detection, eigenvalues, sigmoid — foundations for all 10 algorithms.">
+<meta name="description" content="Core ML concepts in learning order: features, target, overfitting, bias-variance tradeoff, augmentation, anomaly detection, eigenvalues, sigmoid — with diagrams and tables.">
 <meta name="author" content="Malik Hasnain">
-<link rel="stylesheet" href="/assets/style.css">
+<link rel="stylesheet" href="assets/style.css">
 </head>
 <body>
+  <div class="topbar">
+    <button class="tb-btn tb-menu" aria-label="Menu">☰</button>
+    <div class="tb-brand">Hasnain<span style="color:var(--accent)">AI</span></div>
+    <button class="tb-btn" data-lang-btn="ru">UR</button>
+    <button class="tb-btn" data-lang-btn="en">EN</button>
+    <button class="tb-btn" data-theme-btn="light" aria-label="Light mode">☀</button>
+    <button class="tb-btn" data-theme-btn="dark" aria-label="Dark mode">🌙</button>
+  </div>
+  <div class="backdrop"></div>
 <div class="layout">
   <aside class="sidebar">
     <div class="brand">Hasnain<span>AI</span></div>
     <div class="tagline">HCCDA-AI prep &amp; practice</div>
     <nav>
-      <a href="/index.html">🏠 Home</a>
-      <a href="/concepts.html" class="active">📚 Core Concepts</a>
-      <div style="color:var(--muted);font-size:.75rem;margin:14px 0 4px 10px;">TOPICS (class sequence)</div>
-      <a href="/topics/confusion-matrix.html"><span class="num">01</span>Confusion Matrix</a>
-      <a href="/topics/cnn.html"><span class="num">02</span>CNN</a>
-      <a href="/topics/dbscan.html"><span class="num">03</span>DBSCAN</a>
-      <a href="/topics/vgg16.html"><span class="num">04</span>VGG16</a>
-      <a href="/topics/logistic-regression.html"><span class="num">05</span>Logistic Regression</a>
-      <a href="/topics/simple-linear-regression.html"><span class="num">06</span>Simple Linear Regression</a>
-      <a href="/topics/pca.html"><span class="num">07</span>PCA</a>
-      <a href="/topics/kmeans.html"><span class="num">08</span>K-Means</a>
-      <a href="/topics/multiple-regression.html"><span class="num">09</span>Multiple Regression</a>
-      <a href="/topics/rnn.html"><span class="num">10</span>RNN</a>
-      <div style="margin-top:18px;padding:10px;border:1px solid var(--border);border-radius:8px;background:#1f2630;">
-        <div style="font-size:.78rem;color:var(--muted);">🤝 Collaborate on projects</div>
-        <a href="https://wa.me/923446466664" target="_blank" rel="noopener" style="display:block;margin-top:4px;font-size:.85rem;">💬 WhatsApp: +92 344 646 6664</a>
+      <a href="index.html">🏠 Home</a>
+      <a href="concepts.html" class="active">📚 Core Concepts</a>
+      <div style="color:var(--muted);font-size:.75rem;margin:14px 0 4px 10px;">TOPICS</div>
+      <a href="topics/confusion-matrix.html"><span class="num">01</span>Confusion Matrix</a>
+      <a href="topics/cnn.html"><span class="num">02</span>CNN</a>
+      <a href="topics/dbscan.html"><span class="num">03</span>DBSCAN</a>
+      <a href="topics/vgg16.html"><span class="num">04</span>VGG16</a>
+      <a href="topics/logistic-regression.html"><span class="num">05</span>Logistic Regression</a>
+      <a href="topics/simple-linear-regression.html"><span class="num">06</span>Simple Linear Regression</a>
+      <a href="topics/pca.html"><span class="num">07</span>PCA</a>
+      <a href="topics/kmeans.html"><span class="num">08</span>K-Means</a>
+      <a href="topics/multiple-regression.html"><span class="num">09</span>Multiple Regression</a>
+      <a href="topics/rnn.html"><span class="num">10</span>RNN</a>
+      <div class="side-box">
+        <div class="box-title">Practice here</div>
+        <a href="https://colab.research.google.com" target="_blank" rel="noopener">▶ Open Google Colab</a>
+      </div>
+      <div class="side-box">
+        <div class="box-title">🤝 Collaborate</div>
+        <a href="https://wa.me/923446466664" target="_blank" rel="noopener">💬 WhatsApp: +92 344 646 6664</a>
+      </div>
+      <div class="toggle-row">
+        <button class="tb-btn" data-lang-btn="ru">اردو / Roman Urdu</button>
+        <button class="tb-btn" data-lang-btn="en">English</button>
+        <button class="tb-btn" data-theme-btn="light">☀ Light</button>
+        <button class="tb-btn" data-theme-btn="dark">🌙 Dark</button>
       </div>
     </nav>
   </aside>
   <main>
-    <h1>Core Concepts (explained ONCE — used everywhere)</h1>
-    <p>These terms appear in every algorithm. Each is defined here <b>one time only</b> — topic pages link back to this page instead of repeating.</p>
+    <h1 class="en">Core Concepts</h1>
+    <h1 class="ru">Bunyadi Concepts</h1>
+    <p class="en">Each concept below is defined <b>once</b>, in learning order — every definition builds on the one before it, and the topic pages link back here instead of repeating. Read top to bottom the first time; afterwards use it as your dictionary.</p>
+    <p class="ru">Neeche har concept <b>ek hi baar</b> define hua hai, seekhne ki tarteeb mein — har taaruf pichle par khara hota hai, aur topic pages yahan wapas link karte hain baja ye dohrane ke. Pehli dafa upar se neeche parho; uske baad ise dictionary ki tarah use karo.</p>
 
-    <h2>1. Data basics</h2>
-    <div class="term"><b>Feature (X, independent variable):</b> an input column used to make a prediction — e.g. house size, age, pixel values.</div>
-    <div class="term"><b>Target variable (y, dependent variable):</b> the output the model is trained to predict. In supervised learning, the model learns from examples where the target is already known. Continuous target → regression; category target → classification.</div>
-    <div class="term"><b>Sample:</b> one row of the dataset — one house, one patient, one image. Your notes: "imputer used to fill none value" → see Missing data below.</div>
-    <div class="term"><b>Probability sample:</b> a sample chosen by random chance, where every member has a known probability of being picked (simple random, stratified, systematic, cluster). Results generalize to the population.</div>
-    <div class="term"><b>Non-probability sample:</b> a sample chosen by convenience or judgment (convenience, snowball, quota). Cheaper but biased — results may not generalize.</div>
-    <div class="term"><b>Imputer / missing data:</b> an imputer fills empty (None/NaN) cells, e.g. SimpleImputer(strategy='mean') replaces each missing value with that column's mean. Models crash or lie on missing data.</div>
+    <h2 class="en">1. The data you learn from</h2>
+    <h2 class="ru">1. Woh data jis se seekha jata hai</h2>
+    <p class="en">Everything starts with a <b>table of examples</b>. Before any algorithm, you must be able to name the parts of that table.</p>
+    <p class="ru">Har cheez ka aaghaz <b>misalon ki table</b> se hota hai. Kisi algorithm se pehle aapko is table ke hisson ke naam aane chahiye.</p>
+    <div class="term"><b>Sample:</b> <span class="en">one row of the dataset — one house, one patient, one image. 1,000 rows = 1,000 samples the model can learn from.</span><span class="ru">dataset ki ek row — ek ghar, ek mareez, ek tasveer. 1,000 rows = 1,000 misalein jin se model seekh sakta hai.</span></div>
+    <div class="term"><b>Feature (X, independent variable):</b> <span class="en">an input column used to make a prediction — house size, age, pixel values. The <i>cause</i> side of the problem.</span><span class="ru">woh input column jis se prediction hoti hai — ghar ka size, umar, pixel values. Masle ka <i>sabab</i> wala rukh.</span></div>
+    <div class="term"><b>Target variable (y, dependent variable):</b> <span class="en">the output column the model is trained to predict — the <i>effect</i>. Continuous target (price, temperature) → regression problem. Category target (spam/ham, cat/dog) → classification problem.</span><span class="ru">woh output column jo model predict karna seekhta hai — yaani <i>asar</i>. Continuous target (price, temperature) → regression problem. Category target (spam/ham) → classification problem.</span></div>
+    <table>
+      <tr><th></th><th>Example</th><th>Column type</th></tr>
+      <tr><td><b>X</b></td><td>size, bedrooms, age</td><td>numbers or categories</td></tr>
+      <tr><td><b>y</b></td><td>price</td><td>what you predict</td></tr>
+    </table>
+    <div class="term"><b>Probability sample:</b> <span class="en">chosen by random chance where every member has a known chance of being picked (simple random, stratified, systematic, cluster). Results generalize to the population.</span><span class="ru">random chance se chuna gaya namoona jahan har member ke chune jane ki probability maloom ho. Nateeja poori population par laagu hota hai.</span></div>
+    <div class="term"><b>Non-probability sample:</b> <span class="en">chosen by convenience or judgment (convenience, snowball, quota). Cheaper, but biased — findings may not generalize.</span><span class="ru">aasani ya raye se chuna gaya (convenience, snowball, quota). Sasta magar biased — nateeja population par laagu na ho.</span></div>
+    <div class="term"><b>Imputer / missing data:</b> <span class="en">real datasets have empty cells. An imputer fills them mechanically — e.g. <code>SimpleImputer(strategy='mean')</code> replaces each hole with that column's mean.</span><span class="ru">asli datasets mein khali cells hoti hain. Imputer unhe mechanical tor par bhar deta hai — masalan mean strategy har khali jagah us column ka average laga deti hai.</span></div>
 
-    <h2>2. Model evaluation</h2>
-    <div class="term"><b>Train/Test split:</b> hiding part of the data (commonly 20%) so the model is graded on examples it never saw. If you grade on memorized data, the score is fake. random_state fixes the shuffle for reproducibility.</div>
-    <div class="term"><b>Overfitting:</b> the model memorizes training data and fails on new data — train score high, test score low. Fixes: more data, fewer features, regularization (Ridge/Lasso/dropout), cross-validation.</div>
-    <div class="term"><b>Underfitting:</b> the model is too simple — bad on both train and test. Fixes: more features, more complex model, train longer.</div>
-    <div class="term"><b>Bias:</b> error from wrong/too-simple assumptions; high bias → underfitting. <b>Variance:</b> error from sensitivity to training noise; high variance → overfitting. <b>Bias-variance tradeoff:</b> decreasing one usually increases the other — the goal is a balance.</div>
-    <div class="term"><b>Cross-validation:</b> rotating the test set — split data into K folds, train on K−1, test on 1, rotate. Gives a reliable average score and fights overfitting.</div>
+    <h2 class="en">2. How a model is graded honestly</h2>
+    <h2 class="ru">2. Model ka imaandaar imtihan</h2>
+    <p class="en">The one mistake that ruins every ML project: grading a student on a question it has already seen.</p>
+    <p class="ru">Woh ek ghalti jo har ML project barbaad kar deti hai: student ko us sawal par imtihana dena jo usne pehle hi dekh rakha ho.</p>
+    <div class="term"><b>Train/test split:</b> <span class="en">hide part of the data (commonly 20%) before training. The model learns from the 80% and is graded on the unseen 20%. <code>random_state</code> freezes the shuffle so results are reproducible.</span><span class="ru">training se pehle data ka hissa (aam tor par 20%) chhupa do. Model 80% se seekhta hai aur an-dekhe 20% par imtihana hota hai. random_state shuffle ko fix rakhta hai taake nateeja dohraya ja sake.</span></div>
+    <div class="term"><b>Overfitting:</b> <span class="en">the model memorizes the training data — including its noise — and fails on new data. Symptom: <b>train score high, test score low</b>. Fixes: more data, fewer features, regularization, cross-validation.</span><span class="ru">model training data ko — us ke shor samet — rat leta hai aur naye par fail hota hai. Alamat: <b>train score uncha, test score neecha</b>. Ilaaj: zyada data, kam features, regularization, cross-validation.</span></div>
+    <div class="term"><b>Underfitting:</b> <span class="en">the model is too simple to capture the real pattern. Symptom: <b>both train and test scores low</b>. Fixes: add features, use a more powerful model, train longer.</span><span class="ru">model itna simple hai ke asli pattern pakar hi nahi sakta. Alamat: <b>train aur test dono neeche</b>. Ilaaj: features barhao, taqatwar model lo, zyada train karo.</span></div>
+    <table>
+      <tr><th>Condition</th><th>Train</th><th>Test</th><th>Diagnosis</th></tr>
+      <tr><td>Overfitting</td><td>high</td><td>low</td><td>memorized — simplify or add data</td></tr>
+      <tr><td>Underfitting</td><td>low</td><td>low</td><td>too simple — add power</td></tr>
+      <tr><td>Good fit</td><td>high</td><td>high (small gap)</td><td>ship it</td></tr>
+    </table>
+    <p class="en">Now that overfitting and underfitting have faces, we can define the two <i>causes</i> behind them:</p>
+    <p class="ru">Jab overfitting aur underfitting ke chehre maloom ho gaye, to ab unke peeche ki dono <i>wajuhaat</i> define kar sakte hain:</p>
+    <div class="term"><b>Bias:</b> <span class="en">error from the model's <i>wrong assumptions</i> — too rigid to bend to the real pattern. A straight line on curved data has high bias <b>no matter how much data you give it</b>. High bias → <b>underfitting</b>. Think: "too simple to see the truth."</span><span class="ru">model ki <i>ghalat assumptions</i> se paida hone wali ghalti — asli pattern par jhukne se qasar. Mudeer data par seedhi line ka bias uncha rahega, <b>chahe jitna hi data do</b>. Bara bias → <b>underfitting</b>. Yaad rakho: "asal haqeeqat dekhne se simple hai."</span></div>
+    <div class="term"><b>Variance:</b> <span class="en">error from being too sensitive to the <i>particular samples</i> trained on — retrain on a different 80% and you get a wildly different model. High variance → <b>overfitting</b>. Think: "chases noise instead of signal."</span><span class="ru">un <i>khaas misalon</i> ke prati zyada hassas hona jin par train hua — doosre 80% par dobara train karo to bilkul alag model ban jata hai. Bara variance → <b>overfitting</b>. Yaad rakho: "signal ki jagah shor ka peechha."</span></div>
+    <div class="term"><b>Bias-variance tradeoff:</b> <span class="en">you cannot fully minimize both — decreasing one usually increases the other. The goal is the sweet spot: flexible enough to capture the pattern, rigid enough to ignore the noise.</span><span class="ru">dono ko poora kam nahi kar sakte — ek kam karo to doosra barhta hai. Maqsad darmiyani jagah hai: pattern pakarne ke qabil itna lachakdar, shor ignore karne ke qabil itna sakht.</span></div>
+    <div class="term"><b>Cross-validation:</b> <span class="en">rotating the test set — split into K folds, train on K−1, test on 1, rotate, average. One number, far harder to fool.</span><span class="ru">test set ko ghumana — K folds mein toro, K−1 par train karo, 1 par test karo, ghumaao, average lo. Ek number jise dhokha dena mushkil hai.</span></div>
+    <figure>
+      <img src="https://upload.wikimedia.org/wikipedia/commons/6/68/Overfitted_Data.png" alt="Overfitting: green curve memorizes training points, black line generalizes" style="max-width:520px">
+      <figcaption><span class="en">Overfitting made visible (Wikipedia): the green curve weaves through every point but fails on new data; the black line captures the reproducible trend.</span><span class="ru">Overfitting aankhon ke saamne (Wikipedia): hari curve har point se guzarti hai magar naye data par fail hoti hai; kaali line woh trend hai jo naya namoona bhi dohraye.</span></figcaption>
+    </figure>
 
-    <h2>3. Data problems</h2>
-    <div class="term"><b>Anomaly / outlier detection methods:</b> IQR rule (outside Q1−1.5·IQR or Q3+1.5·IQR), Z-score (|z| &gt; 3), DBSCAN noise points, Isolation Forest. Visual: boxplot.</div>
-    <div class="term"><b>Data augmentation (increasing a dataset artificially):</b> jittering (small noise on features), SMOTE (synthetic points between a sample and its neighbor), bootstrapping (sampling with replacement); images: flip/rotate/crop. Overdone augmentation adds bias.</div>
+    <h2 class="en">3. Data problems you must handle</h2>
+    <h2 class="ru">3. Data ke masail jin ka hal zaroori hai</h2>
+    <div class="term"><b>Anomaly / outlier detection:</b> <span class="en"><b>IQR rule</b> — below Q1 − 1.5·IQR or above Q3 + 1.5·IQR; <b>Z-score</b> — |z| &gt; 3; <b>DBSCAN</b> noise points (Topic 03); Isolation Forest. A boxplot shows them visually.</span><span class="ru"><b>IQR rule</b> — Q1 − 1.5·IQR se neeche ya Q3 + 1.5·IQR se upar; <b>Z-score</b> — |z| &gt; 3; <b>DBSCAN</b> ke noise points (Topic 03); Isolation Forest. Boxplot se aankhon se dikh jate hain.</span></div>
+    <div class="term"><b>Data augmentation:</b> <span class="en">creating synthetic examples — jittering (small noise on features), SMOTE (synthetic point between a sample and a neighbor), bootstrapping (sampling with replacement); images: flip/rotate/crop. Overdone augmentation adds bias.</span><span class="ru">masnoori misalein banana — jittering (features par chhota shor), SMOTE (misal aur uske hamsaye ke darmiyan naya point), bootstrapping (wapas rakh kar namoona); tasveeron ke liye: palto/ghumao/kaato. Had se zyada augmentation bias daalta hai.</span></div>
 
-    <h2>4. Math &amp; stat functions (definitions used across all algorithms)</h2>
-    <div class="term"><b>Mean:</b> the average — sum of values ÷ count. The balancing point of data.</div>
-    <div class="term"><b>Variance (σ²):</b> the average of squared distances from the mean — how spread out the data is.</div>
-    <div class="term"><b>Standard deviation (σ, std):</b> the square root of variance — spread in the SAME units as the data.</div>
-    <div class="term"><b>Covariance:</b> how two variables move together — positive = together, negative = opposite. Units are awkward (X-units × Y-units), which is why correlation exists.</div>
-    <div class="term"><b>Pearson correlation (r):</b> covariance divided by (std(X)·std(y)) — scaled to −1…+1. |r| near 1 = strong linear relationship.</div>
-    <div class="term"><b>Percentile / quartile:</b> Q1 = 25th percentile (25% of data below), Q3 = 75th. IQR = Q3 − Q1 = spread of the middle 50%.</div>
-    <div class="term"><b>Distance metrics:</b> Euclidean = straight-line distance (√ of sum of squared differences); Manhattan = city-block distance (sum of absolute differences). K-Means uses Euclidean; DBSCAN uses either.</div>
-    <div class="term"><b>Matrix, eigenvector, eigenvalue:</b> a matrix is a grid of numbers (a linear transformation). An eigenvector of a matrix is a direction the matrix does NOT rotate — it only stretches it, and the stretch factor is the eigenvalue (λ). PCA finds the eigenvectors of the covariance matrix; the biggest eigenvalues mark the directions of most variance.</div>
-    <div class="term"><b>Determinant:</b> a single number computed from a square matrix — geometrically, the volume-scaling factor of the transformation. Zero determinant = matrix squashes space flat (not invertible).</div>
-    <div class="term"><b>Gradient descent:</b> an optimization loop: compute the slope (gradient) of the error, step a little downhill, repeat until the error stops improving. The training engine of neural networks and logistic regression at scale.</div>
-    <div class="term"><b>Sigmoid (logistic) function:</b> σ(z) = 1/(1+e<sup>−z</sup>) — squashes any number into (0, 1), S-shaped. Turns a regression score into a probability.</div>
-    <div class="term"><b>Softmax:</b> the multi-class version of sigmoid — converts a vector of scores into probabilities that sum to 1.</div>
-    <div class="term"><b>Log loss / cross-entropy:</b> the classification loss function — heavily punishes confident wrong predictions. What logistic regression and neural classifiers minimize.</div>
-    <div class="term"><b>Derivative (slope):</b> how fast a function changes at a point. Needed for gradient descent (the gradient is made of derivatives).</div>
-    <div class="term"><b>Argmax:</b> the INDEX of the largest value, not the value itself — e.g. which class has the highest probability.</div>
-    <div class="term"><b>Normalization / scaling:</b> squeezing features to comparable ranges (e.g. 0–1 or mean 0 / std 1). Critical for K-Means, SVM, PCA, KNN — anything using distances.</div>
+    <h2 class="en">4. Math &amp; stat functions (the toolbox every algorithm uses)</h2>
+    <h2 class="ru">4. Math aur stat functions (har algorithm ka toolbox)</h2>
+    <p class="en">Every algorithm in this course is built from the same dozen math parts. Learn them once here, recognize them everywhere.</p>
+    <p class="ru">Is course ka har algorithm unhi bara-bara math hisson se banta hai. Yahan ek dafa seekh lo — har jagah pehchan lo ge.</p>
+    <div class="term"><b>Mean (μ, x̄):</b> <span class="en">the average — sum ÷ count. The balance point of the data.</span><span class="ru">average — jama ÷ tadaad. Data ka balance point.</span></div>
+    <div class="term"><b>Variance (σ²):</b> <span class="en">average of squared distances from the mean — how spread out the data is.</span><span class="ru">mean se doori ke squares ka average — data kitna phaila hua hai.</span></div>
+    <div class="term"><b>Standard deviation (σ, std):</b> <span class="en">square root of variance — spread in the data's own units, so "σ = 5 years" means something.</span><span class="ru">variance ka jar — apne hi units mein phelao, is liye "σ = 5 saal" ka matlab hota hai.</span></div>
+    <figure>
+      <img src="https://upload.wikimedia.org/wikipedia/commons/f/fb/Normal_distribution_pdf.svg" alt="Normal distribution bell curve with standard deviation bands" style="max-width:520px">
+      <figcaption><span class="en">The normal distribution (Wikipedia): ~68% of data within ±1σ, 95% within ±2σ, 99.7% within ±3σ — exactly why |z| &gt; 3 flags an anomaly.</span><span class="ru">Normal distribution (Wikipedia): taqreeban 68% data ±1σ ke andar, 95% ±2σ, 99.7% ±3σ — isi liye |z| &gt; 3 wala point anomaly kehta jata hai.</span></figcaption>
+    </figure>
+    <div class="term"><b>Covariance:</b> <span class="en">how two variables move together — positive = together, negative = opposite. Awkward units, which is why correlation exists.</span><span class="ru">do variables sath kaise chalti hain — positive = sath, negative = ulat. Units ajeeb hoti hain, isi liye correlation banayi gayi.</span></div>
+    <div class="term"><b>Pearson correlation (r):</b> <span class="en">covariance ÷ (std(X)·std(y)) — scaled to −1…+1. |r| near 1 = strong straight-line relationship.</span><span class="ru">covariance ÷ (std(X)·std(y)) — −1 se +1 tak scale. |r| 1 ke qareeb = mazboot seedha rishta.</span></div>
+    <div class="term"><b>Percentile / quartile:</b> <span class="en">Q1 = 25th percentile, Q3 = 75th. <b>IQR = Q3 − Q1</b> — the middle 50% width, the box in a boxplot.</span><span class="ru">Q1 = 25th percentile, Q3 = 75th. <b>IQR = Q3 − Q1</b> — darmiyani 50% ki chaurai, boxplot ka dabba.</span></div>
+    <div class="term"><b>Distance metrics:</b> <span class="en">Euclidean = straight-line distance (√ of summed squared differences) — what K-Means uses; Manhattan = city-block distance.</span><span class="ru">Euclidean = seedhi line doori — K-Means yehi use karta hai; Manhattan = shehar ke blocks wali doori.</span></div>
+    <div class="term"><b>Matrix / eigenvector / eigenvalue / determinant:</b> <span class="en">a matrix transforms vectors; an eigenvector is a direction it only stretches (not rotates), the eigenvalue (λ) is the stretch factor; the determinant is the volume-scaling factor. PCA finds the eigenvectors of the covariance matrix — biggest λ = direction of most spread.</span><span class="ru">matrix vectors ko transform karti hai; eigenvector woh simt hai jise sirf khicha jata hai (ghumaya nahi), eigenvalue (λ) khichao ka factor hai; determinant volume ka factor hai. PCA covariance matrix ke eigenvectors nikalti hai — sab se bara λ = sab se zyada phelao ki simt.</span></div>
+    <div class="term"><b>Derivative &amp; gradient descent:</b> <span class="en">the derivative is the slope; gradient descent loops: measure the error's slope, step downhill, repeat — the training engine of neural networks.</span><span class="ru">derivative dhalwan (slope) hai; gradient descent ka loop: error ka slope naapo, neeche qadam barhao, dohrate jao — neural networks ka training engine.</span></div>
+    <div class="term"><b>Sigmoid (logistic) function:</b> <span class="en">σ(z) = 1/(1+e<sup>−z</sup>) — squashes any number into (0, 1), S-shaped. Turns a raw score into a probability; the heart of Logistic Regression.</span><span class="ru">σ(z) = 1/(1+e<sup>−z</sup>) — kisi bhi number ko (0, 1) mein daba deta hai, S shakal ka. Raw score ko probability banata hai; Logistic Regression ka dil.</span></div>
+    <div class="term"><b>Softmax:</b> <span class="en">sigmoid's multi-class sibling — converts a vector of scores into probabilities summing to 1. CNN output layer.</span><span class="ru">sigmoid ka multi-class bhai — scores ke vector ko aisi probabilities mein badalta hai jin ka jama 1 ho. CNN ka output layer.</span></div>
+    <div class="term"><b>Log loss / cross-entropy:</b> <span class="en">the classification loss — brutally punishes confident wrong predictions.</span><span class="ru">classification ka loss — purzor ghalat predictions ko sakht saza deta hai.</span></div>
+    <div class="term"><b>Argmax:</b> <span class="en">the <i>index</i> of the largest value — "which class has the top probability."</span><span class="ru">sab se bare value ka <i>index</i> — "kis class ki probability sab se zyada hai."</span></div>
+    <div class="term"><b>Normalization / scaling:</b> <span class="en">squeezing features to comparable ranges. Critical for anything measuring distance or variance: K-Means, SVM, PCA, KNN.</span><span class="ru">features ko milti-julti hadon mein lana. Distance ya variance napne wale har algorithm ke liye zaroori: K-Means, SVM, PCA, KNN.</span></div>
 
-    <h2>5. Learning families</h2>
-    <div class="term"><b>Supervised learning:</b> learning with labels (target known). Regression + classification.</div>
-    <div class="term"><b>Unsupervised learning:</b> learning without labels — finding structure. Clustering (K-Means, DBSCAN) + dimensionality reduction (PCA).</div>
-    <div class="term"><b>Regression:</b> predicting a continuous number (price, temperature).</div>
-    <div class="term"><b>Classification:</b> predicting a category (spam/not spam, cat/dog).</div>
-    <div class="term"><b>Clustering:</b> grouping similar samples without labels.</div>
-    <div class="term"><b>Embedding / feature vector:</b> representing a sample as a list of numbers (an image as 1000 numbers, a word as 300 numbers) so math can be applied.</div>
+    <h2 class="en">5. The learning families</h2>
+    <h2 class="ru">5. Learning ki qismein</h2>
+    <table>
+      <tr><th>Family</th><th>Signal</th><th>Question</th><th>Topics</th></tr>
+      <tr><td>Supervised — regression</td><td>labels, continuous target</td><td>"how much?"</td><td>06, 09</td></tr>
+      <tr><td>Supervised — classification</td><td>labels, category target</td><td>"which one?"</td><td>05, 02, 04, 10</td></tr>
+      <tr><td>Unsupervised — clustering</td><td>no labels</td><td>"what groups?"</td><td>03, 08</td></tr>
+      <tr><td>Unsupervised — dim. reduction</td><td>no labels</td><td>"what matters?"</td><td>07</td></tr>
+    </table>
+    <div class="term"><b>Embedding / feature vector:</b> <span class="en">representing a sample as numbers — an image as 1,000 numbers, a word as 300 — so math can be applied.</span><span class="ru">misal ko numbers mein badalna — tasveer 1,000 numbers, lafz 300 numbers — taake math lagaya ja sake.</span></div>
 
     <div class="callout green">
-      <b>🤝 Collaborate:</b> working on an ML project or want to team up for practice? WhatsApp me: <a href="https://wa.me/923446466664" target="_blank" rel="noopener"><b>+92 344 646 6664</b></a> — <b>Malik Hasnain</b>
+      <b>🤝 Collaborate:</b> <a href="https://wa.me/923446466664" target="_blank" rel="noopener"><b>+92 344 646 6664</b></a> — <b>Malik Hasnain</b>
     </div>
     <div class="prevnext">
-      <a href="/index.html">← Home</a>
-      <a href="/topics/confusion-matrix.html">Topic 01: Confusion Matrix →</a>
+      <a href="index.html">← Home</a>
+      <a href="topics/confusion-matrix.html">Topic 01 →</a>
     </div>
-    <p class="footer-note">Core terms are defined once here; topic pages link back instead of repeating.</p>
+    <p class="footer-note">Core terms defined once here; topic pages link back. Diagrams: Wikipedia/Wikimedia Commons.</p>
   </main>
 </div>
 <script>
@@ -100,5 +155,6 @@ document.querySelectorAll('pre').forEach(p => {
   p.appendChild(b);
 });
 </script>
+<script src="assets/app.js"></script>
 </body>
 </html>

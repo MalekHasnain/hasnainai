@@ -10,86 +10,123 @@
 <meta property="og:title" content="HasnainAI — ML Algorithm Practice for Huawei HCCDA-AI">
 <meta property="og:description" content="10 ML algorithms explained with Colab code blocks, math, real use cases and interview Q&amp;A. Free practice site by Malik Hasnain.">
 <meta property="og:type" content="website">
-<link rel="stylesheet" href="/assets/style.css">
+<link rel="stylesheet" href="assets/style.css">
 </head>
 <body>
+  <div class="topbar">
+    <button class="tb-btn tb-menu" aria-label="Menu">☰</button>
+    <div class="tb-brand">Hasnain<span style="color:var(--accent)">AI</span></div>
+    <button class="tb-btn" data-lang-btn="ru">اردو/UR</button>
+    <button class="tb-btn" data-lang-btn="en">EN</button>
+    <button class="tb-btn" data-theme-btn="light" aria-label="Light mode">☀</button>
+    <button class="tb-btn" data-theme-btn="dark" aria-label="Dark mode">🌙</button>
+  </div>
+  <div class="backdrop"></div>
+
 <div class="layout">
   <aside class="sidebar">
     <div class="brand">Hasnain<span>AI</span></div>
     <div class="tagline">HCCDA-AI prep &amp; practice</div>
     <nav>
-      <a href="/index.html">🏠 Home</a>
-      <a href="/concepts.html">📚 Core Concepts</a>
+      <a href="index.html">🏠 Home</a>
+      <a href="concepts.html">📚 Core Concepts</a>
       <div style="color:var(--muted);font-size:.75rem;margin:14px 0 4px 10px;">TOPICS (class sequence)</div>
-      <a href="/topics/confusion-matrix.html"><span class="num">01</span>Confusion Matrix</a>
-      <a href="/topics/cnn.html"><span class="num">02</span>CNN</a>
-      <a href="/topics/dbscan.html"><span class="num">03</span>DBSCAN</a>
-      <a href="/topics/vgg16.html"><span class="num">04</span>VGG16</a>
-      <a href="/topics/logistic-regression.html"><span class="num">05</span>Logistic Regression</a>
-      <a href="/topics/simple-linear-regression.html"><span class="num">06</span>Simple Linear Regression</a>
-      <a href="/topics/pca.html"><span class="num">07</span>PCA</a>
-      <a href="/topics/kmeans.html"><span class="num">08</span>K-Means</a>
-      <a href="/topics/multiple-regression.html"><span class="num">09</span>Multiple Regression</a>
-      <a href="/topics/rnn.html"><span class="num">10</span>RNN</a>
+      <a href="topics/confusion-matrix.html"><span class="num">01</span>Confusion Matrix</a>
+      <a href="topics/cnn.html"><span class="num">02</span>CNN</a>
+      <a href="topics/dbscan.html"><span class="num">03</span>DBSCAN</a>
+      <a href="topics/vgg16.html"><span class="num">04</span>VGG16</a>
+      <a href="topics/logistic-regression.html"><span class="num">05</span>Logistic Regression</a>
+      <a href="topics/simple-linear-regression.html"><span class="num">06</span>Simple Linear Regression</a>
+      <a href="topics/pca.html"><span class="num">07</span>PCA</a>
+      <a href="topics/kmeans.html"><span class="num">08</span>K-Means</a>
+      <a href="topics/multiple-regression.html"><span class="num">09</span>Multiple Regression</a>
+      <a href="topics/rnn.html"><span class="num">10</span>RNN</a>
       <div style="margin-top:18px;padding:10px;border:1px solid var(--border);border-radius:8px;background:#1f2630;">
         <div style="font-size:.78rem;color:var(--muted);">🤝 Collaborate on projects</div>
         <a href="https://wa.me/923446466664" target="_blank" rel="noopener" style="display:block;margin-top:4px;font-size:.85rem;">💬 WhatsApp: +92 344 646 6664</a>
+      </div>
+      <div class="toggle-row">
+        <button class="tb-btn" data-lang-btn="ru">اردو / Roman Urdu</button>
+        <button class="tb-btn" data-lang-btn="en">English</button>
+        <button class="tb-btn" data-theme-btn="light">☀ Light</button>
+        <button class="tb-btn" data-theme-btn="dark">🌙 Dark</button>
       </div>
     </nav>
   </aside>
   <main>
     <h1>ML Algorithms — Practice &amp; Interview Prep</h1>
-    <p>Hi, I'm <b>Malik Hasnain</b> 👋 — I built this website for myself and other students preparing for the <b>Huawei HCCDA-AI certification</b>. Every algorithm here is broken down so a non-coder can understand <i>what the algorithm actually does</i> and practice it hands-on in Google Colab.</p>
+    <p class="en">Hi, I'm <b>Malik Hasnain</b> 👋 — I built this website for myself and other students preparing for the <b>Huawei HCCDA-AI certification</b>. Every algorithm here is broken down so a non-coder can understand <i>what the algorithm actually does</i> and practice it hands-on in Google Colab.</p>
+    <p class="ru">Assalam-o-alaikum, main <b>Malik Hasnain</b> hoon 👋 — maine yeh website apne liye aur dusre students ke liye banai hai jo <b>Huawei HCCDA-AI certification</b> ki tayyari kar rahe hain. Har algorithm is tarah tora gaya hai ke jise coding nahi aati woh bhi samajh sake ke <i>algorithm asal mein kya karta hai</i> aur use Google Colab mein praktiki tareeqe se practice kar sake.</p>
     <div class="meta">
       <span class="chip">Huawei HCCDA-AI</span>
       <span class="chip">10 topics</span>
       <span class="chip">Practice in Google Colab</span>
       <span class="chip">Kaggle datasets</span>
     </div>
-    <p>This site covers all <b>10 topics from your class notes</b>, in the exact sequence your teacher covered them. Every topic page has:</p>
-    <ul>
+    <p class="en">This site covers all <b>10 topics from your class notes</b>, in the exact sequence your teacher covered them. Every topic page has:</p>
+    <p class="ru">Is site par aapke class notes ke tamam <b>10 topics</b> hain, bilkul usi tarteeb mein jaisa aapke teacher ne parhaya. Har topic page par hai:</p>
+    <ul class="en">
       <li><b>Short intro</b> — what the algorithm does, in plain language</li>
       <li><b>Math/stat functions used</b> — with definitions (mean, variance, covariance, sigmoid, etc.)</li>
       <li><b>Authentic diagrams</b> from Wikipedia/Wikimedia</li>
       <li><b>Code in blocks</b> for Google Colab — every block explains its purpose and what math it performed</li>
-      <b>Kaggle dataset</b> used with each algorithm</li>
+      <li><b>Kaggle dataset</b> used with each algorithm</li>
       <li><b>Real use cases</b> — which companies use it</li>
       <li><b>How to combine</b> this algorithm with others in projects</li>
       <li><b>Interview Q&amp;A</b> — English answers you can speak aloud</li>
     </ul>
-    <div class="callout green">
+    <ul class="ru">
+      <li><b>Chhota intro</b> — algorithm kya karta hai, aasan zubaan mein</li>
+      <li><b>Math/stat functions</b> — definitions ke saath (mean, variance, covariance, sigmoid waghera)</li>
+      <li><b>Asli diagrams</b> Wikipedia/Wikimedia se</li>
+      <li><b>Code blocks</b> Google Colab ke liye — har block batata hai uska maqsad aur usne kya math kiya</li>
+      <li><b>Kaggle dataset</b> har algorithm ke saath</li>
+      <li><b>Asli duniya ke use cases</b> — kaunsi companies use karti hain</li>
+      <li><b>Dusre algorithms ke saath jodne</b> ka tareeqa — project ideas</li>
+      <li><b>Interview Q&amp;A</b> — English jawab jo aap bol kar sakein</li>
+    </ul>
+    <div class="callout green en">
       <b>How to practice:</b> open a topic page → read the intro + math → open <a href="https://colab.research.google.com" target="_blank" rel="noopener">Google Colab</a> → copy each code block one by one (hover a block, click Copy) → run in order. Blocks must run top to bottom.
     </div>
-    <h2>Start here</h2>
+    <div class="callout green ru">
+      <b>Practice kaise karein:</b> koi topic page kholo → intro + math parho → <a href="https://colab.research.google.com" target="_blank" rel="noopener">Google Colab</a> kholo → har code block copy karo (block par hover kar ke Copy dabao) → tarteeb se chalao. Blocks upar se neeche hi chalane hain.
+    </div>
+    <h2 class="en">Start here</h2>
+    <h2 class="ru">Yahan se shuru karein</h2>
     <div class="grid">
-      <a class="card" href="/concepts.html">
+      <a class="card" href="concepts.html">
         <div class="card-num">FIRST</div>
         <h3>📚 Core Concepts</h3>
         <p>Target variable, train/test split, overfitting, bias, data augmentation, anomaly detection — every shared term explained ONCE here.</p>
       </a>
-      <a class="card" href="/topics/confusion-matrix.html">
+      <a class="card" href="topics/confusion-matrix.html">
         <div class="card-num">01</div>
         <h3>Confusion Matrix</h3>
         <p>TP, FP, FN, TN, Accuracy, Precision, Recall — the report card of every classifier.</p>
       </a>
     </div>
-    <h2>All topics</h2>
+    <h2 class="en">All topics</h2>
+    <h2 class="ru">Tamam topics</h2>
     <div class="grid">
-      <a class="card" href="/topics/cnn.html"><div class="card-num">02</div><h3>CNN</h3><p>Convolutional Neural Network — how machines see images.</p></a>
-      <a class="card" href="/topics/dbscan.html"><div class="card-num">03</div><h3>DBSCAN</h3><p>Density-based clustering — finds clusters of any shape and detects anomalies.</p></a>
-      <a class="card" href="/topics/vgg16.html"><div class="card-num">04</div><h3>VGG16</h3><p>The classic 16-layer CNN that made deep learning famous.</p></a>
-      <a class="card" href="/topics/logistic-regression.html"><div class="card-num">05</div><h3>Logistic Regression</h3><p>Yes/No predictions with the sigmoid curve. Fraud detection, disease checks.</p></a>
-      <a class="card" href="/topics/simple-linear-regression.html"><div class="card-num">06</div><h3>Simple Linear Regression</h3><p>One feature, one straight line — the first ML algorithm everyone learns.</p></a>
-      <a class="card" href="/topics/pca.html"><div class="card-num">07</div><h3>PCA</h3><p>Principal Component Analysis — compress many features into a few.</p></a>
-      <a class="card" href="/topics/kmeans.html"><div class="card-num">08</div><h3>K-Means</h3><p>The classic clustering algorithm — customer segmentation.</p></a>
-      <a class="card" href="/topics/multiple-regression.html"><div class="card-num">09</div><h3>Multiple Linear Regression</h3><p>Many features, one prediction plane — house prices.</p></a>
-      <a class="card" href="/topics/rnn.html"><div class="card-num">10</div><h3>RNN</h3><p>Recurrent Neural Network — understanding sequences like text and time.</p></a>
+      <a class="card" href="topics/cnn.html"><div class="card-num">02</div><h3>CNN</h3><p>Convolutional Neural Network — how machines see images.</p></a>
+      <a class="card" href="topics/dbscan.html"><div class="card-num">03</div><h3>DBSCAN</h3><p>Density-based clustering — finds clusters of any shape and detects anomalies.</p></a>
+      <a class="card" href="topics/vgg16.html"><div class="card-num">04</div><h3>VGG16</h3><p>The classic 16-layer CNN that made deep learning famous.</p></a>
+      <a class="card" href="topics/logistic-regression.html"><div class="card-num">05</div><h3>Logistic Regression</h3><p>Yes/No predictions with the sigmoid curve. Fraud detection, disease checks.</p></a>
+      <a class="card" href="topics/simple-linear-regression.html"><div class="card-num">06</div><h3>Simple Linear Regression</h3><p>One feature, one straight line — the first ML algorithm everyone learns.</p></a>
+      <a class="card" href="topics/pca.html"><div class="card-num">07</div><h3>PCA</h3><p>Principal Component Analysis — compress many features into a few.</p></a>
+      <a class="card" href="topics/kmeans.html"><div class="card-num">08</div><h3>K-Means</h3><p>The classic clustering algorithm — customer segmentation.</p></a>
+      <a class="card" href="topics/multiple-regression.html"><div class="card-num">09</div><h3>Multiple Linear Regression</h3><p>Many features, one prediction plane — house prices.</p></a>
+      <a class="card" href="topics/rnn.html"><div class="card-num">10</div><h3>RNN</h3><p>Recurrent Neural Network — understanding sequences like text and time.</p></a>
     </div>
-    <div class="callout green">
+    <div class="callout green en">
       <b>🤝 Want to collaborate on a project?</b> Building something with these algorithms — for a course project, hackathon, or startup idea? Message me on WhatsApp: <a href="https://wa.me/923446466664" target="_blank" rel="noopener"><b>+92 344 646 6664</b></a>
+    </div>
+    <div class="callout green ru">
+      <b>🤝 Kisi project par milkar kaam karna hai?</b> In algorithms se kuch banna hai — course project, hackathon, ya startup idea? WhatsApp par message karein: <a href="https://wa.me/923446466664" target="_blank" rel="noopener"><b>+92 344 646 6664</b></a>
     </div>
     <p class="footer-note">Built by <b>Malik Hasnain</b> for my own and other students' algorithm understanding &amp; practice — Huawei HCCDA-AI certification prep. Diagrams from Wikipedia/Wikimedia Commons. Datasets from Kaggle.</p>
   </main>
 </div>
+<script src="/assets/app.js"></script>
 </body>
 </html>

@@ -4,30 +4,50 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>PCA (Principal Component Analysis) — HasnainAI</title>
-  <link rel="stylesheet" href="/assets/style.css">
+  <link rel="stylesheet" href="../assets/style.css">
 </head>
 <body>
+  <div class="topbar">
+    <button class="tb-btn tb-menu" aria-label="Menu">☰</button>
+    <div class="tb-brand">Hasnain<span style="color:var(--accent)">AI</span></div>
+    <button class="tb-btn" data-lang-btn="ru">اردو/UR</button>
+    <button class="tb-btn" data-lang-btn="en">EN</button>
+    <button class="tb-btn" data-theme-btn="light" aria-label="Light mode">☀</button>
+    <button class="tb-btn" data-theme-btn="dark" aria-label="Dark mode">🌙</button>
+  </div>
+  <div class="backdrop"></div>
+
 <div class="layout">
   <aside class="sidebar">
     <div class="brand">Hasnain<span>AI</span></div>
     <div class="tagline">HCCDA-AI prep &amp; practice</div>
     <nav>
-      <a href="/index.html">🏠 Home</a>
-      <a href="/concepts.html">📚 Core Concepts</a>
+      <a href="../index.html">🏠 Home</a>
+      <a href="../concepts.html">📚 Core Concepts</a>
       <div style="color:var(--muted);font-size:.75rem;margin:14px 0 4px 10px;">TOPICS (class sequence)</div>
-      <a href="/topics/confusion-matrix.html"><span class="num">01</span>Confusion Matrix</a>
-      <a href="/topics/cnn.html"><span class="num">02</span>CNN</a>
-      <a href="/topics/dbscan.html"><span class="num">03</span>DBSCAN</a>
-      <a href="/topics/vgg16.html"><span class="num">04</span>VGG16</a>
-      <a href="/topics/logistic-regression.html"><span class="num">05</span>Logistic Regression</a>
-      <a href="/topics/simple-linear-regression.html"><span class="num">06</span>Simple Linear Regression</a>
-      <a href="/topics/pca.html" class="active"><span class="num">07</span>PCA</a>
-      <a href="/topics/kmeans.html"><span class="num">08</span>K-Means</a>
-      <a href="/topics/multiple-regression.html"><span class="num">09</span>Multiple Regression</a>
-      <a href="/topics/rnn.html"><span class="num">10</span>RNN</a>
+      <a href="confusion-matrix.html"><span class="num">01</span>Confusion Matrix</a>
+      <a href="cnn.html"><span class="num">02</span>CNN</a>
+      <a href="dbscan.html"><span class="num">03</span>DBSCAN</a>
+      <a href="vgg16.html"><span class="num">04</span>VGG16</a>
+      <a href="logistic-regression.html"><span class="num">05</span>Logistic Regression</a>
+      <a href="simple-linear-regression.html"><span class="num">06</span>Simple Linear Regression</a>
+      <a href="pca.html" class="active"><span class="num">07</span>PCA</a>
+      <a href="kmeans.html"><span class="num">08</span>K-Means</a>
+      <a href="multiple-regression.html"><span class="num">09</span>Multiple Regression</a>
+      <a href="rnn.html"><span class="num">10</span>RNN</a>
       <div style="margin-top:18px;padding:10px;border:1px solid var(--border);border-radius:8px;background:#1f2630;">
         <div style="font-size:.78rem;color:var(--muted);">🤝 Collaborate on projects</div>
         <a href="https://wa.me/923446466664" target="_blank" rel="noopener" style="display:block;margin-top:4px;font-size:.85rem;">💬 WhatsApp: +92 344 646 6664</a>
+      </div>
+      <div class="side-box">
+        <div class="box-title">Practice here</div>
+        <a href="https://colab.research.google.com" target="_blank" rel="noopener">▶ Open Google Colab</a>
+      </div>
+      <div class="toggle-row">
+        <button class="tb-btn" data-lang-btn="ru">اردو / Roman Urdu</button>
+        <button class="tb-btn" data-lang-btn="en">English</button>
+        <button class="tb-btn" data-theme-btn="light">☀ Light</button>
+        <button class="tb-btn" data-theme-btn="dark">🌙 Dark</button>
       </div>
     </nav>
   </aside>
@@ -51,16 +71,16 @@
 
     <p><b>Step 1 — subtract the mean.</b> For each feature, take its mean and subtract it from every value, so each column is centered at 0:</p>
     <div class="formula">x<sub>centered</sub> = x − mean(x), &nbsp; y<sub>centered</sub> = y − mean(y)</div>
-    <p>This centers the data cloud on the origin so "spread" is measured from the middle. The mean itself is <a href="/concepts.html">already explained in Core Concepts</a>.</p>
+    <p>This centers the data cloud on the origin so "spread" is measured from the middle. The mean itself is <a href="../concepts.html">already explained in Core Concepts</a>.</p>
 
     <p><b>Step 2 — build the covariance matrix.</b> From the centered columns, compute the four entries your notes list as XX, XY, YX, YY:</p>
     <div class="formula">C = [ cov(X,X) &nbsp; cov(X,Y) ]<br>&nbsp;&nbsp;&nbsp;[ cov(Y,X) &nbsp; cov(Y,Y) ]</div>
     <div class="formula">cov(X,Y) = &Sigma; (x<sub>i</sub> − mean(x)) · (y<sub>i</sub> − mean(y)) / (n − 1)</div>
-    <p>The diagonal entries (XX, YY) are the variances of each feature; the off-diagonals (XY and YX, always equal) say how the features move together. Covariance is <a href="/concepts.html">already explained in Core Concepts</a>. With 4 features you get a 4×4 version of this same matrix.</p>
+    <p>The diagonal entries (XX, YY) are the variances of each feature; the off-diagonals (XY and YX, always equal) say how the features move together. Covariance is <a href="../concepts.html">already explained in Core Concepts</a>. With 4 features you get a 4×4 version of this same matrix.</p>
 
     <p><b>Step 3 — solve the characteristic equation.</b> Eigenvalues λ are the numbers for which the matrix C stretched a direction without rotating it. They are found by setting the <b>determinant</b> of (C − λI) to zero — exactly the "characteristic equation (quadratic), determinant" step in your notes:</p>
     <div class="formula">|C − λI| = 0</div>
-    <p>Here I is the identity matrix (1s on the diagonal, 0s elsewhere) and the bars mean determinant (<a href="/concepts.html">already explained in Core Concepts</a>). For a 2×2 covariance matrix, expanding the determinant gives a quadratic equation in λ:</p>
+    <p>Here I is the identity matrix (1s on the diagonal, 0s elsewhere) and the bars mean determinant (<a href="../concepts.html">already explained in Core Concepts</a>). For a 2×2 covariance matrix, expanding the determinant gives a quadratic equation in λ:</p>
     <div class="formula">|C − λI| = (xx − λ)(yy − λ) − (xy)² = &lambda;<sup>2</sup> − A&lambda; + B = 0</div>
     <p>Matching your notes: the <b>square value = A</b> (the coefficient that sits on &lambda;<sup>2</sup> after expanding — here it is 1, and A works out to the sum of the diagonal variances) and <b>&lambda; = B's equation</b> — B is the constant term (it equals the determinant of C). Solving this quadratic with the familiar formula gives the two eigenvalues:</p>
     <div class="formula">&lambda; = (A &plusmn; &radic;(A² − 4B)) / 2</div>
@@ -68,7 +88,7 @@
 
     <p><b>Step 4 — find the eigenvectors (principal axes).</b> For each eigenvalue λ, plug it back and solve:</p>
     <div class="formula">(C − λI) · v = 0 &nbsp; → &nbsp; v = the eigenvector for that λ</div>
-    <p>The eigenvector v is a direction the covariance matrix does not rotate — one principal axis. Eigenvectors and eigenvalues are <a href="/concepts.html">already explained in Core Concepts</a>.</p>
+    <p>The eigenvector v is a direction the covariance matrix does not rotate — one principal axis. Eigenvectors and eigenvalues are <a href="../concepts.html">already explained in Core Concepts</a>.</p>
 
     <p><b>Step 5 — sort by λ, keep top k, project.</b> Sort the eigenvectors by their eigenvalues (biggest variance first), keep the top k (e.g. 2), stack them as rows of a matrix W, and rotate the data onto the new axes:</p>
     <div class="formula">Z = X<sub>centered</sub> · W<sup>T</sup></div>
@@ -76,7 +96,7 @@
 
     <div class="term"><b>Projection:</b> dropping data onto a line or plane by a perpendicular "shadow" — geometrically, z = x · w is the length of x's shadow on direction w. PCA projects every point onto the top eigenvector directions, so each point's many numbers collapse into a few shadow-coordinates (its PC scores).</div>
     <div class="term"><b>Explained variance ratio:</b> for each component, its eigenvalue divided by the total of all eigenvalues — the fraction of the dataset's total variance (information) that this one component carries. In sklearn it is <code>pca.explained_variance_ratio_</code>; e.g. [0.92, 0.05] means PC1 holds 92% of the information and PC2 another 5%. You decide how many components to keep by adding these up (e.g. keep enough to pass 95%).</div>
-    <p class="callout">Standardizing first (<code>StandardScaler</code>, which makes every feature mean 0 and std 1 — <a href="/concepts.html">already explained in Core Concepts</a>) is not optional decoration: PCA chases <i>variance</i>, so any feature measured in bigger units (petal length in cm vs a pixel 0–255) would dominate the components just because its numbers are bigger, not because it matters more.</p>
+    <p class="callout">Standardizing first (<code>StandardScaler</code>, which makes every feature mean 0 and std 1 — <a href="../concepts.html">already explained in Core Concepts</a>) is not optional decoration: PCA chases <i>variance</i>, so any feature measured in bigger units (petal length in cm vs a pixel 0–255) would dominate the components just because its numbers are bigger, not because it matters more.</p>
 
     <h2>Diagram</h2>
     <figure>
@@ -241,7 +261,7 @@ print(f"accuracy with 2 PCA components:    {acc_pca:.3f}")
     <div class="qa"><div class="q">Q: What information does PCA lose, and when is that dangerous?</div><div class="a">A: It keeps only the top-variance directions and discards the rest — low-variance features carrying the real signal get thrown away. If class separation lives in a small-variance direction (common in fraud or rare-detection tasks), PCA can hurt accuracy. Always validate downstream performance before/after, like our Block 11.</div></div>
     <div class="qa"><div class="q">Q: How would you use PCA with Logistic Regression on Iris, and what result do you expect?</div><div class="a">A: Standardize, fit PCA(n_components=2), project, then train Logistic Regression on the 2 PCs and compare with the 4-feature model. On Iris both land around 93–98% accuracy — near-identical performance with half the features stored, which is exactly the compression payoff PCA promises.</div></div>
 
-    <div class="prevnext"><a href="/topics/simple-linear-regression.html">← Simple Linear Regression</a> | <a href="/topics/kmeans.html">K-Means →</a></div>
+    <div class="prevnext"><a href="simple-linear-regression.html">← Simple Linear Regression</a> | <a href="kmeans.html">K-Means →</a></div>
     <p class="footer-note">HasnainAI — HCCDA-AI exam prep. PCA: mean → covariance → det(C − λI) = 0 → λ, v → sort → project.</p>
   </main>
 </div>
@@ -253,5 +273,6 @@ document.querySelectorAll('pre').forEach(p => {
   p.appendChild(b);
 });
 </script>
+<script src="../assets/app.js"></script>
 </body>
 </html>
