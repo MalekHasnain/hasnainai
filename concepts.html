@@ -103,7 +103,7 @@
       <tr><th>Student</th><th>A</th><th>B</th><th>C</th><th>D</th><th>E</th><th>Sum</th></tr>
       <tr><td>Marks (out of 100)</td><td>62</td><td>75</td><td>75</td><td>88</td><td>95</td><td><b>395</b></td></tr>
     </table>
-    <p><span class="en"><b>Mean = 395 ÷ 5 = 79</b> — jama karke tadaad se divide karo, bas yehi formula hai.</span><span class="ru"><b>Mean = 395 ÷ 5 = 79</b> — values ko add karo, unki count se divide karo, formula bas itna hi hai.</span></p>
+    <p><span class="en"><b>Mean = 395 ÷ 5 = 79</b> — add the values, divide by the count; that is the whole formula.</span><span class="ru"><b>Mean = 395 ÷ 5 = 79</b> — values ko add karo, unki count se divide karo, formula bas itna hi hai.</span></p>
     <div class="term"><b>Median:</b> <span class="en">the middle value after sorting — half the data sits below it, half above. Robust: one crazy value barely moves it (mean jumps).</span><span class="ru">sort karne ke baad ka middle value — aadha data isse neeche, aadha upar. Robust: ek outlier isse zyada hila nahi pata (mean jump kar jata hai).</span></div>
     <p class="en">Same marks, sorted: 62, 75, <b>75</b>, 88, 95 → median = <b>75</b> (3rd of 5). Add one rich kid scoring 100 → mean jumps to 82.5, median moves only to 81.5.</p>
     <p class="ru">Wohi marks, sorted: 62, 75, <b>75</b>, 88, 95 → median = <b>75</b> (5 mein se 3rd). Ek 100-score student add karo → mean 82.5 tak jump karta hai, median sirf 81.5 tak.</p>
@@ -160,7 +160,7 @@
       <tr><td>Manhattan</td><td>|4−1| + |6−2| = 3 + 4</td><td><b>7</b></td></tr>
     </table>
     <p><span class="en">Euclidean = "as the crow flies"; Manhattan = a taxi driving block by block. K-Means uses Euclidean to pick the nearest centroid.</span><span class="ru">Euclidean = "kauwa udta hua jo seedha jaye"; Manhattan = taxi block-by-block chalta hua. K-Means nearest centroid chunne ke liye Euclidean use karta hai.</span></p>
-    <div class="term"><b>Matrix / eigenvector / eigenvalue / determinant:</b> <span class="en">a matrix transforms vectors; an eigenvector is a direction it only stretches (not rotates), the eigenvalue (λ) is the stretch factor; the determinant is the volume-scaling factor. PCA finds the eigenvectors of the covariance matrix — biggest λ = direction of most spread.</span><span class="ru">matrix vectors ko transform karti hai; eigenvector woh simt hai jise sirf khicha jata hai (ghumaya nahi), eigenvalue (λ) khichao ka factor hai; determinant volume ka factor hai. PCA covariance matrix ke eigenvectors nikalti hai — sab se bara λ = sab se zyada phelao ki simt.</span></div>
+    <div class="term"><b>Matrix / eigenvector / eigenvalue / determinant:</b> <span class="en">a matrix transforms vectors; an eigenvector is a direction it only stretches (not rotates), the eigenvalue (λ) is the stretch factor; the determinant is the volume-scaling factor. PCA finds the eigenvectors of the covariance matrix — biggest λ = direction of most spread.</span><span class="ru">matrix vectors ko transform karti hai; eigenvector woh simt hai jise sirf khicha jata hai (ghumaya nahi), eigenvalue (λ) khichao ka factor hai; determinant volume ka factor hai. PCA covariance matrix ke eigenvectors nikalti hai — sab se bara λ = sab se zyada spread ki simt.</span></div>
 
     <p class="en">Worked example — matrix M = [[2,0],[0,3]] stretches x by 2 and y by 3:</p>
     <p class="ru">Misal — matrix M = [[2,0],[0,3]] x ko 2 se aur y ko 3 se stretch karti hai:</p>
@@ -171,7 +171,7 @@
       <tr><td>(1, 1)</td><td>(2, 3)</td><td>direction bent — not an eigenvector</td></tr>
     </table>
     <p><span class="en">In PCA the covariance matrix plays the role of M: its biggest-λ eigenvector = the direction where data spreads most = the first principal component.</span><span class="ru">PCA mein covariance matrix M ka role play karti hai: iska sab se bara-λ eigenvector = woh direction jahan data sab se zyada spread hai = first principal component.</span></p>
-    <div class="term"><b>Derivative &amp; gradient descent:</b> <span class="en">the derivative is the slope; gradient descent loops: measure the error's slope, step downhill, repeat — the training engine of neural networks.</span><span class="ru">derivative dhalwan (slope) hai; gradient descent ka loop: error ka slope naapo, neeche qadam barhao, dohrate jao — neural networks ka training engine.</span></div>
+    <div class="term"><b>Derivative &amp; gradient descent:</b> <span class="en">the derivative is the slope; gradient descent loops: measure the error's slope, step downhill, repeat — the training engine of neural networks.</span><span class="ru">derivative yani slope hai; gradient descent ka loop: error ka slope naapo, neeche qadam barhao, dohrate jao — neural networks ka training engine.</span></div>
 
     <p class="en">Worked example — minimize f(x) = (x−4)². Derivative (slope) = 2(x−4). Learning rate 0.3, start at x = 0:</p>
     <p class="ru">Misal — f(x) = (x−4)² ko minimize karo. Derivative (slope) = 2(x−4). Learning rate 0.3, start x = 0:</p>
@@ -189,7 +189,7 @@
       <tr><td>σ(z)</td><td>0.02</td><td>0.12</td><td>0.50</td><td>0.88</td><td>0.98</td></tr>
     </table>
     <p><span class="en">Output is always between 0 and 1 → read it as a probability. σ(0) = 0.5 is the decision boundary; z = +2 already means "88% sure yes".</span><span class="ru">Output hamesha 0 aur 1 ke darmiyan → ise probability ki tarah parho. σ(0) = 0.5 decision boundary hai; z = +2 ka matlab "88% sure yes".</span></p>
-    <div class="term"><b>Softmax:</b> <span class="en">sigmoid's multi-class sibling — converts a vector of scores into probabilities summing to 1. CNN output layer.</span><span class="ru">sigmoid ka multi-class bhai — scores ke vector ko aisi probabilities mein badalta hai jin ka jama 1 ho. CNN ka output layer.</span></div>
+    <div class="term"><b>Softmax:</b> <span class="en">sigmoid's multi-class sibling — converts a vector of scores into probabilities summing to 1. CNN output layer.</span><span class="ru">sigmoid ka multi-class bhai — scores ke vector ko aisi probabilities mein badalta hai jin ka sum 1 ho. CNN ka output layer.</span></div>
 
     <p class="en">Worked example — a CNN's final scores for cat / dog / horse = [5, 3, 1]:</p>
     <p class="ru">Misal — CNN ke final scores cat / dog / horse ke liye = [5, 3, 1]:</p>

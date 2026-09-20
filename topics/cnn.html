@@ -73,7 +73,7 @@
     <p class="ru">Poora pipeline bas chaar simple operations ka repeat hai: convolution, ReLU, pooling, aur aakhir mein flattening + ek softmax layer (softmax <a href="../concepts.html">Core Concepts mein pehle se samjhaya gaya hai</a>).</p>
 
     <div class="term en"><b>Filter (kernel) &amp; convolution:</b> a small grid of learnable weights (e.g. 3&times;3). Convolution slides this filter across the image and, at every position, computes the dot product: multiply filter weights with the pixel values underneath and sum. One output number per position.</div>
-    <div class="term ru"><b>Filter (kernel) &amp; convolution:</b> learnable weights ka ek chhota grid (maslan 3&times;3). Convolution yeh filter image par slide karta hai aur har position par dot product nikaalta hai: filter weights ko neeche wali pixel values se multiply kar ke jama karo. Har position par ek output number.</div>
+    <div class="term ru"><b>Filter (kernel) &amp; convolution:</b> learnable weights ka ek chhota grid (maslan 3&times;3). Convolution yeh filter image par slide karta hai aur har position par dot product nikaalta hai: filter weights ko neeche wali pixel values se multiply kar ke sum karo. Har position par ek output number.</div>
     <div class="formula">output(i, j) = &Sigma;<sub>m,n</sub> W(m, n) &middot; X(i+m, j+n) + b</div>
     <p class="en">Each output pixel is a weighted sum of a small patch of the input — the filter "lights up" where its pattern is present.</p>
     <p class="ru">Har output pixel input ke chhote patch ka weighted sum hota hai — filter wahan "light up" hota hai jahan uska pattern maujood ho.</p>
@@ -104,7 +104,7 @@
 
     <div class="formula">P(class k) = softmax(z)<sub>k</sub>, &nbsp; z = W &middot; flattened&nbsp;features + b</div>
     <p class="en">The final dense layer turns the flattened features into 10 raw scores, and the softmax (a <a href="../concepts.html">Core Concepts</a> term) converts them into probabilities that sum to 1. Training minimizes cross-entropy loss by <a href="../concepts.html">gradient descent — see Core Concepts</a>; the sigmoid, its 2-class cousin, appears again in Topic 05 (Logistic Regression).</p>
-    <p class="ru">Aakhri dense layer flattened features ko 10 raw scores mein badalti hai, aur softmax (ek <a href="../concepts.html">Core Concepts</a> term) unhein probabilities mein badal deta hai jin ka jama 1 hota hai. Training cross-entropy loss ko <a href="../concepts.html">gradient descent se minimize karti hai — Core Concepts dekhen</a>; sigmoid, iska 2-class cousin, Topic 05 (Logistic Regression) mein dobara aata hai.</p>
+    <p class="ru">Aakhri dense layer flattened features ko 10 raw scores mein badalti hai, aur softmax (ek <a href="../concepts.html">Core Concepts</a> term) unhein probabilities mein badal deta hai jin ka sum 1 hota hai. Training cross-entropy loss ko <a href="../concepts.html">gradient descent se minimize karti hai — Core Concepts dekhen</a>; sigmoid, iska 2-class cousin, Topic 05 (Logistic Regression) mein dobara aata hai.</p>
 
     <h2>Diagram</h2>
     <figure><img src="https://upload.wikimedia.org/wikipedia/commons/6/63/Typical_cnn.png" alt="Typical CNN architecture: input image, convolution layers, pooling, fully connected layer, output classes"><figcaption><span class="en">Source: Wikipedia/Wikimedia Commons</span><span class="ru">Manba: Wikipedia/Wikimedia Commons</span></figcaption></figure>

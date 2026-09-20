@@ -58,33 +58,33 @@
     <p class="ru">Simple linear regression statistics ka sab se bunyadi prediction machine hai: ek feature (X) se ek continuous target (y) predict karna, ek seedhi line ke saath.</p>
     <p class="en">The line it draws is not a guess. There is an exact formula (calculus, no iteration needed) that finds the one line minimizing the total squared error between the points and the line. That procedure is called <b>Ordinary Least Squares (OLS)</b>, and it is the same engine that powers multiple regression with many features later in this course.</p>
     <p class="ru">Line andaza nahi hoti. Iska exact formula hai (calculus se derive hua) — jo bhi data do, wohi best line milti hai. Yeh 'learning' ka matlab hai: do numbers seekhna (b0, b1).</p>
-    <p class="en">Despite being over 200 years old (Gauss and Legendre, early 1800s, for astronomy), it is still the first model any data scientist fits — because the two numbers it returns, <b>slope</b> and <b>intercept</b>, are directly readable as business insights: "each extra square foot adds $148 to the price" is a sentence a manager understands.</p>
+    <p class="en">Despite being over 200 years old (Gauss and Legendre, early 1800s, for astronomy), it is still the first model any data scientist fits — because the two numbers it returns, <b>slope</b> and <b>intercept</b>, are directly readable as business insights: "each extra square foot adds $201 to the price" is a sentence a manager understands.</p>
     <p class="ru">200 saal purana hone ke bawajood (Gauss aur Legendre, 1800s ke shuru mein, sayaron ki orbits ke liye) yeh aaj bhi rozana istemal hota hai — kyunke tez, samjhaane ke qabil, aur aksar kaafi acha hai.</p>
     <p class="en">It is a <a href="../concepts.html">supervised</a> regression method: the target is continuous, and every training row already carries the correct answer.</p>
     <p class="ru">Yeh supervised regression method hai: target continuous hai, aur har training example mein jawab pehle se maloom hai.</p>
 
     <h2>The math inside</h2>
     <p class="en">The model is a straight line with two parameters — the intercept b<sub>0</sub> and the slope b<sub>1</sub>:</p>
-    <p class="ru">Model ek seedhi line hai do parameters ke saath — slope b1 (dhalwan) aur intercept b0 (line jahan y-axis ko kaat ti hai).</p>
+    <p class="ru">Model ek seedhi line hai do parameters ke saath — slope b1 aur intercept b0 (line jahan y-axis ko kaat ti hai).</p>
     <div class="formula">y&#770; = b<sub>0</sub> + b<sub>1</sub>x</div>
     <p class="en">For any input x, this computes the predicted y (written y&#770;, "y-hat") by starting at b<sub>0</sub> and walking b<sub>1</sub> units up for every unit of x.</p>
     <p class="ru">Har input x ke liye yeh predicted y nikalta hai (y-hat kehte hain, kyunke asli y se thora different hota hai).</p>
     <div class="formula">b<sub>1</sub> = &Sigma;(x<sub>i</sub> &minus; x&#772;)(y<sub>i</sub> &minus; y&#772;) / &Sigma;(x<sub>i</sub> &minus; x&#772;)&sup2;</div>
     <p class="en">The slope is the <b>covariance of x and y divided by the variance of x</b> — both already <a href="../concepts.html">explained in Core Concepts</a>. If x and y move together (positive covariance), the slope is positive; the more spread x has (bigger variance), the gentler the slope.</p>
-    <p class="ru">Slope = x aur y ki covariance ÷ x ka variance — 'sath chalna, apne phelao se normalized'.</p>
+    <p class="ru">Slope = x aur y ki covariance ÷ x ka variance — 'sath chalna, apne spread se normalized'.</p>
     <div class="formula">b<sub>0</sub> = y&#772; &minus; b<sub>1</sub>x&#772;</div>
     <p class="en">The intercept is chosen so the line passes exactly through the point of means (x&#772;, y&#772;) — the center of mass of the data.</p>
-    <p class="ru">Interceptor aisa chuna jata hai ke line (x̄, ȳ) ke exact se guzre — data ke markaz se.</p>
+    <p class="ru">Intercept aisa chuna jata hai ke line (x̄, ȳ) ke exact se guzre — data ke center se.</p>
     <div class="formula">residual e<sub>i</sub> = y<sub>i</sub> &minus; y&#770;<sub>i</sub></div>
     <p class="en">The residual is the vertical gap between a real point and the line — how wrong the line was on that row (positive = line too low, negative = line too high).</p>
     <p class="ru">Residual asli point aur line ke darmiyan ki vertical khali jagah hai — model ki us point par ghalti.</p>
     <div class="formula">OLS minimizes &Sigma;(y<sub>i</sub> &minus; y&#770;<sub>i</sub>)&sup2;</div>
     <p class="en">Ordinary Least Squares picks the b<sub>0</sub> and b<sub>1</sub> that make the sum of squared residuals as small as possible — squaring kills the sign and punishes big misses. This is the <a href="../concepts.html">loss function</a> of linear regression.</p>
-    <p class="ru">Ordinary Least Squares woh b0, b1 chunta hai jin se squared residuals ka jama sab se chhota ho.</p>
+    <p class="ru">Ordinary Least Squares woh b0, b1 chunta hai jin se squared residuals ka sum sab se chhota ho.</p>
     <div class="term"><b>Residual:</b> the error of one prediction — actual minus predicted (y &minus; y&#770;). Residuals are what OLS squashes; they are also useful diagnostics (a pattern in residuals means the line is the wrong shape).</div>
     <div class="term"><b>Ordinary Least Squares (OLS):</b> the closed-form recipe for finding the best-fit line by minimizing the sum of squared residuals. No gradient descent needed — the two formulas above ARE the answer.</div>
     <div class="term"><b>R&sup2; (R-squared, coefficient of determination):</b> the share of the target's variance the model explains, from 0 to 1. R&sup2; = 1 &minus; (sum of squared residuals) / (variance of y around its mean). 0.85 means 85% of price variation is captured by square footage.</div>
-    <div class="term"><b>MAE / RMSE (error in target units):</b> MAE = mean of |residuals| — "on average we're off by $23,000". RMSE = square root of the mean of squared residuals — same units, but punishes large misses more.</div>
+    <div class="term"><b>MAE / RMSE (error in target units):</b> MAE = mean of |residuals| — "on average we're off by $27,000". RMSE = square root of the mean of squared residuals — same units, but punishes large misses more.</div>
 
     <h2>Diagram</h2>
     <figure>
@@ -92,7 +92,7 @@
       <figcaption>Source: Wikipedia/Wikimedia Commons</figcaption>
     </figure>
     <p class="en">Notice the vertical dashed segments: each one is a residual, the gap between a real point and the line — and OLS rotated/shifted the line until the sum of the squares of exactly those segments was as small as possible.</p>
-    <p class="ru">Vertical dashed hisson par nazar daalo: har ek residual hai — point aur line ka gap. OLS inhi k squares ka jama chhota karta hai.</p>
+    <p class="ru">Vertical dashed hisson par nazar daalo: har ek residual hai — point aur line ka gap. OLS inhi k squares ka sum chhota karta hai.</p>
 
     <h2>Dataset (Kaggle)</h2>
     <p class="en"><b>prokshitha/home-value-insights</b> via kagglehub, file <code>house_price_regression_dataset.csv</code> — a synthetic dataset of 1,000 houses built for practicing price prediction. Each row is one house; columns include Square_Footage, number of rooms, age, and other property attributes, plus the target <b>House_Price</b>. In this topic we deliberately use <b>only Square_Footage</b> as the single feature — one feature in, one number out, that is what makes it <i>simple</i> linear regression. The full 7-feature version (all columns at once) is Topic 09: Multiple Regression, where the same OLS math scales up to many x's.</p>
@@ -275,13 +275,13 @@ print(f"Manual formula b0 + b1*x gives: ${manual:,.0f}")</code></pre>
     <p class="ru">Regression pehle, classification baad mein: predicted price (ya residual) ko feature ke tor par Logistic Regression (Topic 05) mein daal kar 'jaldi bike ga / nahi' predict karo.</p>
 
     <h2>Interview Q&amp;A</h2>
-    <div class="qa"><div class="q">What is the meaning of the slope and the intercept?</div><div class="a">The slope b<sub>1</sub> is the predicted change in y for a one-unit increase in x — "each extra square foot adds $148". The intercept b<sub>0</sub> is the predicted y when x = 0 — the baseline when the feature is absent. The intercept is sometimes not physically meaningful (a 0 sq ft house) but is required to position the line correctly.</div></div>
+    <div class="qa"><div class="q">What is the meaning of the slope and the intercept?</div><div class="a">The slope b<sub>1</sub> is the predicted change in y for a one-unit increase in x — "each extra square foot adds $201". The intercept b<sub>0</sub> is the predicted y when x = 0 — the baseline when the feature is absent. The intercept is sometimes not physically meaningful (a 0 sq ft house) but is required to position the line correctly.</div></div>
     <div class="qa"><div class="q">When does simple linear regression fail?</div><div class="a">When the relationship is not linear (curves need polynomial terms or another model), when one feature is not enough (leaving signal on the table — fix with multiple features), when outliers drag the line (OLS punishes squared errors, so extreme points have huge leverage), and when features are correlated with hidden variables (omitted-variable bias).</div></div>
     <div class="qa"><div class="q">What exactly does OLS minimize, and why square the errors?</div><div class="a">Ordinary Least Squares minimizes the sum of squared residuals &Sigma;(y &minus; y&#770;)&sup2;. Squaring removes the sign so positive and negative misses don't cancel, and it punishes large errors disproportionately — a miss of 4 hurts 16 times as much as a miss of 1. The alternative, sum of absolute errors, is harder to optimize but robust to outliers.</div></div>
     <div class="qa"><div class="q">How are linear regression and logistic regression (Topic 05) related?</div><div class="a">Both fit a linear combination b<sub>0</sub> + b<sub>1</sub>x with (regularized) least-squares-style optimization — but linear regression outputs that raw number (a continuous price), while logistic regression passes it through a sigmoid to squash it into a probability of a category. Same skeleton, different output transform and loss function (squared error vs log loss).</div></div>
     <div class="qa"><div class="q">What is R&sup2; and what does a value of 0.85 mean?</div><div class="a">R&sup2; is the proportion of the target's variance explained by the model: 1 &minus; (squared residual sum) / (variance of y around its mean). 0.85 means 85% of the variation in house prices is captured by square footage alone; the remaining 15% is due to factors the model ignores — rooms, age, location.</div></div>
     <div class="qa"><div class="q">What is a residual and why should you plot them?</div><div class="a">A residual is actual minus predicted for one row. Plotting residuals against x should show a random, patternless band around zero — a curve or funnel shape means the line is the wrong shape or the error spread changes with x, telling you to add polynomial terms or transform the target before trusting the model.</div></div>
-    <div class="qa"><div class="q">Why is MAE easier to explain than RMSE?</div><div class="a">MAE is literally the average miss in target units — "we're off by $23,000 on average" — so anyone can understand it. RMSE is also in target units but takes the square root of the mean of squared errors, so big misses dominate it; it's the right metric when large errors are disproportionately costly, but it's less intuitive to explain.</div></div>
+    <div class="qa"><div class="q">Why is MAE easier to explain than RMSE?</div><div class="a">MAE is literally the average miss in target units — "we're off by $27,000 on average" — so anyone can understand it. RMSE is also in target units but takes the square root of the mean of squared errors, so big misses dominate it; it's the right metric when large errors are disproportionately costly, but it's less intuitive to explain.</div></div>
     <div class="qa"><div class="q">Why does X need double brackets but y single brackets in sklearn?</div><div class="a">X = df[["Square_Footage"]] returns a 2D DataFrame because sklearn models accept a table of features — even a table with one column — while y = df["House_Price"] returns a 1D Series, since the target is always a single column of answers. Passing a 1D x raises a "expected 2D array" error.</div></div>
 
     <div class="prevnext">

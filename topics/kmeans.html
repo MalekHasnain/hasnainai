@@ -55,7 +55,7 @@
 
     <h2>What it is</h2>
     <p class="en">K-Means is an unsupervised algorithm that splits data into <b>k</b> groups (clusters) without ever seeing a label. You choose k in advance — "split my customers into 5 groups" — and the algorithm finds the 5 natural groupings hiding in the features.</p>
-    <p class="ru">K-Means ek unsupervised algorithm hai jo data ko k girohon (clusters) mein taakta hai bina koi label diye..</p>
+    <p class="ru">K-Means ek unsupervised algorithm hai jo data ko k girohon (clusters) mein taakta hai bina koi label diye.</p>
     <p class="en">The intuition is simple: a cluster is a bunch of points that sit close together, and each cluster can be represented by its center (the <b>centroid</b> — the mean position of all its members). K-Means alternates between two steps: assign every point to its nearest centroid, then move each centroid to the mean of the points it just captured. Repeat until nothing moves.</p>
     <p class="ru">Samajh aasan hai: cluster woh points ka giroh hai jo aas paas baithe hon.</p>
     <p class="en">Unlike DBSCAN (Topic 03), K-Means needs k upfront, works best on round, similarly-sized blobs, and always assigns every point to some cluster — there are no "noise" points. In return it's fast, scales to millions of rows, and gives you a centroid per cluster you can inspect and use for prediction on new data.</p>
@@ -72,13 +72,13 @@
     <div class="term"><b>Centroid:</b> the center of a cluster — literally the mean (average) of the coordinates of all points in that cluster. Point (x&#772;, y&#772;) where x&#772; is the average x of the members. The <a href="../concepts.html">mean is already explained in Core Concepts</a>.</div>
     <div class="term"><b>WCSS / elbow method:</b> WCSS = the total within-cluster sum of squares across all clusters (the objective above, summed over the whole dataset). The elbow method runs K-Means for k = 1, 2, 3, … and plots WCSS vs k. WCSS always drops as k grows, but at some k the drop suddenly flattens — that bend (the "elbow") is the natural number of clusters, because adding more clusters past it stops helping.</div>
     <p class="en">The algorithm itself, step by step:</p>
-    <p class="ru">Algorithm khud, qadam ba qadam:.</p>
+    <p class="ru">Algorithm khud, qadam ba qadam:</p>
     <div class="formula">1. Pick k starting centroids randomly (k random points)</div>
     <p class="en">Initialization — where the algorithm starts.</p>
-    <p class="ru">Initialization — algorithm kahan se shuru hota hai..</p>
+    <p class="ru">Initialization — algorithm kahan se shuru hota hai.</p>
     <div class="formula">2. Assign: each point &rarr; nearest centroid (by <a href="../concepts.html" style="text-decoration:underline">Euclidean distance</a>)</div>
     <p class="en">Every point joins the cluster of the centroid closest to it.</p>
-    <p class="ru">Har point apne sab se qareeb centroid ke cluster mein shamil ho jata hai..</p>
+    <p class="ru">Har point apne sab se qareeb centroid ke cluster mein shamil ho jata hai.</p>
     <div class="formula">3. Update: centroid<sub>k</sub> = mean of all points assigned to cluster k</div>
     <p class="en">Each centroid walks to the average position of its members — the step that shrinks WCSS.</p>
     <p class="ru">Har centroid apne members ki average jagah ki taraf chalta hai.</p>
@@ -163,7 +163,7 @@ print(X_scaled[:5])</code></pre>
 
     <div class="block-label">BLOCK 6: Elbow method — choose k</div>
     <p class="en">We don't know the right number of clusters, so we run K-Means for k = 1..10, record WCSS (<code>inertia_</code>) each time, and look for the elbow — the k where the curve bends and adding clusters stops helping much.</p>
-    <p class="ru">Clusters ki sahi tadaad maloom nahi, is liye k = 1..10 ke liye K-Means chalate hain.</p>
+    <p class="ru">Clusters ki sahi number maloom nahi, is liye k = 1..10 ke liye K-Means chalate hain.</p>
     <pre><code># Try every k from 1 to 10 and store the WCSS of each run
 wcss = []
 for k in range(1, 11):
@@ -185,7 +185,7 @@ plt.show()
 
     <div class="block-label">BLOCK 7: Fit K-Means with k = 5</div>
     <p class="en">The elbow points at 5, so we fit the final model with 5 clusters. <code>random_state</code> makes results reproducible; <code>n_init=10</code> retries from 10 random starting positions because K-Means can otherwise get stuck in a bad local optimum.</p>
-    <p class="ru">Elabow 5 ki taraf ishara karta hai, to final model 5 clusters ke saath fit karte hain.</p>
+    <p class="ru">Elbow 5 ki taraf ishara karta hai, to final model 5 clusters ke saath fit karte hain.</p>
     <pre><code># Final model: 5 clusters, 10 restarts, fixed seed for reproducibility
 kmeans = KMeans(n_clusters=5, random_state=42, n_init=10)
 # Fit on the scaled features — no labels anywhere (unsupervised)

@@ -191,7 +191,7 @@ base.summary()</code></pre>
 <pre><code># Build a small "head": our own classifier that sits on top of the frozen base
 model = models.Sequential([
     base,                                        # frozen VGG16 feature extractor
-    layers.GlobalAveragePooling2D(),             # average each 3x3x512 feature map -&gt; 512 numbers
+    layers.GlobalAveragePooling2D(),             # average each 1x1x512 feature map -&gt; 512 numbers (48x48 input shrinks to 1x1 through VGG16’s five 2x2 max-pools)
     layers.Dense(128, activation="relu"),        # small fully-connected layer to recombine features
     layers.Dropout(0.3),                         # randomly zero 30% of activations to fight overfitting
     layers.Dense(10, activation="softmax")       # 10 outputs = CIFAR-10 class probabilities
@@ -256,9 +256,9 @@ for c in rank[:3]:
 <pre><code># Feature extraction mode: throw away the head, keep the 512-dim VGG16 embedding
 # These vectors are reusable input for OTHER algorithms (SVM, K-Means, PCA)
 features = base.predict(X_test[:500], verbose=0)
-print("Embedding shape:", features.shape)   # (500, 3, 3, 512) before pooling
+print("Embedding shape:", features.shape)   # (500, 1, 1, 512) before pooling
 flat = features.reshape(features.shape[0], -1)
-print("Flattened for SVM / K-Means:", flat.shape)   # (500, 4608)</code></pre>
+print("Flattened for SVM / K-Means:", flat.shape)   # (500, 512)</code></pre>
 
     <h2>Real-world use cases &amp; companies</h2>
     <table>
