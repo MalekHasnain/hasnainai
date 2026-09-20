@@ -101,9 +101,30 @@
     <h2 class="ru">4. Math aur stat functions (har algorithm ka toolbox)</h2>
     <p class="en">Every algorithm in this course is built from the same dozen math parts. Learn them once here, recognize them everywhere.</p>
     <p class="ru">Is course ka har algorithm unhi bara-bara math hisson se banta hai. Yahan ek dafa seekh lo — har jagah pehchan lo ge.</p>
-    <div class="term"><b>Mean (μ, x̄):</b> <span class="en">the average — sum ÷ count. The balance point of the data.</span><span class="ru">average — jama ÷ tadaad. Data ka balance point.</span></div>
-    <div class="term"><b>Variance (σ²):</b> <span class="en">average of squared distances from the mean — how spread out the data is.</span><span class="ru">mean se doori ke squares ka average — data kitna phaila hua hai.</span></div>
+    <div class="term"><b>Mean (μ, x̄):</b> <span class="en">sum of all values ÷ number of values — the average, the balance point of the data.</span><span class="ru">tamam values ka jama ÷ values ki tadaad — average, data ka balance point.</span></div>
+    <p class="en">Worked example — marks of 5 students in a test:</p>
+    <p class="ru">Misal — 5 students ke test marks:</p>
+    <table>
+      <tr><th>Student</th><th>A</th><th>B</th><th>C</th><th>D</th><th>E</th><th>Sum</th></tr>
+      <tr><td>Marks (out of 100)</td><td>62</td><td>75</td><td>75</td><td>88</td><td>95</td><td><b>395</b></td></tr>
+    </table>
+    <p><span class="en"><b>Mean = 395 ÷ 5 = 79</b> — jama karke tadaad se divide karo, bas yehi formula hai.</span><span class="ru"><b>Mean = 395 ÷ 5 = 79</b> — jama karo, tadaad se divide karo, formula bas itna hi hai.</span></p>
+    <div class="term"><b>Median:</b> <span class="en">the middle value after sorting — half the data sits below it, half above. Robust: one crazy value barely moves it (mean jumps).</span><span class="ru">sort karne ke baad ka darmiyani value — aadha data neeche, aadha upar. Mazboot: ek ajeeb value isse kam hilaati hai (mean uchhalta hai).</span></div>
+    <p class="en">Same marks, sorted: 62, 75, <b>75</b>, 88, 95 → median = <b>75</b> (3rd of 5). Add one rich kid scoring 100 → mean jumps to 82.5, median moves only to 81.5.</p>
+    <p class="ru">Wohi marks, sorted: 62, 75, <b>75</b>, 88, 95 → median = <b>75</b> (5 mein se 3rd). Ek 100-score wala student add karo → mean 82.5 ko uchhalta hai, median sirf 81.5 tak hilta hai.</p>
+    <div class="term"><b>Variance (σ²):</b> <span class="en">average of squared distances from the mean — how spread out the data is. Steps: (1) subtract mean from every value, (2) square each answer, (3) average the squares.</span><span class="ru">mean se doori ke squares ka average — data kitna phaila hua hai. Steps: (1) har value se mean minus karo, (2) har jawab ka square karo, (3) squares ka average lo.</span></div>
+    <p class="en">Worked example — same marks, mean = 79:</p>
+    <p class="ru">Misal — wohi marks, mean = 79:</p>
+    <table>
+      <tr><th>Marks (x)</th><th>62</th><th>75</th><th>75</th><th>88</th><th>95</th><th>Sum</th></tr>
+      <tr><td>x − mean</td><td>−17</td><td>−4</td><td>−4</td><td>+9</td><td>+16</td><td><b>0</b> ✓</td></tr>
+      <tr><td>(x − mean)²</td><td>289</td><td>16</td><td>16</td><td>81</td><td>256</td><td><b>658</b></td></tr>
+    </table>
+    <p><span class="en"><b>Variance = 658 ÷ 5 = 131.6</b>. Note: deviations always sum to 0 — that's the mean being the balance point.</span><span class="ru"><b>Variance = 658 ÷ 5 = 131.6</b>. Note: deviations ka jama hamesha 0 hota hai — yehi mean ka balance point hona hai.</span></p>
     <div class="term"><b>Standard deviation (σ, std):</b> <span class="en">square root of variance — spread in the data's own units, so "σ = 5 years" means something.</span><span class="ru">variance ka jar — apne hi units mein phelao, is liye "σ = 5 saal" ka matlab hota hai.</span></div>
+    <p><span class="en"><b>σ = √131.6 ≈ 11.5 marks</b> — typical distance of a student from the class average.</span><span class="ru"><b>σ = √131.6 ≈ 11.5 marks</b> — kisi student ka class average se aam faasla.</span></p>
+    <div class="term"><b>Z-score:</b> <span class="en">how many standard deviations a value is from the mean: z = (x − mean) ÷ σ. This is the anomaly detector — |z| &gt; 3 means "extremely unusual".</span><span class="ru">koi value mean se kitne standard doors hai: z = (x − mean) ÷ σ. Yehi anomaly detector hai — |z| &gt; 3 ka matlab "bahut hi ajeeb".</span></div>
+    <p><span class="en">Student E scored 95 → z = (95 − 79) ÷ 11.5 ≈ <b>+1.39</b> (good but normal). A new student scores 30 → z = (30 − 79) ÷ 11.5 ≈ <b>−4.3</b> → |z| &gt; 3 → <b>anomaly</b>, investigate.</span><span class="ru">Student E ne 95 score kiya → z = (95 − 79) ÷ 11.5 ≈ <b>+1.39</b> (achha magar normal). Naya student 30 score kare → z = (30 − 79) ÷ 11.5 ≈ <b>−4.3</b> → |z| &gt; 3 → <b>anomaly</b>, jaanch karo.</span></p>
     <figure>
       <img src="https://upload.wikimedia.org/wikipedia/commons/f/fb/Normal_distribution_pdf.svg" alt="Normal distribution bell curve with standard deviation bands" style="max-width:520px">
       <figcaption><span class="en">The normal distribution (Wikipedia): ~68% of data within ±1σ, 95% within ±2σ, 99.7% within ±3σ — exactly why |z| &gt; 3 flags an anomaly.</span><span class="ru">Normal distribution (Wikipedia): taqreeban 68% data ±1σ ke andar, 95% ±2σ, 99.7% ±3σ — isi liye |z| &gt; 3 wala point anomaly kehta jata hai.</span></figcaption>
