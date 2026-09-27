@@ -291,6 +291,167 @@ print("Flattened for SVM / K-Means:", flat.shape)   # (500, 512)</code></pre>
     <div class="qa"><div class="q en">VGG16 is ~138M parameters &mdash; why is it considered "simple"?</div><div class="q ru">VGG16 ~138M parameters ki hai &mdash; phir bhi "simple" kyun mani jati hai?</div><div class="a en">Simple refers to architecture, not size. VGG16 is one repeated pattern &mdash; 3&times;3 convolutions, same padding, 2&times;2 max-pool, doubling channels &mdash; with no branches, no exotic layers, no special tricks. That uniformity is why it became the default teaching and transfer-learning backbone, even though later nets (ResNet etc.) beat it with far fewer parameters.</div><div class="a ru">Simple ka matlab architecture se hai, size se nahi. VGG16 ek hi repeated pattern hai &mdash; 3&times;3 convolutions, same padding, 2&times;2 max-pool, doubling channels &mdash; koi branches nahi, koi exotic layers nahi, koi special tricks nahi. Yehi uniformity wajah hai ke yeh default teaching aur transfer-learning backbone ban gayi, halanke baad ki networks (ResNet waghera) ne kam parameters se isay beat kar diya.</div></div>
     <div class="qa"><div class="q en">How does VGG16 relate to the CNN you built in Topic 02?</div><div class="q ru">VGG16 ka Topic 02 wale CNN se kya taluq hai?</div><div class="a en">Same machinery, different scale and origin. Your Topic 02 CNN is a small network you trained from scratch: random filters slowly learning edges for CIFAR-10. VGG16 is that same conv/pool/softmax pattern repeated 13 convolutions deep, with filters already trained on ImageNet &mdash; comparing the two on the same data quantifies exactly what transfer learning adds.</div><div class="a ru">Machinery same, scale aur origin different. Aap ka Topic 02 CNN ek chhota network hai jo aap ne scratch se train kiya: random filters dheere dheere CIFAR-10 ke liye edges seekhte hain. VGG16 wohi conv/pool/softmax pattern 13 convolutions deep repeat karti hai, filters pehle se ImageNet par trained hain &mdash; dono ko same data par compare karna batata hai ke transfer learning exactly kitna add karta hai.</div></div>
 
+    <h2>Practical 2 — Binary Classification (Sir Waqas&rsquo;s code, explained)</h2>
+<p class="en">The practice above used 10 classes. Real projects often need a <b>YES/NO answer</b> — sick/healthy, cat/dog, fraud/not-fraud. This is <b>binary classification</b>. The code below is your teacher Sir Waqas's, with a harder medical dataset (chest X-rays: NORMAL vs PNEUMONIA). Only 3 things change vs the 10-class version: last layer becomes <b>Dense(1, sigmoid)</b>, loss becomes <b>binary_crossentropy</b>, and we can draw a <b>ROC-AUC curve</b> (only possible with 2 classes).</p>
+<p class="ru">Upar wali practice 10 classes par thi. Asli projects mein aksar <b>YES/NO jawab</b> chahiye hota hai &mdash; bimar/sehatmand, cat/dog, fraud/not-fraud. Isay <b>binary classification</b> kehte hain. Neeche ka code aapke teacher Sir Waqas ka hai, lekin ek mushkil medical dataset ke saath (chest X-rays: NORMAL vs PNEUMONIA). 10-class version se sirf 3 cheezein badalti hain: aakhri layer <b>Dense(1, sigmoid)</b> ho jati hai, loss <b>binary_crossentropy</b> ho jata hai, aur <b>ROC-AUC curve</b> bana sakte hain (sirf 2 classes par mumkin).</p>
+<div class="block-label">BLOCK 10: Setup + download the dataset</div>
+<pre><code>import kagglehub                      # Kaggle&#x27;s downloader library (pre-installed in Colab)
+import os                              # for joining folder paths
+import numpy as np                     # fast array math
+import tensorflow as tf                # deep-learning framework
+import matplotlib.pyplot as plt        # charts
+
+from tensorflow.keras import layers
+from tensorflow.keras.applications import VGG16
+from tensorflow.keras.applications.vgg16 import preprocess_input
+from sklearn.metrics import confusion_matrix, ConfusionMatrixDisplay
+from sklearn.metrics import roc_curve, roc_auc_score    # BINARY-only metrics
+from google.colab import files          # to upload YOUR own image later
+from tensorflow.keras.utils import load_img, img_to_array
+
+# Download a harder, real-world binary dataset: chest X-rays (NORMAL vs PNEUMONIA)
+# 5,856 hospital-grade images from Guangzhou Women and Children&#x27;s Medical Center
+path = kagglehub.dataset_download(&quot;tolgadincer/labeled-chest-xray-images&quot;)
+print(&quot;Dataset Path:&quot;, path)
+
+# All Kaggle datasets land inside /root/.kaggle/... — kagglehub prints the exact path
+data_path = os.path.join(path, &quot;chest_xray&quot;)   # the folder that holds train/ and test/
+print(&quot;Data folder exists:&quot;, os.path.exists(data_path))  # sanity check: must print True</code></pre>
+<p class="en">kagglehub downloads the dataset straight into Colab — no manual download, no API key. The dataset is <b>complex</b>: medical images where the difference between classes is subtle clouding in the lungs, not obvious shapes like cat vs dog.</p>
+<p class="ru">kagglehub dataset seedha Colab ke andar download kar deta hai &mdash; na manual download, na API key. Yeh dataset <b>complex</b> hai: medical images jahan dono classes ka farq phaiphone mein halka clouding hai, cat vs dog jaise wazeh shapes nahi.</p>
+<div class="block-label">BLOCK 11: Load images from folders (train/test split)</div>
+<pre><code># image_dataset_from_directory reads class names FROM FOLDER NAMES.
+# Inside chest_xray/train/ there are 2 subfolders: NORMAL/ and PNEUMONIA/
+#   -&gt; the folder name becomes the label. This is &quot;data organized by class&quot;.
+# validation_split=0.2 + subset=&quot;training&quot;  -&gt; 80% of images for training
+# same seed=123 + subset=&quot;validation&quot;       -&gt; the OTHER 20% for testing
+# (same seed = same shuffle = no image appears in both sets = no data leakage)
+train_dataset = tf.keras.utils.image_dataset_from_directory(
+    data_path + &quot;/train&quot;,                # we point at train/ and split it ourselves
+    validation_split=0.2,
+    subset=&quot;training&quot;,
+    seed=123,
+    image_size=(224, 224),               # VGG16&#x27;s native input size
+    batch_size=32                        # 32 images per training step
+)
+
+test_dataset = tf.keras.utils.image_dataset_from_directory(
+    data_path + &quot;/train&quot;,                # held-out 20% from the SAME train folder
+    validation_split=0.2,
+    subset=&quot;validation&quot;,
+    seed=123,
+    image_size=(224, 224),
+    batch_size=32
+)
+
+class_names = train_dataset.class_names  # [&#x27;NORMAL&#x27;, &#x27;PNEUMONIA&#x27;] (alphabetical)
+print(&quot;Classes:&quot;, class_names)</code></pre>
+<p class="en">This one function replaces manually loading thousands of images. It reads folders, labels images, shuffles, resizes to 224×224, and packs them into batches of 32. <b>Target variable</b> (teacher's favourite question): the folder name — NORMAL or PNEUMONIA.</p>
+<p class="ru">Yeh ek function hazaron images manually load karne ka kaam kar deta hai. Yeh folders padhta hai, images ko label karta hai, shuffle karta hai, 224&times;224 resize karta hai, aur 32 ke batches mein pack karta hai. <b>Target variable</b> (sir ka favourite sawal): folder ka naam &mdash; NORMAL ya PNEUMONIA.</p>
+<div class="block-label">BLOCK 12: Frozen VGG16 + binary head (sigmoid)</div>
+<pre><code># Same frozen VGG16 feature extractor as before (transfer learning)
+vgg16 = VGG16(weights=&quot;imagenet&quot;, include_top=False, input_shape=(224, 224, 3))
+vgg16.trainable = False          # freeze all 14.7M weights — we only train the head
+
+model = tf.keras.Sequential([
+    layers.Input(shape=(224, 224, 3)),
+    layers.Lambda(preprocess_input),    # RGB-&gt;BGR + zero-centre (inside the model!)
+    vgg16,                              # frozen feature extractor -&gt; 7x7x512 maps
+    layers.Flatten(),                   # 7*7*512 = 25,088 numbers in one row
+    layers.Dense(128, activation=&quot;relu&quot;),   # z = w.x + b, relu keeps positives
+    layers.Dropout(0.5),                # drop 50% of activations — medical datasets
+                                        # are small; strong dropout fights overfitting
+    layers.Dense(1, activation=&quot;sigmoid&quot;)   # &lt;&lt;&lt; BINARY: ONE number between 0 and 1
+])
+# MATH: sigmoid(z) = 1 / (1 + e^-z)  -&gt; squashes any score into a probability
+# Output = P(PNEUMONIA). If it is &gt;= 0.5 -&gt; PNEUMONIA, else NORMAL.
+
+model.compile(optimizer=&quot;adam&quot;,
+              loss=&quot;binary_crossentropy&quot;,     # &lt;&lt;&lt; BINARY loss (not sparse_categorical)
+              metrics=[&quot;accuracy&quot;])
+# MATH: binary_crossentropy = -[y*ln(p) + (1-y)*ln(1-p)]
+#   y=1 (pneumonia): loss = -ln(p)         -&gt; wants p -&gt; 1
+#   y=0 (normal):    loss = -ln(1-p)       -&gt; wants p -&gt; 0</code></pre>
+<p class="en">Three changes make it binary: <b>Dense(1)</b> instead of Dense(10), <b>sigmoid</b> instead of softmax, <b>binary_crossentropy</b> instead of sparse_categorical_crossentropy. Sigmoid IS the logistic function from Topic 05 — deep learning and logistic regression meet here.</p>
+<p class="ru">Teen tabdeeliyan isay binary banati hain: <b>Dense(1)</b> Dense(10) ki jagah, <b>sigmoid</b> softmax ki jagah, <b>binary_crossentropy</b> sparse_categorical ki jagah. Sigmoid wahi logistic function hai Topic 05 se &mdash; deep learning aur logistic regression yahan milte hain.</p>
+<div class="block-label">BLOCK 13: Train + evaluate</div>
+<pre><code># 5 epochs over ~4,700 training images. On a free T4 GPU: ~4-6 minutes
+history = model.fit(train_dataset,
+                    validation_data=test_dataset,
+                    epochs=5)
+
+loss, accuracy = model.evaluate(test_dataset)   # accuracy on unseen 20%
+print(&quot;Test Accuracy:&quot;, accuracy)</code></pre>
+<p class="en">Watch validation accuracy each epoch. If train accuracy climbs but validation stalls — that is <b>overfitting</b> live in front of you (teacher's favourite question, Topic: Core Concepts).</p>
+<p class="ru">Har epoch validation accuracy dekho. Agar train accuracy chadhti hai magar validation atki rahe &mdash; yeh <b>overfitting</b> hai, live (sir ka favourite sawal, Core Concepts page).</p>
+<div class="block-label">BLOCK 14: Predictions + confusion matrix</div>
+<pre><code># Collect TRUE labels and predicted PROBABILITIES over the test set
+y_true, y_scores = [], []
+for images, labels in test_dataset:          # dataset yields batches of 32
+    predictions = model.predict(images, verbose=0).flatten()   # (32,) probabilities
+    y_true.extend(labels.numpy())            # real answers 0 or 1
+    y_scores.extend(predictions)             # model&#x27;s P(PNEUMONIA)
+
+y_true = np.array(y_true)
+y_scores = np.array(y_scores)
+y_pred = (y_scores &gt;= 0.5).astype(int)       # probability -&gt; decision at threshold 0.5
+# MATH: threshold t turns probabilities into classes. 0.5 is the default,
+# but a hospital can move it: lower t = catch more sick (recall up), higher t
+# = fewer false alarms (precision up). This trade-off IS the ROC curve.
+
+cm = confusion_matrix(y_true, y_pred)        # rows=true, cols=predicted (Topic 01)
+disp = ConfusionMatrixDisplay(confusion_matrix=cm, display_labels=class_names)
+disp.plot()
+plt.title(&quot;Confusion Matrix — NORMAL vs PNEUMONIA&quot;)
+plt.show()
+# In a hospital: FN (sick patient sent home) is WORSE than FP (healthy re-tested)</code></pre>
+<p class="en">The 0.5 threshold is a <b>decision</b>, not math truth. In medical AI, teams often lower the threshold to catch more true cases — the confusion matrix changes even though the model is identical. Great interview point.</p>
+<p class="ru">0.5 threshold ek <b>decision</b> hai, math ki sachai nahi. Medical AI mein aksar threshold neeche karte hain taake zyada bimar pakre jayein &mdash; confusion matrix badal jati hai halanke model same hai. Interview ka zabardast point.</p>
+<div class="block-label">BLOCK 15: ROC-AUC curve (binary-only metric)</div>
+<pre><code># ROC = Receiver Operating Characteristic (from WW-II radar operators!)
+# AUC = Area Under the Curve — probability the model ranks a random sick patient
+#        ABOVE a random healthy one. 0.5 = coin flip, 1.0 = perfect.
+auc = roc_auc_score(y_true, y_scores)   # uses SCORES, not classes — measures ranking
+
+fpr, tpr, thresholds = roc_curve(y_true, y_scores)
+# MATH: sweep the threshold from 1 to 0; at each threshold record
+#   TPR = TP/(TP+FN) = recall (caught sick)
+#   FPR = FP/(FP+TN) = false alarm rate (healthy flagged sick)
+# Plot TPR vs FPR -&gt; the ROC curve. Top-left corner = perfect.
+
+plt.plot(fpr, tpr, label=f&quot;AUC = {auc:.3f}&quot;)
+plt.plot([0, 1], [0, 1], linestyle=&quot;--&quot;)    # diagonal = random guessing baseline
+plt.xlabel(&quot;False Positive Rate&quot;)
+plt.ylabel(&quot;True Positive Rate&quot;)
+plt.title(&quot;ROC-AUC Curve&quot;)
+plt.legend()
+plt.show()
+print(&quot;ROC-AUC:&quot;, auc)</code></pre>
+<p class="en"><b>Why ROC-AUC beats accuracy:</b> with imbalanced data (e.g. 80% normal), a dumb model predicting &lsquo;always NORMAL&rsquo; scores 80% accuracy but AUC 0.5. AUC measures the model's <b>ranking power</b> across ALL thresholds — that is why medical and fraud models report it.</p>
+<p class="ru"><b>ROC-AUC accuracy se behtar kyun:</b> imbalanced data par (misal 80% normal), ek dumb model jo hamesha &lsquo;NORMAL&rsquo; bole 80% accuracy lekin AUC 0.5 pawe gi. AUC model ki <b>ranking power</b> napta hai tamam thresholds par &mdash; isi liye medical aur fraud models yehi report karte hain.</p>
+<div class="block-label">BLOCK 16: Upload your own X-ray / image and predict</div>
+<pre><code># Colab-only: opens a file picker — upload any chest X-ray (or test image)
+uploaded = files.upload()
+image_path = list(uploaded.keys())[0]
+
+img = load_img(image_path, target_size=(224, 224))   # load + resize
+img_array = img_to_array(img)                        # (224,224,3) pixels 0-255
+img_array = np.expand_dims(img_array, axis=0)        # add batch dim -&gt; (1,224,224,3)
+
+prediction = model.predict(img_array, verbose=0)[0][0]   # sigmoid -&gt; one probability
+
+if prediction &gt;= 0.5:
+    print(&quot;Prediction: PNEUMONIA&quot;)
+    print(&quot;Probability:&quot;, prediction)
+else:
+    print(&quot;Prediction: NORMAL&quot;)
+    print(&quot;Probability:&quot;, 1 - prediction)   # confidence of the OTHER class</code></pre>
+<p class="en">This is the &lsquo;deploy&rsquo; moment: the trained model judging an image it has never seen. Try uploading an image from the test folder you got wrong in the confusion matrix — see if the probability explains the mistake.</p>
+<p class="ru">Yeh &lsquo;deploy&rsquo; ka lamha hai: trained model kisi aisi image ka faisla kar raha hai jo usne kabhi nahi dekhi. Test folder ki koi aisi image upload karo jo confusion matrix mein galti hui &mdash; dekho probability galti ki wajah batati hai ke nahi.</p>
+<h3>Interview questions — binary classification</h3>
+<div class="qa"><div class="q en">Why Dense(1, sigmoid) for binary but Dense(10, softmax) for multi-class?</div><div class="q ru">Binary ke liye Dense(1, sigmoid) magar multi-class ke liye Dense(10, softmax) kyun?</div><div class="a en">One sigmoid output can represent two classes: P(class1)=p, P(class2)=1−p, so probabilities still sum to 1. With 10 classes you need 10 outputs normalized by softmax. Using 2 sigmoid outputs for binary would be wrong — the two numbers would be independent, not competing.</div><div class="a ru">Ek sigmoid output do classes represent kar sakti hai: P(class1)=p, P(class2)=1−p, is liye probabilities ka jawab ab bhi 1 hai. 10 classes ke liye 10 outputs chahiye jo softmax normalize kare. Binary ke liye 2 sigmoid outputs ghalat hote &mdash; dono numbers independent hote, muqabla nahi karte.</div></div>
+<div class="qa"><div class="q en">What is the ROC-AUC curve and when is it better than accuracy?</div><div class="q ru">ROC-AUC curve kya hai aur kab accuracy se behtar hai?</div><div class="a en">ROC plots True Positive Rate vs False Positive Rate as the decision threshold sweeps from strict to loose; AUC is the area under it = probability that a random positive example scores above a random negative one. It is threshold-independent, so it exposes models that look good only at one lucky threshold, and it stays honest on imbalanced data where accuracy lies.</div><div class="a ru">ROC True Positive Rate aur False Positive Rate ko plot karta hai jab threshold ko sakht se dheela kiya jata hai; AUC iske neeche ka area hai = probability ke koi random positive example random negative se upar score kare. Yeh threshold-independent hai, is liye un models ko expose karta hai jo sirf ek kismat ke threshold par achhe lagte hain, aur imbalanced data par jahan accuracy jhoot bolti hai wahan imandaar rehta hai.</div></div>
+<div class="qa"><div class="q en">The dataset is 74% PNEUMONIA. Why is 74% accuracy a red flag here?</div><div class="q ru">Dataset 74% PNEUMONIA hai. Yahan 74% accuracy red flag kyun hai?</div><div class="a en">Because a model that ALWAYS predicts PNEUMONIA — learning nothing — also scores 74%. Accuracy must always be compared to the majority-class baseline. That is why you also check the confusion matrix (is it just predicting one class?) and AUC (does it actually rank patients?).</div><div class="a ru">Kyunki ek model jo HAMESHA PNEUMONIA predict kare &mdash; kuch bhi seekhe bina &mdash; bhi 74% pawe ga. Accuracy ko hamesha majority-class baseline se compare karna chahiye. Isi liye confusion matrix bhi dekho (kya woh sirf ek class predict kar raha hai?) aur AUC (kya woh waqai rank karta hai?).</div></div>
     <div class="prevnext">
       <a href="dbscan.html"><span class="en">← DBSCAN (Topic 03)</span><span class="ru">← DBSCAN (Topic 03)</span></a>
       <a href="logistic-regression.html"><span class="en">Logistic Regression (Topic 05) →</span><span class="ru">Logistic Regression (Topic 05) →</span></a>
